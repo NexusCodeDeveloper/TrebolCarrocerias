@@ -1,45 +1,77 @@
-import { useRef } from 'react'
-import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import { Zap, Target, Shield } from 'lucide-react'
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { Zap, Target, Shield } from "lucide-react";
 
 const technologies = [
-  { icon: Zap, title: 'Láser Fibra Óptica', description: 'Corte de precisión milimétrica con tecnología láser de última generación.', stat: '0.1mm', statLabel: 'Precisión' },
-  { icon: Target, title: 'Guillotina CNC', description: 'Corte automatizado controlado por computadora que garantiza rectitud y consistencia.', stat: '3000mm', statLabel: 'Capacidad' },
-  { icon: Shield, title: 'Plegadora CNC', description: 'Doblado de chapa con control numérico para acabados perfectos.', stat: '100T', statLabel: 'Presión' },
-]
+  {
+    icon: Zap,
+    title: "Láser Fibra Óptica",
+    description:
+      "Corte de precisión milimétrica con tecnología láser de última generación.",
+    stat: "0.1mm",
+    statLabel: "Precisión",
+  },
+  {
+    icon: Target,
+    title: "Guillotina CNC",
+    description:
+      "Corte automatizado controlado por computadora que garantiza rectitud y consistencia.",
+    stat: "3000mm",
+    statLabel: "Capacidad",
+  },
+  {
+    icon: Shield,
+    title: "Plegadora CNC",
+    description:
+      "Doblado de chapa con control numérico para acabados perfectos.",
+    stat: "100T",
+    statLabel: "Presión",
+  },
+];
 
 const features = [
-  'Homologación CNTSV',
-  'Member de CAPEMISA',
-  'Stock permanente',
-  'Asesoramiento gratuito',
-  'Extensión de chasis AITA',
-  'Ingeniería propia',
-]
+  "Homologación CNTSV",
+  "Member de CAPEMISA",
+  "Stock permanente",
+  "Asesoramiento gratuito",
+  "Extensión de chasis AITA",
+  "Ingeniería propia",
+];
 
 export default function Tecnologia() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const sectionRef = useRef(null)
+  const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
+    offset: ["start end", "end start"],
+  });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, -100])
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   return (
-    <section id="tecnologia" ref={sectionRef} className="relative overflow-hidden">
+    <section
+      id="tecnologia"
+      ref={sectionRef}
+      className="relative overflow-hidden"
+    >
       {/* Sticky parallax hero */}
       <div className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <motion.div style={{ y: bgY }} className="absolute inset-0">
-          <img
-            src="/img/signa-trebol.jpg"
-            alt="Planta Trébol"
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
             className="w-full h-full object-cover"
-            onError={(e) => { e.target.src = 'https://placehold.co/1920x1080/0A0A0A/0D7C3E?text=Trébol+Carrocerías' }}
-          />
+            poster="https://placehold.co/1920x1080/0A0A0A/0D7C3E?text=Cargando+Video..."
+          >
+            <source
+              src="https://www.pexels.com/es-es/download/video/37889019/"
+              type="video/mp4"
+            />
+          </video>
           <div className="absolute inset-0 bg-black/60" />
         </motion.div>
 
@@ -49,13 +81,17 @@ export default function Tecnologia() {
           transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="relative z-10 text-center px-6"
         >
-          <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-6 block">Nuestra Tecnología</span>
+          <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-6 block">
+            Nuestra Tecnología
+          </span>
           <h2 className="font-heading text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight text-white mb-6">
-            Vanguardia<br />
+            Vanguardia
+            <br />
             <span className="gradient-text">Tecnológica</span>
           </h2>
           <p className="text-gray-300 text-xl max-w-2xl mx-auto">
-            Equipamiento de última generación para la máxima calidad y precisión.
+            Equipamiento de última generación para la máxima calidad y
+            precisión.
           </p>
         </motion.div>
       </div>
@@ -69,7 +105,11 @@ export default function Tecnologia() {
                 key={tech.title}
                 initial={{ opacity: 0, y: 60 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: i * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+                transition={{
+                  duration: 0.8,
+                  delay: i * 0.15,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
                 className="group relative p-8 md:p-10 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
               >
                 {/* Glow effect */}
@@ -80,12 +120,20 @@ export default function Tecnologia() {
                     <tech.icon className="w-8 h-8 text-trebol-400" />
                   </div>
 
-                  <h3 className="font-heading text-2xl font-bold mb-3 text-white tracking-tight">{tech.title}</h3>
-                  <p className="text-gray-400 leading-relaxed mb-8 text-lg">{tech.description}</p>
+                  <h3 className="font-heading text-2xl font-bold mb-3 text-white tracking-tight">
+                    {tech.title}
+                  </h3>
+                  <p className="text-gray-400 leading-relaxed mb-8 text-lg">
+                    {tech.description}
+                  </p>
 
                   <div className="border-t border-white/[0.06] pt-6">
-                    <div className="font-heading text-5xl font-bold text-white tracking-tight mb-1">{tech.stat}</div>
-                    <div className="text-gray-500 text-sm tracking-[0.2em] uppercase">{tech.statLabel}</div>
+                    <div className="font-heading text-5xl font-bold text-white tracking-tight mb-1">
+                      {tech.stat}
+                    </div>
+                    <div className="text-gray-500 text-sm tracking-[0.2em] uppercase">
+                      {tech.statLabel}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -102,7 +150,8 @@ export default function Tecnologia() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="font-heading text-3xl md:text-4xl font-bold mb-8 tracking-tight">
-                  ¿Por qué somos la <span className="text-trebol-400">mejor opción</span>?
+                  ¿Por qué somos la{" "}
+                  <span className="text-trebol-400">mejor opción</span>?
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
                   {features.map((feature, i) => (
@@ -131,8 +180,12 @@ export default function Tecnologia() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4">
                     <div className="glass rounded-xl p-4 border border-white/10">
-                      <div className="text-trebol-400 text-sm font-medium tracking-[0.2em] uppercase">Ubicación</div>
-                      <div className="text-white font-heading font-bold tracking-tight">Ruta 51 Km 6½ — El Encón, Salta</div>
+                      <div className="text-trebol-400 text-sm font-medium tracking-[0.2em] uppercase">
+                        Ubicación
+                      </div>
+                      <div className="text-white font-heading font-bold tracking-tight">
+                        Ruta 51 Km 6½ — El Encón, Salta
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -142,5 +195,5 @@ export default function Tecnologia() {
         </div>
       </div>
     </section>
-  )
+  );
 }
