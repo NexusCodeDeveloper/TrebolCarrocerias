@@ -2,7 +2,6 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Productos from "./components/Productos";
 import Galeria from "./components/Galeria";
-/* import Tecnologia from './components/Tecnologia' */
 import Testimonios from "./components/Testimonios";
 import Contacto from "./components/Contacto";
 import Footer from "./components/Footer";
@@ -15,7 +14,6 @@ export default function App() {
       <Hero />
       <Productos />
       <Galeria />
-      {/*  <Tecnologia /> */}
       <Testimonios />
       <Contacto />
       <Footer />

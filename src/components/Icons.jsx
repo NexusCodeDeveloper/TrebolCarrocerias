@@ -1,3 +1,6 @@
+/**
+ * @param {{ className?: string }} props
+ */
 export function WhatsAppIcon({ className }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">

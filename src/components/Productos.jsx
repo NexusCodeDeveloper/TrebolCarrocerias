@@ -11,6 +11,17 @@ import {
   X,
 } from "lucide-react";
 
+/**
+ * @typedef {Object} Product
+ * @property {import("lucide-react").LucideIcon} icon
+ * @property {string} title
+ * @property {string} subtitle
+ * @property {string} description
+ * @property {string} image
+ * @property {string} stat
+ * @property {string} statLabel
+ */
+
 const products = [
   {
     icon: Truck,
@@ -76,7 +87,9 @@ const products = [
 export default function Productos() {
   const sectionRef = useRef(null);
   const cardsRef = useRef(null);
-  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [expandedIndex, setExpandedIndex] = useState(
+    /** @type {number | null} */ (null),
+  );
 
   const { scrollYProgress } = useScroll({
     target: cardsRef,
@@ -119,6 +132,16 @@ export default function Productos() {
   );
 }
 
+/**
+ * @param {{
+ *   product: Product,
+ *   index: number,
+ *   total: number,
+ *   scrollProgress: import("framer-motion").MotionValue<number>,
+ *   isExpanded: boolean,
+ *   onToggle: () => void,
+ * }} props
+ */
 function Card({ product, index, total, scrollProgress, isExpanded, onToggle }) {
   const segment = 1 / total;
   const start = index * segment;
@@ -145,8 +168,8 @@ function Card({ product, index, total, scrollProgress, isExpanded, onToggle }) {
       }}
     >
       <motion.div
-        style={{ opacity }}
         style={{
+          opacity,
           borderRadius: "24px",
           overflow: "hidden",
           boxShadow: "0 25px 50px rgba(0,0,0,0.8)",
@@ -188,7 +211,7 @@ function Card({ product, index, total, scrollProgress, isExpanded, onToggle }) {
               className="w-full h-full object-cover"
               loading="lazy"
               onError={(e) => {
-                e.target.src = `https://placehold.co/800x700/0A0A0A/0D7C3E?text=${product.title}`;
+                e.currentTarget.src = `https://placehold.co/800x700/0A0A0A/0D7C3E?text=${product.title}`;
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#111] hidden md:block" />
