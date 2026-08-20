@@ -62,7 +62,9 @@ const fallbackImages = allImages.map((img) => ({
 export default function Galeria() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [expandedIndex, setExpandedIndex] = useState(null);
+  const [expandedIndex, setExpandedIndex] = useState(
+    /** @type {number | null} */ (null),
+  );
 
   return (
     <section id="galeria" className="py-32 md:py-48 px-4 relative">
@@ -109,7 +111,7 @@ export default function Galeria() {
                   height={500}
                   loading="lazy"
                   onError={(e) => {
-                    e.target.src = img.fallback;
+                    e.currentTarget.src = img.fallback;
                   }}
                 />
 

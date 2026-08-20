@@ -12,7 +12,6 @@ const productLinks = [
 ];
 
 const companyLinks = [
-  { name: "Nuestra Empresa", href: "#tecnologia" },
   { name: "Galería", href: "#galeria" },
   { name: "Clientes", href: "#testimonios" },
   { name: "Contacto", href: "#contacto" },
@@ -89,7 +88,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed">
-              Fabricantes de carrocerías para camiones. Member CAPEMISA,
+              Fabricantes de carrocerías para camiones. Miembro CAPEMISA,
               homologación CNTSV, cumplimiento AITA.
             </p>
           </div>
@@ -171,7 +170,7 @@ export default function Footer() {
       <div className="border-t border-white/[0.06] py-6 px-4">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-600 text-sm">
-            &copy; 2025 Trébol Carrocerías. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} Trébol Carrocerías. Todos los derechos reservados.
           </p>
           <motion.button
             onClick={scrollToTop}

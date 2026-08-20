@@ -2,15 +2,6 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ArrowRight, ArrowDown, Play } from "lucide-react";
 
-const phrases = [
-  "Baranda Volcable",
-  "Paqueteros",
-  "Playos",
-  "Volquetes",
-  "Térmicos",
-  "Extensión Chasis",
-];
-
 export default function Hero() {
   const sectionRef = useRef(null);
   const textRef = useRef(null);
@@ -24,7 +15,6 @@ export default function Hero() {
   const videoScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.15]);
   const videoOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
   const textY = useTransform(scrollYProgress, [0, 0.3], [0, -80]);
-  const textBlur = useTransform(scrollYProgress, [0, 0.2], [0, 8]);
   const barsOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.3], [0.55, 0.85]);
 
@@ -40,11 +30,12 @@ export default function Hero() {
           muted
           loop
           playsInline
+          preload="metadata"
           className="w-full h-full object-cover"
-          poster="https://placehold.co/1920x1080/0A0A0A/0D7C3E?text=Trébol+Carrocerías"
+          poster="https://placehold.co/1920x1080/0A0A0A/0D7C3E?text=Trébol+Carrocería"
         >
           <source
-            src="https://www.pexels.com/es-es/download/video/36251074/"
+            src="https://www.pexels.com/es-es/download/video/4079657/"
             type="video/mp4"
           />
         </video>
@@ -67,7 +58,6 @@ export default function Hero() {
         <motion.div
           style={{
             y: textY,
-            filter: useTransform(textBlur, (v) => `blur(${v}px)`),
           }}
           className="text-center max-w-5xl"
           ref={textRef}
@@ -95,7 +85,7 @@ export default function Hero() {
               delay: 0.4,
               ease: [0.25, 0.46, 0.45, 0.94],
             }}
-            className="font-heading text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white leading-[0.9] mb-8"
+            className="font-heading text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter text-white leading-[1.05] mb-8"
           >
             CARROCERÍAS
             <br />
@@ -112,7 +102,7 @@ export default function Hero() {
             }}
             className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto mb-12 tracking-tight"
           >
-            Soluciones de alta calidad para el transporte de carga. Member
+            Soluciones de alta calidad para el transporte de carga. Miembro
             CAPEMISA, homologación CNTSV.
           </motion.p>
 
