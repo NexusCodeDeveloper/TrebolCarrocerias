@@ -70,14 +70,6 @@ export default function Testimonios() {
             </motion.div>
           ))}
         </div>
-
-        {/* Replace instruction */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.8 }}
-          className="text-center text-gray-600 text-sm mt-10 tracking-tight"
-        ></motion.p>
       </div>
     </section>
   );
