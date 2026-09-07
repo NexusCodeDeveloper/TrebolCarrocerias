@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import {
   Truck,
   Package,
@@ -7,9 +6,9 @@ import {
   ArrowUpDown,
   Thermometer,
   Wrench,
-  Plus,
-  X,
+  Check,
 } from "lucide-react";
+import ImageStackSlider from "./ImageStackSlider";
 
 /**
  * @typedef {Object} Product
@@ -20,8 +19,11 @@ import {
  * @property {string} image
  * @property {string} stat
  * @property {string} statLabel
+ * @property {string[]} features
+ * @property {string[]} gallery
  */
 
+/** @type {Product[]} */
 const products = [
   {
     icon: Truck,
@@ -32,6 +34,16 @@ const products = [
     image: "/img/volcable-amarillo.jpg",
     stat: "500+",
     statLabel: "Unidades fabricadas",
+    features: [
+      "Volcado hidráulico con control preciso",
+      "Estructura reforzada",
+      "Mayor durabilidad",
+    ],
+    gallery: [
+      "/img/volcable-amarillo.jpg",
+      "/img/volcable-blanco.jpg",
+      "/img/volcable-azul.jpg",
+    ],
   },
   {
     icon: Package,
@@ -42,6 +54,16 @@ const products = [
     image: "/img/paquetero-azul.jpg",
     stat: "200+",
     statLabel: "Entregas realizadas",
+    features: [
+      "Optimización de espacio",
+      "Estructura reforzada",
+      "Ideal para distribución urbana y larga distancia",
+    ],
+    gallery: [
+      "/img/paquetero-azul.jpg",
+      "/img/paque-blanco.jpg",
+      "/img/paquetero-trasera.jpg",
+    ],
   },
   {
     icon: Box,
@@ -52,6 +74,16 @@ const products = [
     image: "/img/playo-andina.jpg",
     stat: "300+",
     statLabel: "Proyectos completos",
+    features: [
+      "Suelo reforzado antideslizante",
+      "Laterales desmontables",
+      "Sistema de amarrado integrado",
+    ],
+    gallery: [
+      "/img/playo-andina.jpg",
+      "/img/signa-trebol.jpg",
+      "/img/semi-bajada-bonano.jpg",
+    ],
   },
   {
     icon: ArrowUpDown,
@@ -62,6 +94,16 @@ const products = [
     image: "/img/volcable-azul.jpg",
     stat: "150+",
     statLabel: "Volquetes activos",
+    features: [
+      "Descarga hidráulica optimizada",
+      "Capacidad de 5 a 20 m³",
+      "Diseño industrial para granel",
+    ],
+    gallery: [
+      "/img/volcable-azul.jpg",
+      "/img/volcable-blanco.jpg",
+      "/img/volcable-amarillo.jpg",
+    ],
   },
   {
     icon: Thermometer,
@@ -72,6 +114,16 @@ const products = [
     image: "/img/paquetero-trasera.jpg",
     stat: "80+",
     statLabel: "Flotas equipadas",
+    features: [
+      "Aislación de alta densidad",
+      "Circulación forzada",
+      "Control de temperatura para cadena de frío",
+    ],
+    gallery: [
+      "/img/paquetero-trasera.jpg",
+      "/img/paque-blanco.jpg",
+      "/img/paquetero-azul.jpg",
+    ],
   },
   {
     icon: Wrench,
@@ -82,23 +134,194 @@ const products = [
     image: "/img/frame-hierronort.jpg",
     stat: "100%",
     statLabel: "Homologados",
+    features: [
+      "Diseñada bajo norma AITA",
+      "Homologación completa incluida",
+      "Cumplimiento total de la normativa vigente",
+    ],
+    gallery: [
+      "/img/frame-hierronort.jpg",
+      "/img/semi-bajada-bonano.jpg",
+      "/img/signa-trebol.jpg",
+    ],
   },
 ];
-export default function Productos() {
-  const sectionRef = useRef(null);
-  const cardsRef = useRef(null);
-  const [expandedIndex, setExpandedIndex] = useState(
-    /** @type {number | null} */ (null),
-  );
 
-  const { scrollYProgress } = useScroll({
-    target: cardsRef,
-    offset: ["start 200%", "end end"],
-  });
+/* Config del efecto */
+const SEGMENTS_SCROLL = 1.5; // × altura de viewport por transición (más alto = más lento)
+const FINAL_SCALE = 0.92; // escala del panel tapado
+const FINAL_DIM = 0.35; // opacidad del overlay negro del panel tapado
+const FINAL_OFFSET_Y = -30; // px, desplazamiento vertical del panel tapado
+
+export default function Productos() {
+  const areaRef = useRef(/** @type {HTMLDivElement | null} */ (null));
+  const stageRef = useRef(/** @type {HTMLDivElement | null} */ (null));
+  const panelsRef = useRef(/** @type {(HTMLDivElement | null)[]} */ ([]));
+  const imgRefs = useRef(/** @type {(HTMLImageElement | null)[]} */ ([]));
+  const dimRefs = useRef(/** @type {(HTMLDivElement | null)[]} */ ([]));
+  const textRefs = useRef(/** @type {(HTMLDivElement | null)[]} */ ([]));
+  const styleCache = useRef(/** @type {(string | undefined)[]} */ ([]));
+  const [reducedMotion, setReducedMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  const [areaHeight, setAreaHeight] = useState(0);
+
+  /* prefers-reduced-motion */
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = (/** @type {MediaQueryListEvent} */ e) =>
+      setReducedMotion(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  /* Altura del área de scroll (recalculada en resize) */
+  useEffect(() => {
+    const update = () => {
+      const vh = window.innerHeight;
+      setAreaHeight(
+        Math.round(vh * (1 + (products.length - 1) * SEGMENTS_SCROLL)),
+      );
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  /* Motor del efecto: stage + paneles calculados a mano (sin sticky) */
+  useEffect(() => {
+    if (reducedMotion) return;
+    const LERP = 0.5; // suavizado mínimo de notchs: pegado al scroll, sin retraso visible
+    let rafId = /** @type {number | null} */ (null);
+    let current = 0; // progreso suavizado
+    let target = 0; // progreso real del scroll
+
+    const getTarget = () => {
+      const area = areaRef.current;
+      if (!area) return 0;
+      const viewportH = window.innerHeight;
+      const areaH = area.offsetHeight;
+      const range = areaH - viewportH;
+      if (range <= 0) return 0;
+      const pinStart = area.getBoundingClientRect().top + window.scrollY;
+      return Math.min(1, Math.max(0, (window.scrollY - pinStart) / range));
+    };
+
+    const apply = (/** @type {number} */ p) => {
+      const area = areaRef.current;
+      const stage = stageRef.current;
+      if (!area || !stage) return;
+
+      const viewportH = window.innerHeight;
+      const areaH = area.offsetHeight;
+      const pinStart = area.getBoundingClientRect().top + window.scrollY;
+      const pinEnd = pinStart + areaH - viewportH;
+      const scrollY = window.scrollY;
+
+      /* Posición del stage: absolute → fixed → absolute (sticky a mano) */
+      if (scrollY < pinStart) {
+        stage.style.position = "absolute";
+        stage.style.top = "0px";
+      } else if (scrollY <= pinEnd) {
+        stage.style.position = "fixed";
+        stage.style.top = "0px";
+      } else {
+        stage.style.position = "absolute";
+        stage.style.top = `${areaH - viewportH}px`;
+      }
+
+      /* Progreso global 0..N-1 */
+      const global = p * (products.length - 1);
+      const floor = Math.floor(global);
+      const frac = global - floor;
+
+      /* Transformaciones por panel (solo transform/opacity = compositor, sin repintado) */
+      panelsRef.current.forEach((panel, i) => {
+        if (!panel) return;
+        const img = imgRefs.current[i];
+        const dim = dimRefs.current[i];
+        const text = textRefs.current[i];
+        let transform;
+        let dimOpacity;
+        let imgTransform;
+        let textStyle;
+        if (i < floor) {
+          transform = `translateY(${FINAL_OFFSET_Y}px) scale(${FINAL_SCALE})`;
+          dimOpacity = FINAL_DIM;
+          imgTransform = "scale(1)";
+          textStyle = "opacity:0;transform:translateY(0px)";
+        } else if (i === floor) {
+          transform = `translateY(${FINAL_OFFSET_Y * frac}px) scale(${
+            1 - (1 - FINAL_SCALE) * frac
+          })`;
+          dimOpacity = (FINAL_DIM * frac).toFixed(3);
+          imgTransform = `scale(${1 - 0.1 * frac})`;
+          textStyle = `opacity:${(1 - 0.7 * frac).toFixed(
+            3,
+          )};transform:translateY(${(-24 * frac).toFixed(2)}px)`;
+        } else if (i === floor + 1) {
+          transform = `translateY(${(1 - frac) * 100}%)`;
+          dimOpacity = "0";
+          imgTransform = `scale(${1 + 0.12 * (1 - frac)})`;
+          textStyle = `opacity:${Math.min(1, frac * 1.5).toFixed(
+            3,
+          )};transform:translateY(${((1 - frac) * 40).toFixed(2)}px)`;
+        } else {
+          transform = "translateY(100%)";
+          dimOpacity = "0";
+          imgTransform = "scale(1)";
+          textStyle = "opacity:0;transform:translateY(0px)";
+        }
+        const key = `${transform}|${dimOpacity}|${imgTransform}|${textStyle}`;
+        if (styleCache.current[i] === key) return;
+        styleCache.current[i] = key;
+        panel.style.transform = transform;
+        if (dim) dim.style.opacity = String(dimOpacity);
+        if (img) img.style.transform = imgTransform;
+        if (text) text.style.cssText = textStyle;
+      });
+    };
+
+    const loop = () => {
+      current += (target - current) * LERP;
+      const done = Math.abs(target - current) < 0.0005;
+      if (done) current = target;
+      apply(current);
+      if (done) {
+        rafId = null;
+      } else {
+        rafId = requestAnimationFrame(loop);
+      }
+    };
+
+    const startLoop = () => {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(loop);
+      }
+    };
+
+    const onScroll = () => {
+      target = getTarget();
+      startLoop();
+    };
+    const onResize = () => {
+      target = getTarget();
+      startLoop();
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+    onScroll();
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [reducedMotion]);
 
   return (
-    <section id="productos" ref={sectionRef} className="bg-black">
-      {/* Header - scroll normal, NO sticky */}
+    <section id="productos" className="bg-black">
+      {/* Header - scroll normal */}
       <div className="pt-32 pb-8 px-4 max-w-7xl mx-auto">
         <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
           Nuestros Productos
@@ -110,141 +333,196 @@ export default function Productos() {
         </h2>
       </div>
 
-      {/* Cards */}
-      <div
-        ref={cardsRef}
-        className="relative px-4 md:px-8 max-w-7xl mx-auto"
-        style={{ height: `${(products.length + 0.5) * 100}vh` }}
-      >
-        {products.map((product, i) => (
-          <Card
-            key={product.title}
-            product={product}
-            index={i}
-            total={products.length}
-            scrollProgress={scrollYProgress}
-            isExpanded={expandedIndex === i}
-            onToggle={() => setExpandedIndex(expandedIndex === i ? null : i)}
-          />
-        ))}
-      </div>
+      {reducedMotion ? (
+        /* Reduced motion: flujo normal + fade-in simple */
+        <div className="bg-black">
+          {products.map((product, i) => (
+            <ProductPanel
+              key={product.title}
+              product={product}
+              index={i}
+              mode="flow"
+            />
+          ))}
+        </div>
+      ) : (
+        /* Stacking cards: scroll-area → stage → paneles */
+        <div
+          id="scroll-area"
+          ref={areaRef}
+          className="relative bg-black"
+          style={{ height: areaHeight || undefined }}
+        >
+          <div
+            ref={stageRef}
+            className="absolute inset-x-0 top-0 h-screen overflow-hidden"
+          >
+            {products.map((product, i) => (
+              <ProductPanel
+                key={product.title}
+                product={product}
+                index={i}
+                mode="stack"
+                panelRef={(el) => {
+                  panelsRef.current[i] = el;
+                }}
+                imgRef={(el) => {
+                  imgRefs.current[i] = el;
+                }}
+                dimRef={(el) => {
+                  dimRefs.current[i] = el;
+                }}
+                textRef={(el) => {
+                  textRefs.current[i] = el;
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
 
 /**
- * @param {{
- *   product: Product,
- *   index: number,
- *   total: number,
- *   scrollProgress: import("framer-motion").MotionValue<number>,
- *   isExpanded: boolean,
- *   onToggle: () => void,
- * }} props
+ * @param {Object} props
+ * @param {Product} props.product
+ * @param {number} props.index
+ * @param {"flow" | "stack"} props.mode
+ * @param {(el: HTMLDivElement | null) => void} [props.panelRef]
+ * @param {(el: HTMLImageElement | null) => void} [props.imgRef]
+ * @param {(el: HTMLDivElement | null) => void} [props.dimRef]
+ * @param {(el: HTMLDivElement | null) => void} [props.textRef]
  */
-function Card({ product, index, total, scrollProgress, isExpanded, onToggle }) {
-  const segment = 1 / total;
-  const start = index * segment;
+function ProductPanel({
+  product,
+  index,
+  mode,
+  panelRef,
+  imgRef,
+  dimRef,
+  textRef,
+}) {
+  const ref = useRef(/** @type {HTMLDivElement | null} */ (null));
+  const [inView, setInView] = useState(false);
 
-  const y = useTransform(
-    scrollProgress,
-    [start, start + segment],
-    ["100vh", "0vh"],
-  );
-  const opacity = useTransform(
-    scrollProgress,
-    [start, start + segment * 0.3],
-    [0, 1],
-  );
+  /* Fade-in simple solo en modo flujo (reduced motion) */
+  useEffect(() => {
+    if (mode !== "flow") return;
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.15 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [mode]);
 
   return (
-    <motion.div
+    <div
+      ref={(el) => {
+        ref.current = el;
+        if (panelRef) panelRef(el);
+      }}
+      className={
+        mode === "flow"
+          ? "relative h-screen w-full overflow-hidden"
+          : "absolute inset-0 overflow-hidden"
+      }
       style={{
-        y,
         zIndex: index + 1,
-        position: "sticky",
-        top: "120px",
-        willChange: "transform",
+        opacity: mode === "flow" ? (inView ? 1 : 0) : undefined,
+        transition: mode === "flow" ? "opacity 0.8s ease" : undefined,
       }}
     >
-      <motion.div
-        style={{
-          opacity,
-          borderRadius: "24px",
-          overflow: "hidden",
-          boxShadow: "0 25px 50px rgba(0,0,0,0.8)",
-          backgroundColor: "#111",
+      {/* Imagen de fondo full-bleed */}
+      <img
+        ref={(el) => {
+          if (imgRef) imgRef(el);
         }}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          <div className="p-8 md:p-12 lg:p-16 flex flex-col justify-center order-2 md:order-1">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-3 h-3 rounded-full bg-trebol-500" />
-              <div className="h-px flex-1 bg-gradient-to-r from-trebol-500/50 to-transparent" />
-            </div>
-            <div className="flex items-center gap-3 mb-4">
-              <product.icon className="w-6 h-6 text-trebol-400" />
-              <span className="text-gray-500 text-sm tracking-[0.2em] uppercase">
-                {product.subtitle}
-              </span>
-            </div>
-            <h3 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-4">
-              {product.title}
-            </h3>
-            <p className="text-gray-400 text-lg leading-relaxed mb-8">
-              {product.description}
-            </p>
-            <div className="flex items-end gap-4">
-              <span className="font-heading text-5xl md:text-6xl font-bold text-trebol-400 tracking-tight leading-none">
+        src={product.image}
+        alt={product.title}
+        className="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+        onError={(e) => {
+          e.currentTarget.src = `https://placehold.co/1600x900/0A0A0A/0D7C3E?text=${product.title}`;
+        }}
+      />
+
+      {/* Overlay opaco: nunca menos de 0.55; más fuerte del lado del texto */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/55 md:bg-gradient-to-r md:from-black/90 md:via-black/70 md:to-black/55" />
+
+      {/* Overlay de oscurecimiento (opacity animada por JS, sin filter/repintado) */}
+      <div
+        ref={(el) => {
+          if (dimRef) dimRef(el);
+        }}
+        className="absolute inset-0 bg-black"
+        style={{ opacity: 0 }}
+      />
+
+      {/* Contenido: texto + carrusel */}
+      <div className="relative z-10 flex h-full flex-col justify-end px-8 pb-24 md:flex-row md:items-center md:justify-between md:gap-12 md:pb-0 md:px-20 lg:px-28">
+        <div
+          ref={(el) => {
+            if (textRef) textRef(el);
+          }}
+          className="max-w-xl"
+        >
+          {/* Eyebrow: punto + línea decorativa */}
+          <div className="flex items-center gap-4 mb-5 md:mb-6">
+            <div className="w-3 h-3 rounded-full bg-trebol-500" />
+            <div className="h-px flex-1 bg-gradient-to-r from-trebol-500/50 to-transparent" />
+          </div>
+          {/* Badge con ícono */}
+          <div className="flex items-center gap-3 mb-3 md:mb-4">
+            <product.icon className="w-5 h-5 md:w-6 md:h-6 text-trebol-400" />
+            <span className="text-gray-400 text-xs md:text-sm tracking-[0.2em] uppercase">
+              {product.subtitle}
+            </span>
+          </div>
+          <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-4 md:mb-6">
+            {product.title}
+          </h3>
+          <p className="text-gray-300 text-lg md:text-xl leading-relaxed tracking-tight mb-6 md:mb-8 max-w-lg">
+            {product.description}
+          </p>
+          {/* Características */}
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 md:gap-y-3 mb-8 md:mb-10">
+            {product.features.map((feature) => (
+              <li key={feature} className="flex items-start gap-3">
+                <Check className="w-4 h-4 text-trebol-400 mt-0.5 shrink-0" />
+                <span className="text-gray-300 text-sm md:text-base leading-relaxed tracking-tight">
+                  {feature}
+                </span>
+              </li>
+            ))}
+          </ul>
+          {/* Estadística destacada + Cotizar */}
+          <div className="flex flex-wrap items-center gap-6">
+            <div className="flex items-end gap-3 md:gap-4">
+              <span className="font-heading text-4xl md:text-6xl font-bold text-trebol-400 tracking-tight leading-none">
                 {product.stat}
               </span>
-              <span className="text-gray-500 text-sm tracking-[0.15em] uppercase pb-2">
+              <span className="text-gray-400 text-xs md:text-sm tracking-[0.15em] uppercase pb-1">
                 {product.statLabel}
               </span>
             </div>
-          </div>
-
-          <div className="relative h-[350px] md:h-[500px] order-1 md:order-2">
-            <img
-              src={product.image}
-              alt={product.title}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              onError={(e) => {
-                e.currentTarget.src = `https://placehold.co/800x700/0A0A0A/0D7C3E?text=${product.title}`;
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#111] hidden md:block" />
-            <button className="product-card-btn" onClick={onToggle}>
-              {isExpanded ? (
-                <X size={20} color="white" />
-              ) : (
-                <Plus size={20} color="white" />
-              )}
-            </button>
-            {isExpanded && (
-              <div
-                className="absolute bottom-0 left-0 right-0 p-6"
-                style={
-                  {
-                    /* background: "linear-gradient(to top, #111)", */
-                  }
-                }
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <product.icon className="w-5 h-5 text-trebol-400" />
-                  <span className="text-white font-heading font-bold">
-                    {product.title}
-                  </span>
-                </div>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  {product.description}
-                </p>
-              </div>
-            )}
+            <a
+              href="#contacto"
+              className="ml-auto inline-flex items-center gap-2 bg-trebol-500 hover:bg-trebol-600 px-5 py-2.5 md:px-6 md:py-3 rounded-full font-bold text-white text-xs md:text-sm tracking-tight transition-colors"
+            >
+              Cotizar
+            </a>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+        {/* Carrusel: flotante arriba-derecha en mobile, columna derecha en desktop */}
+        <div className="absolute right-6 top-28 w-56 sm:w-72 md:static md:top-auto md:right-auto md:w-96 lg:w-[32rem] xl:w-[36rem] md:shrink-0">
+          <ImageStackSlider images={product.gallery} alt={product.title} />
+        </div>
+      </div>
+    </div>
   );
 }
