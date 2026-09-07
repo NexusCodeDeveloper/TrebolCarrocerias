@@ -1,5 +1,6 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import QuienesSomos from "./components/QuienesSomos";
 import Productos from "./components/Productos";
 import Galeria from "./components/Galeria";
 import Testimonios from "./components/Testimonios";
@@ -12,6 +13,7 @@ export default function App() {
     <div className="min-h-screen bg-black">
       <Navbar />
       <Hero />
+      <QuienesSomos />
       <Productos />
       <Galeria />
       <Testimonios />
