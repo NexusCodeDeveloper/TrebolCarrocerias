@@ -87,7 +87,7 @@ export default function Footer() {
                 </span>
               </div>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-gray-400 text-sm leading-relaxed tracking-tight">
               Fabricantes de carrocerías para camiones. Miembro CAPEMISA,
               homologación CNTSV, cumplimiento AITA.
             </p>

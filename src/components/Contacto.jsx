@@ -29,7 +29,7 @@ export default function Contacto() {
           <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
             Encontranos en <span className="gradient-text">Salta</span>
           </h2>
-          <p className="text-gray-400 text-xl max-w-2xl mx-auto">
+          <p className="text-gray-300 text-lg md:text-xl leading-relaxed tracking-tight max-w-2xl mx-auto">
             Visitanos en nuestras instalaciones o contactanos por teléfono,
             email o WhatsApp.
           </p>
