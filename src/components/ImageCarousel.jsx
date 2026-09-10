@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getImageUrl } from "../lib/cloudinary";
 
 const AUTOPLAY_MS = 5000;
 
@@ -35,7 +36,7 @@ export default function ImageCarousel({ images, alt }) {
         {images.map((src, i) => (
           <img
             key={src}
-            src={src}
+            src={getImageUrl(src)}
             alt={`${alt} ${i + 1}`}
             className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
             style={{ opacity: i === index ? 1 : 0 }}
@@ -85,7 +86,7 @@ export default function ImageCarousel({ images, alt }) {
               }`}
             >
               <img
-                src={src}
+                src={getImageUrl(src)}
                 alt=""
                 className="h-full w-full object-cover"
                 loading="lazy"
