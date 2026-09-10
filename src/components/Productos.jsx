@@ -8,7 +8,8 @@ import {
   Wrench,
   Check,
 } from "lucide-react";
-import ImageStackSlider from "./ImageStackSlider";
+import ImageCarousel from "./ImageCarousel";
+import { getImageUrl } from "../lib/cloudinary";
 
 /**
  * @typedef {Object} Product
@@ -441,7 +442,7 @@ function ProductPanel({
         ref={(el) => {
           if (imgRef) imgRef(el);
         }}
-        src={product.image}
+        src={getImageUrl(product.image)}
         alt={product.title}
         className="absolute inset-0 w-full h-full object-cover"
         loading="lazy"
@@ -520,7 +521,7 @@ function ProductPanel({
         </div>
         {/* Carrusel: flotante arriba-derecha en mobile, columna derecha en desktop */}
         <div className="absolute right-6 top-28 w-56 sm:w-72 md:static md:top-auto md:right-auto md:w-96 lg:w-[32rem] xl:w-[36rem] md:shrink-0">
-          <ImageStackSlider images={product.gallery} alt={product.title} />
+          <ImageCarousel images={product.gallery} alt={product.title} />
         </div>
       </div>
     </div>
