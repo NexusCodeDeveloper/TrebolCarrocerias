@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronRight } from "lucide-react";
+import { getImageUrl } from "../lib/cloudinary";
 
 const navLinks = [
   { name: "Inicio", href: "#inicio" },
@@ -38,18 +39,14 @@ export default function Navbar() {
             whileHover={{ scale: 1.02 }}
             className="flex items-center gap-3"
           >
-            <img
-              src="/img/logo-trebol.png"
-              alt="Trébol Carrocerías"
-              className="h-10 w-auto"
-            />
             <div className="flex flex-col">
-              <span className="font-heading text-xl font-bold text-white tracking-tight">
-                TREBOL
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.3em] text-trebol-400 font-medium -mt-1">
-                Carrocerías
-              </span>
+              <img
+                src={getImageUrl(
+                  "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067601/Recurso_4_xxrqtt.svg",
+                )}
+                alt="Trébol Carrocerías"
+                className="h-10 w-auto"
+              />
             </div>
           </motion.a>
 
