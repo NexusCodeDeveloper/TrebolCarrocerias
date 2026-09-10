@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getImageUrl } from "../lib/cloudinary";
 
 const images = [
   "/img/volcable-amarillo.jpg",
@@ -102,7 +103,7 @@ export default function Galeria() {
               className="absolute left-1/2 top-1/2 w-72 md:w-[34rem] aspect-[4/3] cursor-pointer select-none overflow-hidden ring-1 ring-white/10 shadow-elevated"
             >
               <img
-                src={src}
+                src={getImageUrl(src)}
                 alt="Carrocería Trébol"
                 className="w-full h-full object-cover"
                 loading="lazy"
