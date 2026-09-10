@@ -54,7 +54,7 @@ export default function Hero() {
       </motion.div>
 
       {/* Content: bloque izquierdo como referencia */}
-      <div className="relative h-full flex items-center px-6 lg:px-10">
+      <div className="relative h-full flex items-center px-6 lg:px-10 z-10">
         <div className="w-full max-w-7xl mx-auto">
           <motion.div style={{ y: textY }} className="max-w-3xl" ref={textRef}>
             <motion.div
