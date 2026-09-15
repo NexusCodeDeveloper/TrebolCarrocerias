@@ -19,7 +19,11 @@ export default function Hero() {
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.3], [0.55, 0.85]);
 
   return (
-    <section id="inicio" ref={sectionRef} className="relative h-[110vh]">
+    <section
+      id="inicio"
+      ref={sectionRef}
+      className="relative h-[110vh] overflow-hidden"
+    >
       {/* Video background */}
       <motion.div
         style={{ scale: videoScale, opacity: videoOpacity }}
@@ -83,9 +87,9 @@ export default function Hero() {
               }}
               className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white leading-[0.95] mb-6 md:mb-8"
             >
-              CARROCERÍAS
+              <span className="gradient-text">TRÉBOL</span>
               <br />
-              <span className="gradient-text">TREBOL</span>
+              CARROCERÍAS
             </motion.h1>
 
             <motion.p
