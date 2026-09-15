@@ -5,9 +5,16 @@ import {
   Mail,
   MapPin,
   Clock,
+  ChevronRight,
 } from "lucide-react";
-import { WhatsAppIcon } from "./Icons";
+import { WhatsAppIcon, FacebookIcon, InstagramIcon, XIcon } from "./Icons";
 import { getImageUrl } from "../lib/cloudinary";
+
+const socialLinks = [
+  { name: "Facebook", href: "", icon: FacebookIcon },
+  { name: "Instagram", href: "", icon: InstagramIcon },
+  { name: "X", href: "", icon: XIcon },
+];
 
 const productLinks = [
   { name: "Baranda Volcable", href: "#productos" },
@@ -21,6 +28,8 @@ const productLinks = [
 const companyLinks = [
   { name: "Quiénes Somos", href: "#quienes-somos" },
   { name: "Galería", href: "#galeria" },
+  { name: "Proceso", href: "#como-lo-hacemos" },
+  { name: "Normas", href: "#normas" },
   { name: "Clientes", href: "#testimonios" },
   { name: "Contacto", href: "#contacto" },
 ];
@@ -54,19 +63,19 @@ export default function Footer() {
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-trebol-500/10 blur-[140px]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/20 to-transparent" />
 
-      {/* CTA band */}
-      <div className="relative py-20 md:py-28 px-4">
-        <div className="max-w-5xl mx-auto">
+      {/* Contacto */}
+      <div id="contacto" className="relative py-20 md:py-28 px-4">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="rounded-[2rem] p-px bg-gradient-to-b from-white/10 via-white/[0.04] to-transparent"
+            className="max-w-5xl mx-auto rounded-[2rem] p-px bg-gradient-to-b from-white/10 via-white/[0.04] to-transparent"
           >
             <div className="rounded-[calc(2rem-1px)] bg-dark-900/90 backdrop-blur-sm px-6 py-14 md:px-16 md:py-20 text-center">
               <span className="text-trebol-400 text-xs md:text-sm font-medium tracking-[0.3em] uppercase mb-5 block">
-                Cotizá tu proyecto
+                Contacto
               </span>
               <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">
                 ¿Listo para optimizar
@@ -101,6 +110,104 @@ export default function Footer() {
               </div>
             </div>
           </motion.div>
+
+          {/* Contact cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {/* Click to call */}
+            <motion.a
+              href="tel:+543875021303"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="group flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center group-hover:bg-trebol-500/20 transition-colors flex-shrink-0">
+                <Phone className="w-6 h-6 text-trebol-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
+                  Llamanos
+                </div>
+                <div className="text-white font-heading font-bold tracking-tight">
+                  (0387) 155 021 303
+                </div>
+              </div>
+              <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-trebol-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+            </motion.a>
+
+            {/* WhatsApp */}
+            <motion.a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="group flex items-center gap-4 p-6 rounded-3xl border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/40 transition-all duration-500"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                <WhatsAppIcon className="w-6 h-6 fill-green-400" />
+              </div>
+              <div className="flex-1">
+                <div className="text-green-400 text-xs tracking-[0.15em] uppercase mb-1">
+                  WhatsApp
+                </div>
+                <div className="text-white font-heading font-bold tracking-tight">
+                  Chateá con nosotros
+                </div>
+              </div>
+              <ChevronRight className="w-4 h-4 text-green-600 group-hover:text-green-400 group-hover:translate-x-1 transition-all" />
+            </motion.a>
+
+            {/* Email */}
+            <motion.a
+              href="mailto:ventas@trebolcarrocerias.com.ar"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="group flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center group-hover:bg-trebol-500/20 transition-colors flex-shrink-0">
+                <Mail className="w-6 h-6 text-trebol-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
+                  Email
+                </div>
+                <div className="text-white font-heading font-bold text-xs tracking-tight truncate">
+                  ventas@trebolcarrocerias.com.ar
+                </div>
+              </div>
+              <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-trebol-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+            </motion.a>
+
+            {/* Address / Hours */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center flex-shrink-0">
+                <MapPin className="w-6 h-6 text-trebol-400" />
+              </div>
+              <div>
+                <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
+                  Ubicación
+                </div>
+                <div className="text-white font-heading font-bold text-xs tracking-tight">
+                  Ruta Nacional 51 - Km 6,5 — El Encón, Salta
+                </div>
+                <div className="text-gray-500 text-xs mt-1">
+                  Lun - Vie: 8:00 – 18:00
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
 
@@ -109,18 +216,30 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <img
-              src={getImageUrl(
-                "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067587/Recurso_5_ihwvie.png",
-              )}
-              alt="Trébol Carrocerías"
-              className="h-16 md:h-20 w-auto mb-6"
-            />
-            <p className="text-gray-400 text-sm leading-relaxed tracking-tight mb-6">
-              Fabricantes de carrocerías para camiones. Miembro CAPEMISA,
-              homologación CNTSV, cumplimiento AITA.
-            </p>
-            <div className="h-px w-24 bg-gradient-to-r from-trebol-500 to-transparent" />
+            <div className="mb-6 flex items-center justify-center gap-6 md:flex-col md:items-start md:justify-start">
+              <img
+                src={getImageUrl(
+                  "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067587/Recurso_5_ihwvie.png",
+                )}
+                alt="Trébol Carrocerías"
+                className="h-16 md:h-40 w-auto"
+              />
+              <div className="flex items-center gap-3">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.href || undefined}
+                    target={social.href ? "_blank" : undefined}
+                    rel={social.href ? "noopener noreferrer" : undefined}
+                    aria-label={social.name}
+                    className="grid h-10 w-10 place-items-center rounded-full border border-white/[0.08] bg-dark-700 text-gray-500 transition-all duration-300 hover:border-trebol-500/30 hover:bg-trebol-500/10 hover:text-trebol-400"
+                  >
+                    <social.icon className="h-4 w-4" />
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div className="h-px w-24 bg-gradient-to-r from-trebol-500 to-transparent mx-auto md:mx-0" />
           </div>
 
           {/* Products */}
@@ -195,10 +314,10 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-trebol-400 flex-shrink-0 mt-0.5" />
                 <a
-                  href="mailto:administracion@trebolcarrocerias.com.ar"
+                  href="mailto:ventas@trebolcarrocerias.com.ar"
                   className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight break-all"
                 >
-                  administracion@trebolcarrocerias.com.ar
+                  ventas@trebolcarrocerias.com.ar
                 </a>
               </li>
               <li className="flex items-start gap-3">
@@ -209,7 +328,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight"
                 >
-                  Ruta 51 Km 6½ — El Encón, Salta (4407)
+                  Ruta Nacional 51 - Km 6,5 - El Encón, Salta
                 </a>
               </li>
               <li className="flex items-start gap-3">
@@ -225,33 +344,23 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="relative border-t border-white/[0.06] py-6 px-4">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-gray-600 text-sm tracking-tight">
-            &copy; {new Date().getFullYear()} Trébol Carrocerías. Todos los
-            derechos reservados.
-          </p>
-          <div className="flex items-center gap-6">
-            <div className="hidden sm:flex items-center gap-5">
-              {companyLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-gray-600 hover:text-trebol-400 transition-colors text-xs tracking-tight"
-                >
-                  {link.name}
-                </a>
-              ))}
-            </div>
-            <motion.button
-              onClick={scrollToTop}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label="Volver arriba"
-              className="w-10 h-10 rounded-full bg-dark-700 border border-white/[0.08] flex items-center justify-center hover:bg-trebol-500 hover:border-trebol-500 transition-all"
-            >
-              <ArrowUp className="w-4 h-4 text-white" />
-            </motion.button>
+        <div className="max-w-7xl mx-auto flex flex-col items-center gap-4">
+          <div className="text-gray-600 text-sm tracking-tight text-center">
+            <p>
+              &copy; {new Date().getFullYear()} Trébol Carrocerías. Todos los
+              derechos reservados.
+            </p>
+            <p>Desarrollo Web by NexusCode</p>
           </div>
+          <motion.button
+            onClick={scrollToTop}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Volver arriba"
+            className="w-10 h-10 rounded-full bg-dark-700 border border-white/[0.08] flex items-center justify-center hover:bg-trebol-500 hover:border-trebol-500 transition-all"
+          >
+            <ArrowUp className="w-4 h-4 text-white" />
+          </motion.button>
         </div>
       </div>
     </footer>
