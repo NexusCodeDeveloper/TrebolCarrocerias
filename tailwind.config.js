@@ -29,7 +29,7 @@ export default {
         amarillo: '#FFD100',
       },
       fontFamily: {
-        heading: ['Space Grotesk', 'sans-serif'],
+        heading: ['Rubik', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
       },
       boxShadow: {
