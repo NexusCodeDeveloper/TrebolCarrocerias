@@ -69,16 +69,18 @@ export default function Testimonios() {
       <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          initial={{ opacity: 0, x: -50 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="mb-16 md:mb-20"
         >
-          <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-6 block">
+          <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
             Confianza
           </span>
           <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
-            Empresas que nos <span className="gradient-text">eligen</span>
+            Empresas que nos
+            <br />
+            <span className="gradient-text">eligen</span>
           </h2>
         </motion.div>
 
