@@ -117,23 +117,109 @@ function GalleryCard({
 }
 
 export default function Galeria() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [active, setActive] = useState(0);
-  const [hovered, setHovered] = useState(false);
-  const autoplay = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const count = images.length;
+  const headerRef = useRef(/** @type {HTMLDivElement | null} */ (null));
+  const isInView = useInView(headerRef, { once: true, margin: "-100px" });
+  const cardRefs = useRef(/** @type {(HTMLElement | null)[]} */ ([]));
+  const stepRef = useRef(0);
+  const touchX = useRef(0);
+  const swipedRef = useRef(false);
+  const reduce = useReducedMotion();
+  const x = useMotionValue(0);
 
-  /* Autoplay: avanza solo, pausa al hover */
-  useEffect(() => {
-    if (!autoplay || hovered) return;
-    const id = setInterval(() => {
-      setActive((a) => (a + 1) % count);
-    }, AUTOPLAY_MS);
-    return () => clearInterval(id);
-  }, [autoplay, hovered, count]);
+  const count = ITEMS.length;
+  const [virtual, setVirtual] = useState(count);
+  const virtualRef = useRef(count);
+  const [lightbox, setLightbox] = useState(/** @type {number | null} */ (null));
 
-  /* Navegación con teclado */
+  const goTo = useCallback(
+    (/** @type {number} */ realTarget) => {
+      const step = stepRef.current;
+      if (!step) return;
+      const half = Math.floor(count / 2);
+
+      let base = virtualRef.current;
+      let shift = 0;
+      if (base < count) shift = count;
+      else if (base >= 2 * count) shift = -count;
+
+      if (shift !== 0) {
+        base += shift;
+        virtualRef.current = base;
+        x.jump(x.get() - shift * step);
+        setVirtual(base);
+      }
+
+      const currentReal = ((base % count) + count) % count;
+      const delta =
+        ((((realTarget - currentReal + half) % count) + count) % count) - half;
+      if (delta === 0) return;
+
+      const target = base + delta;
+      virtualRef.current = target;
+      setVirtual(target);
+      animate(
+        x,
+        -target * step,
+        reduce
+          ? { duration: 0, velocity: 0 }
+          : {
+              type: "spring",
+              stiffness: 130,
+              damping: 26,
+              mass: 0.9,
+              velocity: 0,
+            },
+      );
+    },
+    [x, count, reduce],
+  );
+
+  const goNext = useCallback(() => {
+    const currentReal = ((virtualRef.current % count) + count) % count;
+    goTo(currentReal + 1);
+  }, [goTo, count]);
+
+  const goPrev = useCallback(() => {
+    const currentReal = ((virtualRef.current % count) + count) % count;
+    goTo(currentReal - 1);
+  }, [goTo, count]);
+
+  const showReal = useCallback(
+    (/** @type {number} */ realTarget) => {
+      const wrapped = ((realTarget % count) + count) % count;
+      setLightbox(wrapped);
+      goTo(wrapped);
+    },
+    [goTo, count],
+  );
+
+  const openLightbox = useCallback(
+    (/** @type {number} */ realTarget) => {
+      if (swipedRef.current) {
+        swipedRef.current = false;
+        return;
+      }
+      showReal(realTarget);
+    },
+    [showReal],
+  );
+
+  const closeLightbox = useCallback(() => setLightbox(null), []);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const first = cardRefs.current[0];
+      const second = cardRefs.current[1];
+      if (!first || !second) return;
+      const step = second.offsetLeft - first.offsetLeft;
+      stepRef.current = step;
+      x.jump(-virtualRef.current * step);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [x]);
+
   useEffect(() => {
     const onKey = (/** @type {KeyboardEvent} */ e) => {
       if (e.key === "ArrowRight") setActive((a) => (a + 1) % count);
