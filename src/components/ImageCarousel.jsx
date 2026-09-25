@@ -138,6 +138,76 @@ export default function ImageCarousel({ images, alt }) {
           ))}
         </div>
       )}
+
+      {createPortal(
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm md:p-8"
+              onClick={() => setOpen(false)}
+              role="dialog"
+              aria-modal="true"
+              aria-label={`Imagen ampliada: ${alt}`}
+            >
+              <motion.div
+                initial={{ scale: 0.92, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="relative w-full max-w-5xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={getImageUrl(images[index])}
+                  alt={`${alt} ${index + 1}`}
+                  className="max-h-[80vh] w-full rounded-2xl object-contain ring-1 ring-white/10 shadow-elevated"
+                  onError={(e) => {
+                    e.currentTarget.src = `https://placehold.co/1600x900/0A0A0A/0D7C3E?text=${alt}`;
+                  }}
+                />
+
+                {count > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={prev}
+                      aria-label="Imagen anterior"
+                      className="absolute left-2 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-trebol-600 md:left-4 md:h-12 md:w-12"
+                    >
+                      <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={next}
+                      aria-label="Imagen siguiente"
+                      className="absolute right-2 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-trebol-600 md:right-4 md:h-12 md:w-12"
+                    >
+                      <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+                    </button>
+                    <span className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-[11px] font-medium tracking-wide text-white backdrop-blur">
+                      {index + 1} / {count}
+                    </span>
+                  </>
+                )}
+              </motion.div>
+
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Cerrar"
+                className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-trebol-500 hover:bg-trebol-600 md:right-6 md:top-6"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
     </div>
   );
 }
