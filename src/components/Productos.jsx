@@ -519,8 +519,8 @@ function ProductPanel({
             </a>
           </div>
         </div>
-        {/* Carrusel: flotante arriba-derecha en mobile, columna derecha en desktop */}
-        <div className="absolute right-6 top-28 w-56 sm:w-72 md:static md:top-auto md:right-auto md:w-96 lg:w-[32rem] xl:w-[36rem] md:shrink-0">
+        {/* Carrusel: arriba y centrado en mobile, columna derecha en desktop */}
+        <div className="order-first mx-auto w-80 max-w-full shrink-0 md:order-none md:mx-0 md:w-96 lg:w-[32rem] xl:w-[36rem]">
           <ImageCarousel images={product.gallery} alt={product.title} />
         </div>
       </div>
