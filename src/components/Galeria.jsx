@@ -222,8 +222,18 @@ export default function Galeria() {
 
   useEffect(() => {
     const onKey = (/** @type {KeyboardEvent} */ e) => {
-      if (e.key === "ArrowRight") setActive((a) => (a + 1) % count);
-      if (e.key === "ArrowLeft") setActive((a) => (a - 1 + count) % count);
+      if (e.key === "Escape" && lightbox !== null) {
+        closeLightbox();
+        return;
+      }
+      if (e.key === "ArrowRight") {
+        if (lightbox !== null) showReal(lightbox + 1);
+        else goNext();
+      }
+      if (e.key === "ArrowLeft") {
+        if (lightbox !== null) showReal(lightbox - 1);
+        else goPrev();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
