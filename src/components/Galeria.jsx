@@ -237,15 +237,38 @@ export default function Galeria() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [count]);
+  }, [lightbox, goNext, goPrev, showReal, closeLightbox]);
 
-  const prev = () => setActive((a) => (a - 1 + count) % count);
-  const next = () => setActive((a) => (a + 1) % count);
+  useEffect(() => {
+    if (lightbox === null) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [lightbox]);
+
+  const onTouchStart = (/** @type {React.TouchEvent} */ e) => {
+    touchX.current = e.touches[0].clientX;
+    swipedRef.current = false;
+  };
+
+  const onTouchEnd = (/** @type {React.TouchEvent} */ e) => {
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    if (Math.abs(dx) < 48) return;
+    swipedRef.current = true;
+    if (dx < 0) goNext();
+    else goPrev();
+  };
+
+  const realIndex = ((virtual % count) + count) % count;
 
   return (
-    <section id="galeria" className="py-32 md:py-48 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 mb-16" ref={ref}>
-        {/* Header */}
+    <section id="galeria" className="bg-black">
+      <div
+        ref={headerRef}
+        className="mx-auto max-w-7xl px-4 pt-32 pb-12 md:pt-48 md:pb-16"
+      >
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
