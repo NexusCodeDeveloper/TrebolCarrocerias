@@ -24,7 +24,23 @@ export default function ImageCarousel({ images, alt }) {
       setIndex((i) => (i + 1) % count);
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [autoplay, hovered, count]);
+  }, [autoplay, hovered, open, count]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (/** @type {KeyboardEvent} */ e) => {
+      if (e.key === "Escape") setOpen(false);
+      if (e.key === "ArrowRight") setIndex((i) => (i + 1) % count);
+      if (e.key === "ArrowLeft") setIndex((i) => (i - 1 + count) % count);
+    };
+    window.addEventListener("keydown", onKey);
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previous;
+    };
+  }, [open, count]);
 
   const prev = () => setIndex((i) => (i - 1 + count) % count);
   const next = () => setIndex((i) => (i + 1) % count);
@@ -35,7 +51,10 @@ export default function ImageCarousel({ images, alt }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="relative aspect-video overflow-hidden rounded-2xl bg-black/40 ring-1 ring-white/10 shadow-elevated">
+      <div
+        onClick={() => setOpen(true)}
+        className="relative aspect-video cursor-zoom-in overflow-hidden rounded-2xl bg-black/40 ring-1 ring-white/10 shadow-elevated"
+      >
         {images.map((src, i) => (
           <img
             key={src}
@@ -50,11 +69,15 @@ export default function ImageCarousel({ images, alt }) {
             }}
           />
         ))}
+
         {count > 1 && (
           <>
             <button
               type="button"
-              onClick={prev}
+              onClick={(e) => {
+                e.stopPropagation();
+                prev();
+              }}
               aria-label="Imagen anterior"
               className="absolute left-3 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-trebol-600"
             >
@@ -62,7 +85,10 @@ export default function ImageCarousel({ images, alt }) {
             </button>
             <button
               type="button"
-              onClick={next}
+              onClick={(e) => {
+                e.stopPropagation();
+                next();
+              }}
               aria-label="Imagen siguiente"
               className="absolute right-3 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-trebol-600"
             >
@@ -73,9 +99,22 @@ export default function ImageCarousel({ images, alt }) {
             </span>
           </>
         )}
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setOpen(true);
+          }}
+          aria-label="Ver imagen ampliada"
+          className="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-trebol-600"
+        >
+          <Maximize2 className="h-4 w-4" />
+        </button>
       </div>
+
       {count > 1 && (
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 hidden gap-2 md:flex">
           {images.map((src, i) => (
             <button
               key={src}
