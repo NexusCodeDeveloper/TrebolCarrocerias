@@ -1,22 +1,120 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+} from "framer-motion";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { getImageUrl } from "../lib/cloudinary";
 
-const images = [
-  "/img/volcable-amarillo.jpg",
-  "/img/paquetero-azul.jpg",
-  "/img/volcable-blanco.jpg",
-  "/img/semi-bajada-bonano.jpg",
-  "/img/paquetero-trasera.jpg",
-  "/img/playo-andina.jpg",
-  "/img/frame-hierronort.jpg",
-  "/img/paque-blanco.jpg",
-  "/img/signa-trebol.jpg",
-  "/img/volcable-azul.jpg",
+const ITEMS = [
+  { src: "/img/volcable-amarillo.jpg", title: "Volcable Amarillo", category: "Volcables" },
+  { src: "/img/paquetero-azul.jpg", title: "Paquetero Azul", category: "Paqueteros" },
+  { src: "/img/volcable-blanco.jpg", title: "Volcable Blanco", category: "Volcables" },
+  { src: "/img/semi-bajada-bonano.jpg", title: "Semi Bajada Bonano", category: "Semi Bajada" },
+  { src: "/img/paquetero-trasera.jpg", title: "Paquetero Trasera", category: "Paqueteros" },
+  { src: "/img/playo-andina.jpg", title: "Playo Andina", category: "Playos" },
+  { src: "/img/frame-hierronort.jpg", title: "Frame Norte", category: "Frames" },
+  { src: "/img/paque-blanco.jpg", title: "Paquetero Blanco", category: "Paqueteros" },
+  { src: "/img/signa-trebol.jpg", title: "Signa Trébol", category: "Signa" },
+  { src: "/img/volcable-azul.jpg", title: "Volcable Azul", category: "Volcables" },
 ];
 
-const AUTOPLAY_MS = 3000;
+const SLIDES = [...ITEMS, ...ITEMS, ...ITEMS];
+
+const CARD_WIDTH = "w-[78vw] sm:w-[62vw] md:w-[46vw] lg:w-[36vw] xl:w-[31vw]";
+
+const PLACEHOLDER = "https://placehold.co/1200x800/0A0A0A/0D7C3E?text=Trébol";
+
+/** @type {import("framer-motion").Transition} */
+const CARD_SPRING = { type: "spring", stiffness: 170, damping: 24 };
+
+/**
+ * @param {Object} props
+ * @param {{ src: string, title: string, category: string }} props.item
+ * @param {number} props.index
+ * @param {number} props.realIndex
+ * @param {number} props.active
+ * @param {number} props.count
+ * @param {boolean | null} props.reduce
+ * @param {(realIndex: number) => void} props.onOpen
+ * @param {(el: HTMLElement | null) => void} [props.cardRef]
+ */
+function GalleryCard({
+  item,
+  index,
+  realIndex,
+  active,
+  count,
+  reduce,
+  onOpen,
+  cardRef,
+}) {
+  const half = Math.floor(count / 2);
+  const rel = ((((index - active + half) % count) + count) % count) - half;
+  const abs = Math.abs(rel);
+  const clamped = Math.max(-1, Math.min(1, rel));
+  const transition = reduce || abs > 3 ? { duration: 0 } : CARD_SPRING;
+
+  return (
+    <motion.article
+      ref={cardRef}
+      initial={false}
+      animate={{
+        y: index % 2 === 0 ? -18 : 18,
+        rotateY: clamped * -12,
+        scale: 1 - Math.min(abs, 2) * 0.09,
+        opacity: Math.max(0.25, 1 - abs * 0.3),
+      }}
+      transition={transition}
+      onClick={() => onOpen(realIndex)}
+      className={`group relative aspect-[4/3] shrink-0 cursor-zoom-in select-none overflow-hidden rounded-2xl bg-dark-800 ring-1 ring-white/10 shadow-elevated ${CARD_WIDTH}`}
+    >
+      <motion.div
+        initial={false}
+        animate={{ x: clamped * 24 }}
+        transition={transition}
+        className="absolute -inset-x-10 inset-y-0"
+      >
+        <img
+          src={getImageUrl(item.src)}
+          alt={`${item.title} — Carrocería Trébol`}
+          loading="lazy"
+          decoding="async"
+          onError={(e) => {
+            e.currentTarget.src = PLACEHOLDER;
+          }}
+          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+        />
+      </motion.div>
+
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
+
+      <span className="absolute left-4 top-4 z-10 rounded-full border border-white/15 bg-black/40 px-3 py-1 text-[0.65rem] font-semibold tracking-[0.25em] text-white/80 backdrop-blur">
+        {String(realIndex + 1).padStart(2, "0")}
+      </span>
+
+      <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6">
+        <span className="mb-1 block text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-trebol-400">
+          {item.category}
+        </span>
+        <h3 className="font-heading text-lg font-semibold text-white md:text-2xl">
+          {item.title}
+        </h3>
+        <span className="mt-3 block h-px w-10 bg-amarillo transition-all duration-500 group-hover:w-20" />
+      </div>
+
+      <span
+        className={`pointer-events-none absolute inset-0 rounded-2xl transition-all duration-500 ${
+          rel === 0 ? "ring-2 ring-trebol-500/70" : "ring-1 ring-transparent"
+        }`}
+      />
+    </motion.article>
+  );
+}
 
 export default function Galeria() {
   const ref = useRef(null);
