@@ -484,14 +484,14 @@ function ProductPanel({
               {product.subtitle}
             </span>
           </div>
-          <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-4 md:mb-6">
+          <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-3 md:mb-6">
             {product.title}
           </h3>
-          <p className="text-gray-300 text-lg md:text-xl leading-relaxed tracking-tight mb-6 md:mb-8 max-w-lg">
+          <p className="text-gray-300 text-base md:text-xl leading-relaxed tracking-tight mb-4 md:mb-8 max-w-lg">
             {product.description}
           </p>
           {/* Características */}
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 md:gap-y-3 mb-8 md:mb-10">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-3 mb-5 md:mb-10">
             {product.features.map((feature) => (
               <li key={feature} className="flex items-start gap-3">
                 <Check className="w-4 h-4 text-trebol-400 mt-0.5 shrink-0" />
