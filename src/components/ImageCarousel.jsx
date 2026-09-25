@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 import { getImageUrl } from "../lib/cloudinary";
 
 const AUTOPLAY_MS = 5000;
@@ -13,10 +15,11 @@ export default function ImageCarousel({ images, alt }) {
   const count = images.length;
   const [index, setIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
+  const [open, setOpen] = useState(false);
   const autoplay = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   useEffect(() => {
-    if (!autoplay || hovered || count < 2) return;
+    if (!autoplay || hovered || open || count < 2) return;
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % count);
     }, AUTOPLAY_MS);
