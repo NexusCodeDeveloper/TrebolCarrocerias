@@ -465,7 +465,7 @@ function ProductPanel({
       />
 
       {/* Contenido: texto + carrusel */}
-      <div className="relative z-10 flex h-full flex-col justify-end px-8 pb-24 md:flex-row md:items-center md:justify-between md:gap-12 md:pb-0 md:px-20 lg:px-28">
+      <div className="relative z-10 flex h-full flex-col justify-between px-6 pb-8 pt-28 md:flex-row md:items-center md:justify-between md:gap-12 md:pb-0 md:pt-0 md:px-20 lg:px-28">
         <div
           ref={(el) => {
             if (textRef) textRef(el);
@@ -473,12 +473,12 @@ function ProductPanel({
           className="max-w-xl"
         >
           {/* Eyebrow: punto + línea decorativa */}
-          <div className="flex items-center gap-4 mb-5 md:mb-6">
+          <div className="flex items-center gap-4 mb-3 md:mb-6">
             <div className="w-3 h-3 rounded-full bg-trebol-500" />
             <div className="h-px flex-1 bg-gradient-to-r from-trebol-500/50 to-transparent" />
           </div>
           {/* Badge con ícono */}
-          <div className="flex items-center gap-3 mb-3 md:mb-4">
+          <div className="flex items-center gap-3 mb-2 md:mb-4">
             <product.icon className="w-5 h-5 md:w-6 md:h-6 text-trebol-400" />
             <span className="text-gray-400 text-xs md:text-sm tracking-[0.2em] uppercase">
               {product.subtitle}
