@@ -285,76 +285,171 @@ export default function Galeria() {
         </motion.div>
       </div>
 
-      {/* Naipe de cartas: abanico 2D */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        className="relative flex items-center justify-center h-96 md:h-[38rem] px-4 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+      <div
+        className="relative touch-pan-y overflow-hidden py-12 md:py-16"
+        style={{ perspective: "1600px" }}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
       >
-        {images.map((src, i) => {
-          /* Distancia circular más corta → loop infinito sin saltos */
-          const half = Math.floor(count / 2);
-          const offset =
-            ((((i - active + half) % count) + count) % count) - half;
-          const abs = Math.abs(offset);
-          return (
-            <motion.div
-              key={src}
-              onClick={() => setActive(i)}
-              animate={{
-                x: `calc(-50% + ${offset * 34}%)`,
-                y: "-50%",
-                rotate: -offset * 8,
-                scale: (1 + (abs === 0 ? 0.1 : 0)) - Math.min(abs, 3) * 0.12,
-                opacity: Math.max(0.15, 1 - abs * 0.22),
-                filter: `grayscale(${Math.min(0.6, abs * 0.3)}) blur(${Math.min(
-                  2.5,
-                  abs * 0.8,
-                )}px)`,
+        <motion.div
+          style={{ x, transformStyle: "preserve-3d" }}
+          className="relative flex w-max items-center gap-5 pl-4 will-change-transform md:gap-8 lg:pl-[max(1rem,calc((100%-80rem)/2+1rem))]"
+        >
+          {SLIDES.map((item, i) => (
+            <GalleryCard
+              key={`${item.src}-${i}`}
+              item={item}
+              index={i}
+              realIndex={i % count}
+              active={virtual}
+              count={count}
+              reduce={reduce}
+              onOpen={openLightbox}
+              cardRef={(el) => {
+                cardRefs.current[i] = el;
               }}
-              transition={{ type: "spring", stiffness: 260, damping: 30 }}
-              style={{ zIndex: 20 - abs }}
-              className="absolute left-1/2 top-1/2 w-72 md:w-[34rem] aspect-[4/3] cursor-pointer select-none overflow-hidden ring-1 ring-white/10 shadow-elevated"
+            />
+          ))}
+        </motion.div>
+
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-20 bg-gradient-to-r from-black to-transparent md:w-32" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-20 bg-gradient-to-l from-black to-transparent md:w-32" />
+
+        <div className="absolute left-3 top-1/2 z-30 -translate-y-1/2 md:left-8">
+          <motion.button
+            type="button"
+            onClick={goPrev}
+            aria-label="Imagen anterior"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur transition-colors hover:border-trebol-500 hover:bg-trebol-600 md:h-14 md:w-14"
+          >
+            <motion.span
+              animate={reduce ? { x: 0 } : { x: [-3, 3, -3] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
             >
-              <img
-                src={getImageUrl(src)}
-                alt="Carrocería Trébol"
-                className="w-full h-full object-cover"
-                loading="lazy"
-                decoding="async"
-                onError={(e) => {
-                  e.currentTarget.src = `https://placehold.co/1200x800/0A0A0A/0D7C3E?text=Trébol`;
-                }}
-              />
-              {i === active && (
-                <div className="absolute inset-0 ring-2 ring-trebol-500/60 pointer-events-none" />
-              )}
+              <ChevronLeft className="h-6 w-6" />
+            </motion.span>
+          </motion.button>
+        </div>
+
+        <div className="absolute right-3 top-1/2 z-30 -translate-y-1/2 md:right-8">
+          <motion.button
+            type="button"
+            onClick={goNext}
+            aria-label="Imagen siguiente"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur transition-colors hover:border-trebol-500 hover:bg-trebol-600 md:h-14 md:w-14"
+          >
+            <motion.span
+              animate={reduce ? { x: 0 } : { x: [3, -3, 3] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <ChevronRight className="h-6 w-6" />
+            </motion.span>
+          </motion.button>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-5 px-4 pb-32 md:flex-row md:justify-center md:gap-8 md:pb-48">
+        <div className="flex items-center gap-2">
+          {ITEMS.map((item, i) => (
+            <button
+              key={item.src}
+              type="button"
+              onClick={() => goTo(count + i)}
+              aria-label={`Ir a imagen ${i + 1}`}
+              aria-current={i === realIndex}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === realIndex
+                  ? "w-6 bg-trebol-500"
+                  : "w-1.5 bg-white/30 hover:bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
+        <span className="text-xs font-medium tracking-[0.3em] text-white/40">
+          {String(realIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+        </span>
+      </div>
+
+      <AnimatePresence>
+        {lightbox !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm md:p-8"
+            onClick={closeLightbox}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Imagen ampliada: ${ITEMS[lightbox].title}`}
+          >
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="relative w-full max-w-5xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative">
+                <img
+                  src={getImageUrl(ITEMS[lightbox].src)}
+                  alt={`${ITEMS[lightbox].title} — Carrocería Trébol`}
+                  onError={(e) => {
+                    e.currentTarget.src = PLACEHOLDER;
+                  }}
+                  className="max-h-[72vh] w-full rounded-2xl object-contain ring-1 ring-white/10 shadow-elevated"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => showReal(lightbox - 1)}
+                  aria-label="Imagen anterior"
+                  className="absolute left-2 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-trebol-600 md:left-4 md:h-12 md:w-12"
+                >
+                  <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => showReal(lightbox + 1)}
+                  aria-label="Imagen siguiente"
+                  className="absolute right-2 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-black/60 text-white backdrop-blur transition hover:bg-trebol-600 md:right-4 md:h-12 md:w-12"
+                >
+                  <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+                </button>
+              </div>
+
+              <div className="mt-4 flex items-end justify-between gap-4">
+                <div>
+                  <span className="mb-1 block text-[0.65rem] font-semibold uppercase tracking-[0.3em] text-trebol-400">
+                    {ITEMS[lightbox].category}
+                  </span>
+                  <h3 className="font-heading text-xl font-semibold text-white md:text-2xl">
+                    {ITEMS[lightbox].title}
+                  </h3>
+                </div>
+                <span className="text-xs font-medium tracking-[0.3em] text-white/40">
+                  {String(lightbox + 1).padStart(2, "0")} /{" "}
+                  {String(count).padStart(2, "0")}
+                </span>
+              </div>
             </motion.div>
-          );
-        })}
 
-        {/* Flechas */}
-        <button
-          type="button"
-          onClick={prev}
-          aria-label="Imagen anterior"
-          className="absolute left-4 md:left-10 top-1/2 -translate-y-1/2 z-30 grid h-10 w-10 place-items-center rounded-full bg-black/50 backdrop-blur border border-white/10 text-white transition hover:bg-trebol-600 hover:border-trebol-500"
-        >
-          <ChevronLeft className="h-5 w-5" />
-        </button>
-        <button
-          type="button"
-          onClick={next}
-          aria-label="Imagen siguiente"
-          className="absolute right-4 md:right-10 top-1/2 -translate-y-1/2 z-30 grid h-10 w-10 place-items-center rounded-full bg-black/50 backdrop-blur border border-white/10 text-white transition hover:bg-trebol-600 hover:border-trebol-500"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </button>
-
-      </motion.div>
+            <button
+              type="button"
+              onClick={closeLightbox}
+              aria-label="Cerrar"
+              className="absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition hover:border-trebol-500 hover:bg-trebol-600 md:right-6 md:top-6"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
