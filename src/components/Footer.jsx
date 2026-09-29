@@ -45,23 +45,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-black overflow-hidden">
-      {/* Fondo: degradado + grilla técnica + glow verde */}
-      <div className="absolute inset-0 bg-gradient-to-b from-dark-900 via-black to-black" />
-      <div
-        className="absolute inset-x-0 top-0 h-[40rem]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          maskImage:
-            "radial-gradient(ellipse 60% 70% at 50% 0%, black, transparent)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 60% 70% at 50% 0%, black, transparent)",
-        }}
-      />
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-trebol-500/10 blur-[140px]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/20 to-transparent" />
+    <footer className="relative overflow-hidden py-20 md:py-28 px-4">
+      {/* Background: negro con acento marca - cierre */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#041506] via-[#020802] to-black" />
+      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-trebol-600/15 blur-[160px]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
 
       {/* Contacto */}
       <div id="contacto" className="relative py-20 md:py-28 px-4">
