@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
 import {
   Truck,
   Package,
@@ -162,6 +163,8 @@ export default function Productos() {
   const dimRefs = useRef(/** @type {(HTMLDivElement | null)[]} */ ([]));
   const textRefs = useRef(/** @type {(HTMLDivElement | null)[]} */ ([]));
   const styleCache = useRef(/** @type {(string | undefined)[]} */ ([]));
+  const headerRef = useRef(null);
+  const isInView = useInView(headerRef, { once: true, margin: "-100px" });
   const [reducedMotion, setReducedMotion] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
@@ -324,14 +327,26 @@ export default function Productos() {
     <section id="productos" className="bg-black">
       {/* Header - scroll normal */}
       <div className="pt-32 pb-8 px-4 max-w-7xl mx-auto">
-        <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
-          Nuestros Productos
-        </span>
-        <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-12">
-          Soluciones que
-          <br />
-          <span className="gradient-text">mueven al transporte</span>
-        </h2>
+        <div ref={headerRef}>
+          <motion.span
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block"
+          >
+            Nuestros Productos
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+            className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-12"
+          >
+            Soluciones que
+            <br />
+            <span className="gradient-text">mueven al transporte</span>
+          </motion.h2>
+        </div>
       </div>
 
       {reducedMotion ? (

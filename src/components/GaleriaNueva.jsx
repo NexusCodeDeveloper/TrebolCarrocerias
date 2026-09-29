@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { X } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 import "./GaleriaNueva.css";
 
 /**
@@ -55,6 +56,8 @@ export const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeIndex, setActiveIndex] = useState(galleryImages.length - 1);
   const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const isInView = useInView(headerRef, { once: true, margin: "-100px" });
 
   useEffect(() => {
     if (selectedImage) {
@@ -80,20 +83,31 @@ export const Gallery = () => {
 
   return (
     <section id="galeria" className="bg-black">
-      <div
-        className="w-full px-4 md:px-6 pt-32 pb-12 md:pt-48 md:pb-16"
-        ref={sectionRef}
-      >
-        <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
-          Nuestros Trabajos
-        </span>
-        <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
-          Galería de
-          <br />
-          <span className="gradient-text">Proyectos</span>
-        </h2>
-
-        <div className="gallery-accordion">
+      <div className="pt-32 pb-12 md:pt-48 md:pb-16" ref={sectionRef}>
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div ref={headerRef} className="mb-12 md:mb-16">
+            <motion.span
+              initial={{ opacity: 0, x: -50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block"
+            >
+              Nuestros Trabajos
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, x: -50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+              className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white"
+            >
+              Galería de
+              <br />
+              <span className="gradient-text">Proyectos</span>
+            </motion.h2>
+          </div>
+        </div>
+        <div className="w-full px-4 md:px-6">
+          <div className="gallery-accordion">
           {galleryImages.map((img, index) => {
             const isActive = activeIndex === index;
             const activeIsRight = activeIndex !== null && activeIndex > index;
@@ -162,6 +176,7 @@ export const Gallery = () => {
             />
           </div>
         )}
+      </div>
       </div>
     </section>
   );
