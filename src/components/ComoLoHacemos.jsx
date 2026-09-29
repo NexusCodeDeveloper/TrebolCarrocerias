@@ -36,8 +36,8 @@ export default function ComoLoHacemos() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const videoRef = useRef(null);
-  const [reducedMotion] = useState(() =>
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  const [reducedMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
   const [playing, setPlaying] = useState(() => !reducedMotion);
 
@@ -54,26 +54,27 @@ export default function ComoLoHacemos() {
   return (
     <section
       id="como-lo-hacemos"
-      className="py-32 md:py-48 px-4 relative overflow-hidden"
+      className="relative overflow-hidden py-32 md:py-48 px-4"
     >
-      {/* Fondo: degradado + grilla técnica + glows verdes */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-dark-800 to-black" />
+      {/* Background: gris acero industrial - color pleno distinto */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0d1318] via-[#141f28] to-[#0d1318]" />
+      <div className="absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-slate-500/20 blur-[160px]" />
+      <div className="absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-slate-600/20 blur-[160px]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-400/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-400/30 to-transparent" />
+      {/* Grid técnico */}
       <div
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
+            "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
           maskImage:
             "radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)",
           WebkitMaskImage:
             "radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)",
         }}
       />
-      <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-trebol-500/10 blur-[120px]" />
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-trebol-700/10 blur-[120px]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/20 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/20 to-transparent" />
 
       <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
         {/* Header */}
