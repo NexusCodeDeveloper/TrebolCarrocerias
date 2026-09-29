@@ -16,14 +16,14 @@ export default function QuienesSomos() {
   return (
     <section
       id="quienes-somos"
-      className="relative overflow-hidden py-24 md:py-32 px-4"
+      className="relative overflow-hidden py-32 md:py-48 px-4"
     >
-      {/* Background: verde sutil */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-trebol-800/25 to-black" />
-      <div className="absolute -top-24 right-0 w-96 h-96 rounded-full bg-trebol-500/10 blur-[120px]" />
-      <div className="absolute -bottom-24 left-0 w-96 h-96 rounded-full bg-trebol-700/10 blur-[120px]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/20 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/20 to-transparent" />
+      {/* Background: verde bosque profundo - color pleno */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#051a0a] via-[#0a2e12] to-[#051a0a]" />
+      <div className="absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-trebol-600/20 blur-[160px]" />
+      <div className="absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-trebol-700/20 blur-[160px]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
 
       <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
