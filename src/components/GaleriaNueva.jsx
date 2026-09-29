@@ -53,32 +53,8 @@ const galleryImages = [
 
 export const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isSectionVisible, setIsSectionVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(null);
   const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const element = sectionRef.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsSectionVisible(entry.isIntersecting),
-      { threshold: 0.25 },
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (selectedImage || isHovered || !isSectionVisible) return;
-
-    const interval = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % galleryImages.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [selectedImage, isHovered, isSectionVisible]);
 
   useEffect(() => {
     if (selectedImage) {
@@ -93,6 +69,14 @@ export const Gallery = () => {
       document.body.classList.remove("lightbox-active");
     };
   }, [selectedImage]);
+
+  const handleItemClick = (index, img) => {
+    if (activeIndex === index) {
+      setSelectedImage(img);
+    } else {
+      setActiveIndex(index);
+    }
+  };
 
   return (
     <section id="galeria" className="bg-black">
@@ -109,17 +93,12 @@ export const Gallery = () => {
           <span className="gradient-text">Proyectos</span>
         </h2>
 
-        <div
-          className="gallery-accordion"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+        <div className="gallery-accordion">
           {galleryImages.map((img, index) => (
             <div
               key={img.id}
               className={`gallery-accordion-item ${activeIndex === index ? "active" : ""}`}
-              onMouseEnter={() => setActiveIndex(index)}
-              onClick={() => setSelectedImage(img)}
+              onClick={() => handleItemClick(index, img)}
             >
               <img src={img.src} alt={img.title} loading="lazy" />
               <div className="gallery-overlay">
