@@ -14,6 +14,7 @@ import "./GaleriaNueva.css";
  * - logo: URL opcional de logo del proyecto
  * - logoClass: clase CSS extra para el logo (opcional)
  */
+/** @type {{id: number, src: string, title: string, size: "large"|"wide"|"small", logo: string|null, logoClass?: string}[]} */
 const galleryImages = [
   {
     id: 1,
@@ -21,6 +22,7 @@ const galleryImages = [
     title: "Volcable Amarillo",
     size: "large",
     logo: null,
+    logoClass: "",
   },
   {
     id: 2,
@@ -28,6 +30,7 @@ const galleryImages = [
     title: "Paquetero Azul",
     size: "wide",
     logo: null,
+    logoClass: "",
   },
   {
     id: 3,
@@ -35,6 +38,7 @@ const galleryImages = [
     title: "Volcable Blanco",
     size: "small",
     logo: null,
+    logoClass: "",
   },
   {
     id: 4,
@@ -42,6 +46,7 @@ const galleryImages = [
     title: "Semi Bajada Bonano",
     size: "large",
     logo: null,
+    logoClass: "",
   },
   {
     id: 5,
@@ -49,11 +54,15 @@ const galleryImages = [
     title: "Paquetero Trasera",
     size: "small",
     logo: null,
+    logoClass: "",
   },
 ];
 
 export const Gallery = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(
+    /** @type {{id: number, src: string, title: string, size: "large"|"wide"|"small", logo: string|null, logoClass?: string}|null} */
+    (null)
+  );
   const [activeIndex, setActiveIndex] = useState(galleryImages.length - 1);
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
@@ -73,6 +82,10 @@ export const Gallery = () => {
     };
   }, [selectedImage]);
 
+  /**
+   * @param {number} index
+   * @param {{id: number, src: string, title: string, size: "large"|"wide"|"small", logo: string|null, logoClass?: string}} img
+   */
   const handleItemClick = (index, img) => {
     if (activeIndex === index) {
       setSelectedImage(img);
@@ -82,8 +95,15 @@ export const Gallery = () => {
   };
 
   return (
-    <section id="galeria" className="bg-black">
-      <div className="pt-32 pb-12 md:pt-48 md:pb-16" ref={sectionRef}>
+    <section id="galeria" className="relative overflow-hidden py-32 md:py-48 px-4">
+      {/* Background: negro con acento marca */}
+      <div className="absolute inset-0 bg-black" />
+      <div className="absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-trebol-600/10 blur-[160px]" />
+      <div className="absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-trebol-700/10 blur-[160px]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/20 to-transparent" />
+
+      <div className="relative z-10 pt-16 pb-16 md:pt-32 md:pb-24" ref={sectionRef}>
         <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div ref={headerRef} className="mb-12 md:mb-16">
             <motion.span
@@ -106,77 +126,83 @@ export const Gallery = () => {
             </motion.h2>
           </div>
         </div>
-        <div className="w-full px-4 md:px-6">
-          <div className="gallery-accordion">
-          {galleryImages.map((img, index) => {
-            const isActive = activeIndex === index;
-            const activeIsRight = activeIndex !== null && activeIndex > index;
-            return (
-              <div
-                key={img.id}
-                className={`gallery-accordion-item ${isActive ? "active" : ""}`}
-                onClick={() => handleItemClick(index, img)}
-              >
-                {isActive ? (
-                  <>
-                    <img src={img.src} alt={img.title} loading="lazy" />
-                    <div className="gallery-overlay">
-                      {img.logo && (
-                        <img
-                          src={img.logo}
-                          alt="Logo Proyecto"
-                          className={`gallery-project-logo ${img.logoClass || ""}`}
-                        />
-                      )}
-                      <div className="gallery-text-content">
-                        <p>{img.title}</p>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+        >
+          <div className="w-full px-4 md:px-6">
+            <div className="gallery-accordion">
+            {galleryImages.map((img, index) => {
+              const isActive = activeIndex === index;
+              const activeIsRight = activeIndex !== null && activeIndex > index;
+              return (
+                <div
+                  key={img.id}
+                  className={`gallery-accordion-item ${isActive ? "active" : ""}`}
+                  onClick={() => handleItemClick(index, img)}
+                >
+                  {isActive ? (
+                    <>
+                      <img src={img.src} alt={img.title} loading="lazy" />
+                      <div className="gallery-overlay">
+                        {img.logo && (
+                          <img
+                            src={img.logo}
+                            alt="Logo Proyecto"
+                            className={`gallery-project-logo ${img.logoClass || ""}`}
+                          />
+                        )}
+                        <div className="gallery-text-content">
+                          <p>{img.title}</p>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="gallery-closed">
+                      <img
+                        src={img.src}
+                        alt={img.title}
+                        loading="lazy"
+                        className="gallery-closed-img"
+                      />
+                      <div className="gallery-closed-bg" />
+                      <div className={`gallery-arrow ${activeIsRight ? "arrow-right" : "arrow-left"}`}>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 18 15 12 9 6" />
+                        </svg>
                       </div>
                     </div>
-                  </>
-                ) : (
-                  <div className="gallery-closed">
-                    <img
-                      src={img.src}
-                      alt={img.title}
-                      loading="lazy"
-                      className="gallery-closed-img"
-                    />
-                    <div className="gallery-closed-bg" />
-                    <div className={`gallery-arrow ${activeIsRight ? "arrow-right" : "arrow-left"}`}>
-                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                      </svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {selectedImage && (
-          <div className="lightbox">
-            <button
-              className="close-btn"
-              onClick={() => setSelectedImage(null)}
-              aria-label="Cerrar"
-            >
-              <X size={24} />
-            </button>
-            <img
-              src={selectedImage.src}
-              alt={selectedImage.title}
-              className="lightbox-main-img"
-            />
-            <p className="lightbox-caption">{selectedImage.title}</p>
-            <img
-              src="/img/volcable-amarillo.jpg"
-              alt="Trébol Carrocerías"
-              className="lightbox-watermark"
-            />
+                  )}
+                </div>
+              );
+            })}
           </div>
-        )}
-      </div>
+
+          {selectedImage && (
+            <div className="lightbox">
+              <button
+                className="close-btn"
+                onClick={() => setSelectedImage(null)}
+                aria-label="Cerrar"
+              >
+                <X size={24} />
+              </button>
+              <img
+                src={selectedImage.src}
+                alt={selectedImage.title}
+                className="lightbox-main-img"
+              />
+              <p className="lightbox-caption">{selectedImage.title}</p>
+              <img
+                src="/img/volcable-amarillo.jpg"
+                alt="Trébol Carrocerías"
+                className="lightbox-watermark"
+              />
+            </div>
+          )}
+</div>
+        </motion.div>
       </div>
     </section>
   );
