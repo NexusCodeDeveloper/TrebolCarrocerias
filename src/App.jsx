@@ -8,6 +8,11 @@ import Normas from "./components/Normas";
 import Testimonios from "./components/Testimonios";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import { lazy, Suspense } from "react";
+
+const Gallery = lazy(() =>
+  import("./components/GaleriaNueva").then((m) => ({ default: m.Gallery }))
+);
 
 export default function App() {
   return (
@@ -16,7 +21,10 @@ export default function App() {
       <Hero />
       <QuienesSomos />
       <Productos />
-      <Galeria />
+      {/* <Galeria /> */}
+      <Suspense fallback={<div style={{ minHeight: "50vh" }} />}>
+        <Gallery />
+      </Suspense>
       <ComoLoHacemos />
       <Normas />
       <Testimonios />
