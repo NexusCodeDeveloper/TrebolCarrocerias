@@ -49,41 +49,6 @@ const galleryImages = [
     size: "small",
     logo: null,
   },
-  {
-    id: 6,
-    src: "/img/playo-andina.jpg",
-    title: "Playo Andina",
-    size: "wide",
-    logo: null,
-  },
-  {
-    id: 7,
-    src: "/img/frame-hierronort.jpg",
-    title: "Frame Norte",
-    size: "large",
-    logo: null,
-  },
-  {
-    id: 8,
-    src: "/img/paque-blanco.jpg",
-    title: "Paquetero Blanco",
-    size: "wide",
-    logo: null,
-  },
-  {
-    id: 9,
-    src: "/img/signa-trebol.jpg",
-    title: "Signa Trébol",
-    size: "small",
-    logo: null,
-  },
-  {
-    id: 10,
-    src: "/img/volcable-azul.jpg",
-    title: "Volcable Azul",
-    size: "large",
-    logo: null,
-  },
 ];
 
 export const Gallery = () => {
@@ -130,13 +95,19 @@ export const Gallery = () => {
   }, [selectedImage]);
 
   return (
-    <section id="galeria" className="gallery-section">
-      <div className="gallery-container" ref={sectionRef}>
-        <div className="gallery-header">
-          <h2 className="gallery-title">
-            Descubre <span>Nuestros Espacios</span>
-          </h2>
-        </div>
+    <section id="galeria" className="bg-black">
+      <div
+        className="mx-auto max-w-7xl px-4 pt-32 pb-12 md:pt-48 md:pb-16"
+        ref={sectionRef}
+      >
+        <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
+          Nuestros Trabajos
+        </span>
+        <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
+          Galería de
+          <br />
+          <span className="gradient-text">Proyectos</span>
+        </h2>
 
         <div
           className="gallery-accordion"
