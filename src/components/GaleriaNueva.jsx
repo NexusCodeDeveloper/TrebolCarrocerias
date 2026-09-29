@@ -53,7 +53,7 @@ const galleryImages = [
 
 export const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(galleryImages.length - 1);
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -81,7 +81,7 @@ export const Gallery = () => {
   return (
     <section id="galeria" className="bg-black">
       <div
-        className="mx-auto max-w-7xl px-4 pt-32 pb-12 md:pt-48 md:pb-16"
+        className="w-full px-4 md:px-6 pt-32 pb-12 md:pt-48 md:pb-16"
         ref={sectionRef}
       >
         <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
@@ -94,27 +94,50 @@ export const Gallery = () => {
         </h2>
 
         <div className="gallery-accordion">
-          {galleryImages.map((img, index) => (
-            <div
-              key={img.id}
-              className={`gallery-accordion-item ${activeIndex === index ? "active" : ""}`}
-              onClick={() => handleItemClick(index, img)}
-            >
-              <img src={img.src} alt={img.title} loading="lazy" />
-              <div className="gallery-overlay">
-                {img.logo && (
-                  <img
-                    src={img.logo}
-                    alt="Logo Proyecto"
-                    className={`gallery-project-logo ${img.logoClass || ""}`}
-                  />
+          {galleryImages.map((img, index) => {
+            const isActive = activeIndex === index;
+            const activeIsRight = activeIndex !== null && activeIndex > index;
+            return (
+              <div
+                key={img.id}
+                className={`gallery-accordion-item ${isActive ? "active" : ""}`}
+                onClick={() => handleItemClick(index, img)}
+              >
+                {isActive ? (
+                  <>
+                    <img src={img.src} alt={img.title} loading="lazy" />
+                    <div className="gallery-overlay">
+                      {img.logo && (
+                        <img
+                          src={img.logo}
+                          alt="Logo Proyecto"
+                          className={`gallery-project-logo ${img.logoClass || ""}`}
+                        />
+                      )}
+                      <div className="gallery-text-content">
+                        <p>{img.title}</p>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="gallery-closed">
+                    <img
+                      src={img.src}
+                      alt={img.title}
+                      loading="lazy"
+                      className="gallery-closed-img"
+                    />
+                    <div className="gallery-closed-bg" />
+                    <div className={`gallery-arrow ${activeIsRight ? "arrow-right" : "arrow-left"}`}>
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                    </div>
+                  </div>
                 )}
-                <div className="gallery-text-content">
-                  <p>{img.title}</p>
-                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {selectedImage && (
