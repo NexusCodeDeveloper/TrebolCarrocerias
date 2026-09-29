@@ -324,9 +324,19 @@ export default function Productos() {
   }, [reducedMotion]);
 
   return (
-    <section id="productos" className="bg-black">
+    <section
+      id="productos"
+      className="relative overflow-hidden py-32 md:py-48 px-4"
+    >
+      {/* Background: azul petróleo/teal - color pleno distinto */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#06181e] via-[#0a2d3a] to-[#06181e]" />
+      <div className="absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-teal-600/20 blur-[160px]" />
+      <div className="absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-teal-700/20 blur-[160px]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/40 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/40 to-transparent" />
+
       {/* Header - scroll normal */}
-      <div className="pt-32 pb-8 px-4 max-w-7xl mx-auto">
+      <div className="relative z-10 pt-16 pb-8 px-4 max-w-7xl mx-auto">
         <div ref={headerRef}>
           <motion.span
             initial={{ opacity: 0, x: -50 }}
