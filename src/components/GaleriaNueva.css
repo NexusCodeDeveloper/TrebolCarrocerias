@@ -33,13 +33,34 @@
   flex: 1;
   overflow: hidden;
   cursor: pointer;
-  transition: flex 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease;
+  transition: flex 0.8s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease, box-shadow 0.5s ease;
   filter: brightness(0.3);
 }
 .gallery-accordion-item.active {
   flex: 6;
   filter: brightness(1);
   box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* Hover en items cerrados: efecto "encendido / seleccionado" */
+.gallery-accordion-item:hover:not(.active) {
+  filter: brightness(0.85) saturate(1.12);
+  z-index: 5;
+  animation: galleryItemGlow 2.4s ease-in-out infinite;
+}
+@keyframes galleryItemGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px rgba(102, 187, 106, 0.6),
+      0 0 22px rgba(13, 124, 62, 0.45),
+      0 0 55px rgba(13, 124, 62, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(160, 240, 138, 0.9),
+      0 0 32px rgba(102, 187, 106, 0.65),
+      0 0 80px rgba(13, 124, 62, 0.4);
+  }
 }
 .gallery-accordion-item > img {
   width: 100%;
@@ -80,7 +101,7 @@
   opacity: 0;
 }
 .gallery-accordion-item:hover:not(.active) .gallery-closed-img {
-  filter: brightness(1.1) saturate(3) contrast(1.2) blur(0);
+  filter: brightness(1.08) saturate(1.35) contrast(1.1) blur(0);
 }
 .gallery-closed-bg {
   position: absolute;
@@ -91,10 +112,22 @@
   opacity: 1;
   transition: background 0.5s ease, opacity 0.5s ease;
 }
+.gallery-closed-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(102, 187, 106, 0.45) 0%, transparent 70%),
+    linear-gradient(160deg, rgba(13, 124, 62, 0.5) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
 .gallery-accordion-item:hover:not(.active) .gallery-closed-bg {
-  background: 
-    radial-gradient(ellipse at center, rgba(223, 229, 226, 0.3) 0%, transparent 70%),
-    linear-gradient(135deg, rgba(13, 124, 62, 0.2) 0%, rgba(20, 20, 20, 0.2) 50%, rgba(0, 0, 0, 0.5) 100%);
+  opacity: 0.5;
+}
+.gallery-accordion-item:hover:not(.active) .gallery-closed-bg::after {
+  opacity: 1;
 }
 .gallery-closed::before {
   content: '';
@@ -104,6 +137,32 @@
     radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
     radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.01) 0%, transparent 50%);
   pointer-events: none;
+}
+/* Destello de luz que recorre la imagen al hacer hover */
+.gallery-closed::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.16) 47%,
+    rgba(160, 240, 138, 0.38) 52%,
+    transparent 65%
+  );
+  transform: translateX(-130%);
+  opacity: 0;
+  pointer-events: none;
+}
+.gallery-accordion-item:hover:not(.active) .gallery-closed::after {
+  animation: galleryLightSweep 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+@keyframes galleryLightSweep {
+  0% { transform: translateX(-130%); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translateX(130%); opacity: 0; }
 }
 .gallery-arrow {
   position: relative;
@@ -133,6 +192,7 @@
   transform: rotate(180deg) scale(1.1);
 }
 .gallery-accordion-item:hover .gallery-arrow {
+  animation: none;
   background: linear-gradient(135deg, rgba(13, 124, 62, 1) 0%, rgba(102, 187, 106, 0.9) 100%);
   border-color: #A0F08A;
   color: #C0F8B0;
