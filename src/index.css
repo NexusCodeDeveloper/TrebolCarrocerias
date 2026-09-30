@@ -123,3 +123,98 @@ body {
   0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
   50% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
 }
+
+/* ===== Animaciones de suspense (mismo lenguaje que las flechas de la galería) ===== */
+
+/* Glow pulsante para botones circulares */
+.pulse-glow {
+  animation: pulseGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(13, 124, 62, 0.2), 0 0 0 0 rgba(13, 124, 62, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(13, 124, 62, 0.55), 0 0 0 8px rgba(13, 124, 62, 0);
+  }
+}
+
+/* Anillo expansivo para llamados a la acción (play) */
+.pulse-ring {
+  animation: pulseRing 2s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(13, 124, 62, 0.55), 0 0 18px rgba(13, 124, 62, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 18px rgba(13, 124, 62, 0), 0 0 30px rgba(13, 124, 62, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(13, 124, 62, 0), 0 0 18px rgba(13, 124, 62, 0.35);
+  }
+}
+
+/* Esquinas técnicas que "respiran" */
+.corner-pulse {
+  animation: cornerPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes cornerPulse {
+  0%, 100% {
+    opacity: 0.35;
+    filter: drop-shadow(0 0 0 rgba(102, 187, 106, 0));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 6px rgba(102, 187, 106, 0.9));
+  }
+}
+
+/* Iconos que laten suavemente */
+.icon-pulse {
+  animation: iconPulse 3s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 0 rgba(13, 124, 62, 0));
+  }
+  50% {
+    filter: drop-shadow(0 0 7px rgba(102, 187, 106, 0.8));
+  }
+}
+
+/* Resplandor ambiental que respira */
+.ambient-pulse {
+  animation: ambientPulse 4.5s ease-in-out infinite;
+}
+
+@keyframes ambientPulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
+
+/* Cajitas de equipamiento: se mecen arriba/abajo (como las flechas).
+   Usa "translate" (propiedad individual) para no pisar el transform de framer-motion. */
+.equipment-float {
+  animation: equipmentBob 2s ease-in-out infinite;
+}
+
+@keyframes equipmentBob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-glow,
+  .pulse-ring,
+  .corner-pulse,
+  .icon-pulse,
+  .ambient-pulse,
+  .equipment-float {
+    animation: none;
+  }
+}
