@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import {
-  Factory,
   FoldVertical,
   Zap,
   Scissors,
@@ -107,7 +106,7 @@ export default function ComoLoHacemos() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative"
           >
-            <div className="absolute -inset-10 rounded-[3rem] bg-trebol-500/20 blur-3xl" />
+            <div className="absolute -inset-10 rounded-[3rem] bg-trebol-500/20 blur-3xl ambient-pulse" />
 
             <div className="relative aspect-video overflow-hidden rounded-3xl bg-dark-800 ring-1 ring-white/10 shadow-elevated">
               <video
@@ -129,14 +128,13 @@ export default function ComoLoHacemos() {
                   aria-label="Reproducir video"
                   className="absolute inset-0 z-20 grid place-items-center"
                 >
-                  <span className="grid h-16 w-16 place-items-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition hover:border-trebol-500 hover:bg-trebol-600">
+                  <span className="pulse-ring grid h-16 w-16 place-items-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition hover:border-trebol-500 hover:bg-trebol-600">
                     <Play className="h-6 w-6 translate-x-0.5" />
                   </span>
                 </button>
               )}
 
               <div className="absolute left-4 top-4 z-20 flex items-center gap-2 rounded-full border border-white/10 bg-black/50 px-4 py-2 backdrop-blur">
-                <Factory className="h-4 w-4 text-trebol-400" />
                 <span className="text-xs font-medium tracking-tight text-white">
                   Tecnología CNC
                 </span>
@@ -146,7 +144,7 @@ export default function ComoLoHacemos() {
                 type="button"
                 onClick={() => setPlaying((p) => !p)}
                 aria-label={playing ? "Pausar video" : "Reproducir video"}
-                className="absolute bottom-4 right-4 z-20 grid h-12 w-12 place-items-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur transition hover:border-trebol-500 hover:bg-trebol-600"
+                className="pulse-glow absolute bottom-4 right-4 z-20 grid h-12 w-12 place-items-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur transition hover:border-trebol-500 hover:bg-trebol-600"
               >
                 {playing ? (
                   <Pause className="h-5 w-5" />
@@ -156,10 +154,11 @@ export default function ComoLoHacemos() {
               </button>
             </div>
 
-            {corners.map((position) => (
+            {corners.map((position, i) => (
               <span
                 key={position}
-                className={`pointer-events-none absolute h-6 w-6 border-trebol-500/60 ${position}`}
+                style={{ animationDelay: `${i * 0.35}s` }}
+                className={`corner-pulse pointer-events-none absolute h-6 w-6 border-trebol-500/60 ${position}`}
               />
             ))}
           </motion.div>
@@ -177,9 +176,8 @@ export default function ComoLoHacemos() {
 
             <div className="relative z-10">
               <div className="mb-4 flex items-center gap-3">
-                <Factory className="h-5 w-5 text-trebol-400" />
                 <h3 className="font-heading text-lg font-bold tracking-tight text-white md:text-xl">
-                  Equipamiento de 1º generación CNC
+                  Equipamiento CNC de última generación
                 </h3>
               </div>
               <div className="mb-6 h-px w-full bg-gradient-to-r from-trebol-500/40 to-transparent" />
@@ -191,9 +189,13 @@ export default function ComoLoHacemos() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={isInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, delay: 0.45 + i * 0.1 }}
-                    className="group flex items-center gap-3 rounded-2xl border border-white/[0.06] bg-black/30 px-4 py-3 transition-colors duration-300 hover:border-trebol-500/30 hover:bg-black/50"
+                    style={{ animationDelay: `${0.9 + i * 0.18}s` }}
+                    className="equipment-float group flex items-center gap-3 rounded-2xl border border-white/[0.06] bg-black/30 px-4 py-3 transition-colors duration-300 hover:border-trebol-500/30 hover:bg-black/50"
                   >
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-trebol-500/10 ring-1 ring-trebol-500/30">
+                    <div
+                      className="icon-pulse grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-trebol-500/10 ring-1 ring-trebol-500/30"
+                      style={{ animationDelay: `${i * 0.25}s` }}
+                    >
                       <item.icon className="h-5 w-5 text-trebol-400" />
                     </div>
                     <span className="text-sm leading-snug tracking-tight text-gray-300 md:text-base">
