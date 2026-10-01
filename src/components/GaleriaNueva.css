@@ -138,32 +138,6 @@
     radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.01) 0%, transparent 50%);
   pointer-events: none;
 }
-/* Destello de luz que recorre la imagen al hacer hover */
-.gallery-closed::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: linear-gradient(
-    115deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.16) 47%,
-    rgba(160, 240, 138, 0.38) 52%,
-    transparent 65%
-  );
-  transform: translateX(-130%);
-  opacity: 0;
-  pointer-events: none;
-}
-.gallery-accordion-item:hover:not(.active) .gallery-closed::after {
-  animation: galleryLightSweep 0.9s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-@keyframes galleryLightSweep {
-  0% { transform: translateX(-130%); opacity: 0; }
-  12% { opacity: 1; }
-  88% { opacity: 1; }
-  100% { transform: translateX(130%); opacity: 0; }
-}
 .gallery-arrow {
   position: relative;
   z-index: 1;
