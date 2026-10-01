@@ -1,6 +1,14 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
+import { getVideoUrl, getVideoPoster } from "../lib/cloudinary";
+
+/**
+ * Video de fondo del Hero.
+ * - Archivo local: subilo a `public/video/` y usá la ruta, ej. "/video/hero.mp4"
+ * - Cloudinary: URL completa o public ID, ej. "trebol/hero"
+ */
+const HERO_VIDEO = "/video/hero.mp4";
 
 export default function Hero() {
   const sectionRef = useRef(null);
@@ -36,12 +44,12 @@ export default function Hero() {
           playsInline
           preload="metadata"
           className="w-full h-full object-cover"
-          poster="https://placehold.co/1920x1080/0A0A0A/0D7C3E?text=Trébol+Carrocería"
+          poster={
+            getVideoPoster(HERO_VIDEO) ||
+            "https://placehold.co/1920x1080/0A0A0A/0D7C3E?text=Trébol+Carrocería"
+          }
         >
-          <source
-            src="https://www.pexels.com/es-es/download/video/4079657/"
-            type="video/mp4"
-          />
+          <source src={getVideoUrl(HERO_VIDEO)} />
         </video>
         <motion.div
           style={{ opacity: overlayOpacity }}
