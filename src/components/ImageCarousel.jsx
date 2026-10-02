@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Maximize2, Play, X } from "lucide-react";
-import { getImageUrl, getVideoUrl } from "../lib/cloudinary";
+import { getImageUrl, getVideoUrl, getVideoPoster } from "../lib/cloudinary";
 
 const AUTOPLAY_MS = 5000;
 
@@ -67,6 +67,7 @@ export default function ImageCarousel({ images, alt }) {
               <video
                 key={src}
                 src={getVideoUrl(src)}
+                poster={getVideoPoster(src)}
                 className="absolute inset-0 h-full w-full object-cover"
                 autoPlay
                 muted
@@ -152,6 +153,7 @@ export default function ImageCarousel({ images, alt }) {
                 <div className="relative h-full w-full">
                   <video
                     src={getVideoUrl(src)}
+                    poster={getVideoPoster(src)}
                     className="h-full w-full object-cover"
                     muted
                     playsInline
@@ -201,6 +203,7 @@ export default function ImageCarousel({ images, alt }) {
                   <video
                     key={images[index]}
                     src={getVideoUrl(images[index])}
+                    poster={getVideoPoster(images[index])}
                     className="max-h-[80vh] w-full rounded-2xl object-contain ring-1 ring-white/10 shadow-elevated"
                     autoPlay
                     controls

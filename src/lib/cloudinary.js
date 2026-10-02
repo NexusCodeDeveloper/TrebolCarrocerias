@@ -47,14 +47,22 @@ export const getVideoUrl = (path) => {
 };
 
 /**
- * Genera un poster a partir de la URL de un video de Cloudinary.
- * Usa `so_1` porque el primer frame suele ser negro (fundido de entrada).
- * Si la ruta no es de Cloudinary devuelve cadena vacía.
+ * Genera un poster a partir de la URL de un video.
+ * - Ruta local (`/video/x.mp4`): devuelve el poster generado en `/video/posters/x.jpg`.
+ * - Video de Cloudinary: usa `so_1` porque el primer frame suele ser negro
+ *   (fundido de entrada) y lo convierte a jpg.
  * @param {string} path
  * @returns {string}
  */
 export const getVideoPoster = (path) => {
-  if (!path || path.startsWith("/")) return "";
+  if (!path) return "";
+
+  if (path.startsWith("/")) {
+    if (!/\.(mp4|webm|mov|m4v)$/i.test(path)) return "";
+    return path
+      .replace(/\.(mp4|webm|mov|m4v)$/i, ".jpg")
+      .replace("/video/", "/video/posters/");
+  }
 
   const url = path.startsWith("http")
     ? path
