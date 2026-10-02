@@ -117,7 +117,7 @@ const products = [
     icon: Truck,
     iconImage:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870198/3_baranda_volcable_kvbsls.png",
-    title: "Baranda Volcable y Media Baranda",
+    title: "Baranda Volcable",
     subtitle: "abatimiento rápido",
     description:
       "Apta para transportar una amplia variedad de cargas, incluyendo carga general, granos a granel o productos paletizados.",
@@ -336,6 +336,7 @@ export default function Productos() {
   const dimRefs = useRef(/** @type {(HTMLDivElement | null)[]} */ ([]));
   const textRefs = useRef(/** @type {(HTMLDivElement | null)[]} */ ([]));
   const styleCache = useRef(/** @type {(string | undefined)[]} */ ([]));
+  const jumpRef = useRef(/** @type {((p: number) => void) | null} */ (null));
   const headerRef = useRef(null);
   const isInView = useInView(headerRef, { once: true, margin: "-100px" });
   const [reducedMotion, setReducedMotion] = useState(
@@ -364,6 +365,25 @@ export default function Productos() {
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
+
+  /* Salto directo al producto desde los logos del header */
+  const scrollToProduct = (/** @type {number} */ index) => {
+    if (reducedMotion) {
+      document
+        .getElementById(`producto-${index}`)
+        ?.scrollIntoView({ behavior: "instant", block: "start" });
+      return;
+    }
+    const area = areaRef.current;
+    if (!area) return;
+    const range = area.offsetHeight - window.innerHeight;
+    if (range <= 0) return;
+    const pinStart = area.getBoundingClientRect().top + window.scrollY;
+    const p = products.length > 1 ? index / (products.length - 1) : 0;
+    /* Salto seco: sin animación de scroll ni transición entre paneles */
+    window.scrollTo({ top: pinStart + p * range, behavior: "instant" });
+    jumpRef.current?.(p);
+  };
 
   /* Motor del efecto: stage + paneles calculados a mano (sin sticky) */
   useEffect(() => {
@@ -487,11 +507,19 @@ export default function Productos() {
       startLoop();
     };
 
+    /* Salto seco: sincroniza el motor sin lerp (usado por los logos) */
+    jumpRef.current = (p) => {
+      target = p;
+      current = p;
+      apply(current);
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     onScroll();
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
+      jumpRef.current = null;
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
     };
@@ -530,6 +558,33 @@ export default function Productos() {
             <br />
             <span className="gradient-text">mueven al transporte</span>
           </motion.h2>
+          {/* Accesos rápidos: logos clickeables de los 7 productos */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.25 }}
+            className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:gap-4 md:justify-center md:gap-4 lg:gap-6 lg:overflow-visible lg:pb-0 xl:justify-between [&::-webkit-scrollbar]:hidden"
+          >
+            {products.map((product, i) => (
+              <button
+                key={product.title}
+                type="button"
+                onClick={() => scrollToProduct(i)}
+                aria-label={`Ver ${product.title}`}
+                title={product.title}
+                className="group shrink-0 rounded-2xl border border-white/10 bg-white/5 p-2.5 transition-all duration-300 hover:-translate-y-1 hover:border-trebol-500/60 hover:bg-trebol-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trebol-400 sm:p-3 lg:p-4"
+              >
+                <img
+                  src={getLogoUrl(product.iconImage ?? "")}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-14 w-14 rounded-xl object-contain transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16 lg:h-20 lg:w-20"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            ))}
+          </motion.div>
         </div>
       </div>
 
@@ -632,6 +687,7 @@ function ProductPanel({
 
   return (
     <div
+      id={mode === "flow" ? `producto-${index}` : undefined}
       ref={(el) => {
         ref.current = el;
         if (panelRef) panelRef(el);
@@ -663,7 +719,7 @@ function ProductPanel({
       />
 
       {/* Overlay opaco: nunca menos de 0.55; más fuerte del lado del texto */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/55 md:bg-gradient-to-r md:from-black/90 md:via-black/70 md:to-black/55" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/55 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/70 lg:to-black/55" />
 
       {/* Overlay de oscurecimiento (opacity animada por JS, sin filter/repintado) */}
       <div
@@ -675,82 +731,82 @@ function ProductPanel({
       />
 
       {/* Contenido: texto + carrusel */}
-      <div className="relative z-10 flex h-full flex-col justify-between px-6 pb-8 pt-28 md:flex-row md:items-center md:justify-between md:gap-12 md:pb-0 md:pt-0 md:px-20 lg:px-28">
-        <div className="relative max-w-xl">
+      <div className="relative z-10 flex h-full flex-col justify-between px-6 pb-8 pt-28 md:justify-center md:gap-8 md:px-12 md:pt-0 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pb-0 lg:px-16 xl:gap-12 xl:px-28">
+        <div className="relative max-w-xl md:max-w-2xl lg:max-w-xl">
           <div
             ref={(el) => {
               if (textRef) textRef(el);
             }}
           >
-          {/* Eyebrow: punto + línea decorativa */}
-          <div className="flex items-center gap-4 mb-3 md:mb-6">
-            <div className="w-3 h-3 rounded-full bg-trebol-500" />
-            <div className="h-px flex-1 bg-gradient-to-r from-trebol-500/50 to-transparent" />
-          </div>
-          {/* Badge con ícono */}
-          <div className="flex items-center gap-3 mb-2 md:mb-4">
-            {product.iconImage ? (
-              <img
-                src={getLogoUrl(product.iconImage)}
-                alt=""
-                aria-hidden="true"
-                className="w-8 h-8 md:w-12 md:h-12 "
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              <product.icon className="w-5 h-5 md:w-6 md:h-6 text-trebol-400" />
-            )}
-            <span className="text-gray-400 text-xs md:text-sm tracking-[0.2em] uppercase">
-              {product.subtitle}
-            </span>
-          </div>
-          <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-3 md:mb-6">
-            {product.title}
-          </h3>
-          <p className="text-gray-300 text-base md:text-xl leading-relaxed tracking-tight mb-4 md:mb-8 max-w-lg">
-            {product.description}
-          </p>
-          {/* Características */}
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-3 mb-5 md:mb-10">
-            {product.features.map((feature) => (
-              <li key={feature} className="flex items-start gap-3">
-                <Check className="w-4 h-4 text-trebol-400 mt-0.5 shrink-0" />
-                <span className="text-gray-300 text-sm md:text-base leading-relaxed tracking-tight">
-                  {feature}
-                </span>
-              </li>
-            ))}
-          </ul>
-          {/* Estadística destacada / Características + Cotizar */}
-          <div className="flex flex-wrap items-center gap-6">
-            {product.details?.length ? (
-              <button
-                type="button"
-                onClick={() => setDetailsOpen(true)}
-                aria-expanded={detailsOpen}
-                className="inline-flex items-center gap-2 rounded-full border border-trebol-500/40 bg-trebol-500/10 px-5 py-2.5 md:px-6 md:py-3 text-xs md:text-sm font-bold text-trebol-300 tracking-tight transition-colors hover:border-trebol-500/70 hover:bg-trebol-500/20"
+            {/* Eyebrow: punto + línea decorativa */}
+            <div className="flex items-center gap-4 mb-3 md:mb-6">
+              <div className="w-3 h-3 rounded-full bg-trebol-500" />
+              <div className="h-px flex-1 bg-gradient-to-r from-trebol-500/50 to-transparent" />
+            </div>
+            {/* Badge con ícono */}
+            <div className="flex items-center gap-3 mb-2 md:mb-4">
+              {product.iconImage ? (
+                <img
+                  src={getLogoUrl(product.iconImage)}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-8 h-8 md:w-12 md:h-12 "
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <product.icon className="w-5 h-5 md:w-6 md:h-6 text-trebol-400" />
+              )}
+              <span className="text-gray-400 text-xs md:text-sm tracking-[0.2em] uppercase">
+                {product.subtitle}
+              </span>
+            </div>
+            <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-3 md:mb-6">
+              {product.title}
+            </h3>
+            <p className="text-gray-300 text-base md:text-xl leading-relaxed tracking-tight mb-4 md:mb-8 max-w-lg">
+              {product.description}
+            </p>
+            {/* Características */}
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-3 mb-5 md:mb-10">
+              {product.features.map((feature) => (
+                <li key={feature} className="flex items-start gap-3">
+                  <Check className="w-4 h-4 text-trebol-400 mt-0.5 shrink-0" />
+                  <span className="text-gray-300 text-sm md:text-base leading-relaxed tracking-tight">
+                    {feature}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {/* Estadística destacada / Características + Cotizar */}
+            <div className="flex flex-wrap items-center gap-6">
+              {product.details?.length ? (
+                <button
+                  type="button"
+                  onClick={() => setDetailsOpen(true)}
+                  aria-expanded={detailsOpen}
+                  className="inline-flex items-center gap-2 rounded-full border border-trebol-500/40 bg-trebol-500/10 px-5 py-2.5 md:px-6 md:py-3 text-xs md:text-sm font-bold text-trebol-300 tracking-tight transition-colors hover:border-trebol-500/70 hover:bg-trebol-500/20"
+                >
+                  <Plus className="h-4 w-4" />
+                  Características
+                </button>
+              ) : (
+                <div className="flex items-end gap-3 md:gap-4">
+                  <span className="font-heading text-4xl md:text-6xl font-bold text-trebol-400 tracking-tight leading-none">
+                    {product.stat}
+                  </span>
+                  <span className="text-gray-400 text-xs md:text-sm tracking-[0.15em] uppercase pb-1">
+                    {product.statLabel}
+                  </span>
+                </div>
+              )}
+              <a
+                href="#contacto"
+                className="ml-auto inline-flex items-center gap-2 bg-trebol-500 hover:bg-trebol-600 px-5 py-2.5 md:px-6 md:py-3 rounded-full font-bold text-white text-xs md:text-sm tracking-tight transition-colors"
               >
-                <Plus className="h-4 w-4" />
-                Características
-              </button>
-            ) : (
-              <div className="flex items-end gap-3 md:gap-4">
-                <span className="font-heading text-4xl md:text-6xl font-bold text-trebol-400 tracking-tight leading-none">
-                  {product.stat}
-                </span>
-                <span className="text-gray-400 text-xs md:text-sm tracking-[0.15em] uppercase pb-1">
-                  {product.statLabel}
-                </span>
-              </div>
-            )}
-            <a
-              href="#contacto"
-              className="ml-auto inline-flex items-center gap-2 bg-trebol-500 hover:bg-trebol-600 px-5 py-2.5 md:px-6 md:py-3 rounded-full font-bold text-white text-xs md:text-sm tracking-tight transition-colors"
-            >
-              Cotizar
-            </a>
-          </div>
+                Cotizar
+              </a>
+            </div>
           </div>
 
           {/* Panel de características: se despliega hacia arriba sobre el texto */}
@@ -794,8 +850,8 @@ function ProductPanel({
             ) : null}
           </AnimatePresence>
         </div>
-        {/* Carrusel: arriba y centrado en mobile, columna derecha en desktop */}
-        <div className="order-first mx-auto w-80 max-w-full shrink-0 md:order-none md:mx-0 md:w-96 lg:w-[32rem] xl:w-[36rem]">
+        {/* Carrusel: arriba y centrado en mobile/tablet, columna derecha en desktop */}
+        <div className="order-first mx-auto w-80 max-w-full shrink-0 md:w-[26rem] lg:order-none lg:mx-0 lg:w-96 xl:w-[36rem]">
           <ImageCarousel images={product.gallery} alt={product.title} />
         </div>
       </div>
