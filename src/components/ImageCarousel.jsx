@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
-import { getImageUrl } from "../lib/cloudinary";
+import { ChevronLeft, ChevronRight, Maximize2, Play, X } from "lucide-react";
+import { getImageUrl, getVideoUrl } from "../lib/cloudinary";
 
 const AUTOPLAY_MS = 5000;
+
+const isVideo = (/** @type {string} */ src) =>
+  /\.(mp4|webm|mov|m4v)$/i.test(src);
 
 /**
  * @param {Object} props
@@ -16,15 +19,17 @@ export default function ImageCarousel({ images, alt }) {
   const [index, setIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
   const [open, setOpen] = useState(false);
-  const autoplay = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const autoplay = !window.matchMedia("(prefers-reduced-motion: reduce)")
+    .matches;
+  const currentIsVideo = isVideo(images[index]);
 
   useEffect(() => {
-    if (!autoplay || hovered || open || count < 2) return;
+    if (!autoplay || hovered || open || count < 2 || currentIsVideo) return;
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % count);
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [autoplay, hovered, open, count]);
+  }, [autoplay, hovered, open, count, currentIsVideo]);
 
   useEffect(() => {
     if (!open) return;
@@ -55,20 +60,36 @@ export default function ImageCarousel({ images, alt }) {
         onClick={() => setOpen(true)}
         className="relative aspect-video cursor-zoom-in overflow-hidden rounded-2xl bg-black/40 ring-1 ring-white/10 shadow-elevated"
       >
-        {images.map((src, i) => (
-          <img
-            key={src}
-            src={getImageUrl(src)}
-            alt={`${alt} ${i + 1}`}
-            className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-            style={{ opacity: i === index ? 1 : 0 }}
-            loading="lazy"
-            decoding="async"
-            onError={(e) => {
-              e.currentTarget.src = `https://placehold.co/1600x900/0A0A0A/0D7C3E?text=${alt}`;
-            }}
-          />
-        ))}
+        {images.map((src, i) => {
+          if (isVideo(src)) {
+            if (i !== index) return null;
+            return (
+              <video
+                key={src}
+                src={getVideoUrl(src)}
+                className="absolute inset-0 h-full w-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            );
+          }
+          return (
+            <img
+              key={src}
+              src={getImageUrl(src)}
+              alt={`${alt} ${i + 1}`}
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+              style={{ opacity: i === index ? 1 : 0 }}
+              loading="lazy"
+              decoding="async"
+              onError={(e) => {
+                e.currentTarget.src = `https://placehold.co/1600x900/0A0A0A/0D7C3E?text=${alt}`;
+              }}
+            />
+          );
+        })}
 
         {count > 1 && (
           <>
@@ -127,13 +148,28 @@ export default function ImageCarousel({ images, alt }) {
                   : "opacity-50 ring-1 ring-white/10 hover:opacity-80"
               }`}
             >
-              <img
-                src={getImageUrl(src)}
-                alt=""
-                className="h-full w-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
+              {isVideo(src) ? (
+                <div className="relative h-full w-full">
+                  <video
+                    src={getVideoUrl(src)}
+                    className="h-full w-full object-cover"
+                    muted
+                    playsInline
+                    preload="metadata"
+                  />
+                  <span className="absolute inset-0 grid place-items-center bg-black/30">
+                    <Play className="h-4 w-4 fill-white text-white" />
+                  </span>
+                </div>
+              ) : (
+                <img
+                  src={getImageUrl(src)}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
             </button>
           ))}
         </div>
@@ -161,14 +197,26 @@ export default function ImageCarousel({ images, alt }) {
                 className="relative w-full max-w-5xl"
                 onClick={(e) => e.stopPropagation()}
               >
-                <img
-                  src={getImageUrl(images[index])}
-                  alt={`${alt} ${index + 1}`}
-                  className="max-h-[80vh] w-full rounded-2xl object-contain ring-1 ring-white/10 shadow-elevated"
-                  onError={(e) => {
-                    e.currentTarget.src = `https://placehold.co/1600x900/0A0A0A/0D7C3E?text=${alt}`;
-                  }}
-                />
+                {isVideo(images[index]) ? (
+                  <video
+                    key={images[index]}
+                    src={getVideoUrl(images[index])}
+                    className="max-h-[80vh] w-full rounded-2xl object-contain ring-1 ring-white/10 shadow-elevated"
+                    autoPlay
+                    controls
+                    loop
+                    playsInline
+                  />
+                ) : (
+                  <img
+                    src={getImageUrl(images[index])}
+                    alt={`${alt} ${index + 1}`}
+                    className="max-h-[80vh] w-full rounded-2xl object-contain ring-1 ring-white/10 shadow-elevated"
+                    onError={(e) => {
+                      e.currentTarget.src = `https://placehold.co/1600x900/0A0A0A/0D7C3E?text=${alt}`;
+                    }}
+                  />
+                )}
 
                 {count > 1 && (
                   <>

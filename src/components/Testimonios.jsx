@@ -36,6 +36,74 @@ const clients = [
     name: "La Estrella Catering y Hotelería",
     logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067541/Recurso_12_j5ioti.png",
   },
+  {
+    name: "andina",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_19_yumvu9.png",
+  },
+  {
+    name: "Gala ko",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_20_votbqo.png",
+  },
+  {
+    name: "smc",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_26_w1odtm.png",
+  },
+  {
+    name: "Control Andina",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_21_wbffza.png",
+  },
+  {
+    name: "RQ",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_25_kii98f.png",
+  },
+  {
+    name: "Cronec SRL",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_18_mzpfxa.png",
+  },
+  {
+    name: "Shamana",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_27_ilok36.png",
+  },
+  {
+    name: "Imeca",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_23_ayxkmr.png",
+  },
+  {
+    name: "Salta Perforaciones",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_28_pwgc1a.png",
+  },
+  {
+    name: "Geo Mix",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_24_qks6jy.png",
+  },
+  {
+    name: "Municipalidad",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_29_kgzboa.png",
+  },
+  {
+    name: "Noa Generación",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_22_hymouz.png",
+  },
+  {
+    name: "JMG",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_30_qdfjda.png",
+  },
+  {
+    name: "Mei",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_32_ljzpgi.png",
+  },
+  {
+    name: "Nubicom",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_31_ajanbo.png",
+  },
+  {
+    name: "Saltapor",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868055/Recurso_33_fqjxab.png",
+  },
+  {
+    name: "Salta Municipalidad",
+    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868056/Recurso_34_n5xcvw.png",
+  },
 ];
 
 export default function Testimonios() {
