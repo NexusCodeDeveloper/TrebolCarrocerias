@@ -10,7 +10,6 @@ import {
   Pause,
   Truck,
   Plus,
-  Sparkles,
 } from "lucide-react";
 import { getImageUrl, getVideoUrl, getVideoPoster } from "../lib/cloudinary";
 
