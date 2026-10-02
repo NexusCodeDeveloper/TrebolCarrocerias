@@ -322,7 +322,8 @@ const products = [
 ];
 
 /* Config del efecto */
-const SEGMENTS_SCROLL = 1.5; // × altura de viewport por transición (más alto = más lento)
+const SEGMENTS_SCROLL = 2; // × altura de viewport por transición (más alto = más lento)
+const SEGMENT_HOLD = 0.45; // % del tramo con la card quieta para leer antes de transicionar
 const FINAL_SCALE = 0.92; // escala del panel tapado
 const FINAL_DIM = 0.35; // opacidad del overlay negro del panel tapado
 const FINAL_OFFSET_Y = -30; // px, desplazamiento vertical del panel tapado
@@ -406,10 +407,11 @@ export default function Productos() {
         stage.style.top = `${areaH - viewportH}px`;
       }
 
-      /* Progreso global 0..N-1 */
+      /* Progreso global 0..N-1 (con zona muerta de lectura al inicio de cada tramo) */
       const global = p * (products.length - 1);
       const floor = Math.floor(global);
-      const frac = global - floor;
+      const raw = global - floor;
+      const frac = Math.max(0, (raw - SEGMENT_HOLD) / (1 - SEGMENT_HOLD));
 
       /* Transformaciones por panel (solo transform/opacity = compositor, sin repintado) */
       panelsRef.current.forEach((panel, i) => {
@@ -674,12 +676,12 @@ function ProductPanel({
 
       {/* Contenido: texto + carrusel */}
       <div className="relative z-10 flex h-full flex-col justify-between px-6 pb-8 pt-28 md:flex-row md:items-center md:justify-between md:gap-12 md:pb-0 md:pt-0 md:px-20 lg:px-28">
-        <div
-          ref={(el) => {
-            if (textRef) textRef(el);
-          }}
-          className="relative max-w-xl"
-        >
+        <div className="relative max-w-xl">
+          <div
+            ref={(el) => {
+              if (textRef) textRef(el);
+            }}
+          >
           {/* Eyebrow: punto + línea decorativa */}
           <div className="flex items-center gap-4 mb-3 md:mb-6">
             <div className="w-3 h-3 rounded-full bg-trebol-500" />
@@ -749,6 +751,7 @@ function ProductPanel({
               Cotizar
             </a>
           </div>
+          </div>
 
           {/* Panel de características: se despliega hacia arriba sobre el texto */}
           <AnimatePresence>
@@ -758,7 +761,7 @@ function ProductPanel({
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1] }}
-                className="absolute inset-x-0 bottom-0 z-20 overflow-hidden rounded-2xl border border-trebol-500/30 bg-black/85 shadow-elevated backdrop-blur-xl"
+                className="absolute inset-x-0 bottom-0 z-20 overflow-hidden rounded-2xl border border-trebol-500/30 bg-black shadow-elevated"
                 role="dialog"
                 aria-label={`Características de ${product.title}`}
               >
