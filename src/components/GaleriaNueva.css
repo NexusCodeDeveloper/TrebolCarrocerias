@@ -338,6 +338,40 @@
     width: 45px;
     height: 45px;
   }
+
+  /* Flechas más chicas y en vertical: apuntan hacia la imagen abierta */
+  .gallery-arrow {
+    width: 44px;
+    height: 44px;
+  }
+  .gallery-arrow svg {
+    width: 26px;
+    height: 26px;
+  }
+  .gallery-arrow.arrow-right {
+    transform: rotate(90deg);
+    animation: arrowPulseDown 2s ease-in-out infinite, arrowGlow 3s ease-in-out infinite;
+  }
+  .gallery-arrow.arrow-left {
+    transform: rotate(-90deg);
+    animation: arrowPulseUp 2s ease-in-out infinite, arrowGlow 3s ease-in-out infinite;
+  }
+  .gallery-accordion-item:hover .gallery-arrow.arrow-right {
+    transform: rotate(90deg) scale(1.15);
+  }
+  .gallery-accordion-item:hover .gallery-arrow.arrow-left {
+    transform: rotate(-90deg) scale(1.15);
+  }
+}
+
+@keyframes arrowPulseDown {
+  0%, 100% { transform: rotate(90deg) translateX(0); opacity: 0.8; }
+  50% { transform: rotate(90deg) translateX(8px); opacity: 1; }
+}
+
+@keyframes arrowPulseUp {
+  0%, 100% { transform: rotate(-90deg) translateX(0); opacity: 0.8; }
+  50% { transform: rotate(-90deg) translateX(8px); opacity: 1; }
 }
 @media (max-width: 600px) {
   .gallery-container {
