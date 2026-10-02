@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { AnimatePresence, motion, useInView } from "framer-motion";
 import {
   Truck,
   Package,
@@ -8,13 +8,16 @@ import {
   Thermometer,
   Wrench,
   Check,
+  Plus,
+  X,
 } from "lucide-react";
 import ImageCarousel from "./ImageCarousel";
-import { getImageUrl } from "../lib/cloudinary";
+import { getImageUrl, getLogoUrl } from "../lib/cloudinary";
 
 /**
  * @typedef {Object} Product
  * @property {import("lucide-react").LucideIcon} icon
+ * @property {string} [iconImage]
  * @property {string} title
  * @property {string} subtitle
  * @property {string} description
@@ -22,129 +25,298 @@ import { getImageUrl } from "../lib/cloudinary";
  * @property {string} stat
  * @property {string} statLabel
  * @property {string[]} features
+ * @property {{ title: string, text: string }[]} [details]
  * @property {string[]} gallery
  */
 
 /** @type {Product[]} */
 const products = [
   {
-    icon: Truck,
-    title: "Baranda Volcable",
-    subtitle: "Sistema hidráulico",
+    icon: ArrowUpDown,
+    iconImage:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870197/1_volquete_rbncgx.png",
+    title: "Volquetes",
+    subtitle: "Granel",
     description:
-      "Carrocerías baranda volcable para transporte de carga general. Sistema de volcado hidráulico con control preciso, estructura reforzada y mayor durabilidad.",
+      "Diseñados para el transporte de materiales a granel en sectores exigentes como minería, construcción y obras viales. ",
+    image: "/img/volcable-azul.jpg",
+    stat: "150+",
+    statLabel: "Volquetes activos",
+    features: [
+      "Volquete 8m3/10 toneladas",
+      "Pickups playo baranda volcable",
+      "Pickups volquete 1.0 TN",
+      "Volcado hidráulico de alta precisión",
+    ],
+    details: [
+      {
+        title: "Uso especializado",
+        text: "Diseñados para el transporte de materiales a granel en sectores exigentes como minería, construcción y obras viales.",
+      },
+      {
+        title: "Estructura reforzada",
+        text: "Fabricados con acero de alta resistencia que soporta cargas pesadas y la fricción constante del trabajo duro.",
+      },
+      {
+        title: "Volcado hidráulico de alta precisión",
+        text: "Incorporan un sistema hidráulico que garantiza una descarga rápida y segura del material.",
+      },
+      {
+        title: "Rendimiento duradero",
+        text: "Construidos para responder con durabilidad y alta exigencia en trabajos pesados.",
+      },
+    ],
+    gallery: [
+      "/video/volquetes.mp4",
+      "/img/volcable-blanco.jpg",
+      "/img/volcable-azul.jpg",
+    ],
+  },
+  {
+    icon: ArrowUpDown,
+    iconImage:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870198/2_batea_roquera_luurf8.png",
+    title: "Bateas Rockeras",
+    subtitle: "Robustez",
+    description:
+      "Diseño robusto orientado a la extracción y traslado de rocas, áridos y minerales de gran tamaño.",
+    image: "/img/volcable-amarillo.jpg",
+    stat: "150+",
+    statLabel: "Volquetes activos",
+    features: [
+      "Capacidad: 17 m³ / 28 toneladas ",
+      "Estructura: Chapa antidesgaste de alta resistencia (Hardox 450)",
+      "Tratamiento superficial: Limpieza y desengrase con fosfatizante",
+      "Base y Acabado: Primer bicomponente y esmalte poliuretánico de alta adherencia",
+    ],
+    details: [
+      {
+        title: "Especialización en material pesado",
+        text: "Diseño robusto orientado a la extracción y traslado de rocas, áridos y minerales de gran tamaño. ",
+      },
+      {
+        title: "Resistencia a la abrasión",
+        text: "Construidas con placas de acero de alta abrasión para resistir el desgaste constante de los materiales pesados. ",
+      },
+      {
+        title: "Absorción de impactos",
+        text: "Incorporan geometrías reforzadas diseñadas específicamente para absorber el impacto continuo durante el proceso de carga.",
+      },
+      {
+        title: "Descarga eficiente en terrenos difíciles",
+        text: "Cuentan con una caja basculante que asegura una descarga ágil e integral, incluso en los terrenos más hostiles.",
+      },
+    ],
+    gallery: [
+      "/video/blockera.mp4",
+      "/img/volcable-blanco.jpg",
+      "/img/volcable-amarillo.jpg",
+    ],
+  },
+  {
+    icon: Truck,
+    iconImage:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870198/3_baranda_volcable_kvbsls.png",
+    title: "Baranda Volcable y Media Baranda",
+    subtitle: "abatimiento rápido",
+    description:
+      "Apta para transportar una amplia variedad de cargas, incluyendo carga general, granos a granel o productos paletizados.",
     image: "/img/volcable-amarillo.jpg",
     stat: "500+",
     statLabel: "Unidades fabricadas",
     features: [
-      "Volcado hidráulico con control preciso",
-      "Estructura reforzada",
-      "Mayor durabilidad",
+      "Transporta distintos tipos de carga",
+      "Barandas de abatimiento rápido y seguro",
+      "Estructura liviana que aumenta la carga útil",
+      "Construcción robusta para soportar altas exigencias",
+    ],
+    details: [
+      {
+        title: "Versatilidad de carga",
+        text: "Apta para transportar una amplia variedad de cargas incluyendo carga general, granos a granel o productos paletizados. ",
+      },
+      {
+        title: "Apertura lateral ágil y segura",
+        text: "Posee un sistema de herrajes y cierres herméticos que facilitan el abatimiento rápido de las barandas para operar con comodidad.",
+      },
+      {
+        title: "Eficiencia en capacidad de carga",
+        text: "Cuenta con una estructura liviana que optimiza el peso tara, maximizando el volumen de carga útil en cada viaje.",
+      },
+      {
+        title: "Alta resistencia estructural",
+        text: "Diseñada con una construcción robusta que tolera las exigencias del transporte sin comprometer la integridad del chasis.",
+      },
     ],
     gallery: [
-      "/img/volcable-amarillo.jpg",
+      "/video/barandaVolcable.mp4",
       "/img/volcable-blanco.jpg",
       "/img/volcable-azul.jpg",
     ],
   },
   {
     icon: Package,
-    title: "Paqueteros",
-    subtitle: "Distribución",
+    iconImage:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870198/4_T%C3%A9rmicos_uwfwis.png",
+    title: "Térmicos",
+    subtitle: "Temperatura",
     description:
-      "Soluciones robustas para transporte de paquetes. Estructura reforzada con optimización de espacio, ideal para distribución urbana y larga distancia.",
+      "Cuentan con un aislamiento de alta densidad y paneles monolíticos que conservan la cadena de frío.",
     image: "/img/paquetero-azul.jpg",
     stat: "200+",
     statLabel: "Entregas realizadas",
     features: [
-      "Optimización de espacio",
-      "Estructura reforzada",
-      "Ideal para distribución urbana y larga distancia",
+      "Conserva la cadena de frío de productos perecederos",
+      "Sellado hermético que reduce el consumo del equipo de frío",
+      "Materiales higiénicos y de fácil limpieza",
+      "Concesión oficial de Industrias Bonano",
+    ],
+    details: [
+      {
+        title: "Aislamiento térmico superior",
+        text: "Cuentan con un aislamiento de alta densidad y paneles monolíticos que conservan la cadena de frío para alimentos, carnes y productos perecederos (frío, congelados, supercongelados y carnicero). ",
+      },
+      {
+        title: "Eficiencia energética",
+        text: "Incorporan sellados herméticos que optimizan el rendimiento y reducen el consumo del equipo de frío. ",
+      },
+      {
+        title: "Revestimientos sanitarios",
+        text: "Fabricados con materiales higiénicos de fácil limpieza para cumplir con las exigencias del transporte alimentario. ",
+      },
+      {
+        title: "Calidad de fabricación",
+        text: "Carrocerías desarrolladas comercializadas bajo la concesión oficial de Industrias Bonano.",
+      },
     ],
     gallery: [
-      "/img/paquetero-azul.jpg",
+      "/video/termicos.mp4",
       "/img/paque-blanco.jpg",
       "/img/paquetero-trasera.jpg",
     ],
   },
   {
     icon: Box,
+    iconImage:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870199/5_playos_r7wrhg.png",
     title: "Playos",
-    subtitle: "Carga general",
+    subtitle: "Carga y descarga",
     description:
-      "Carrocerías playo para carga paletizada. Suelo reforzado con antideslizante, laterales desmontables y sistema de amarrado integrado.",
-    image: "/img/playo-andina.jpg",
+      "Diseño sin barandas laterales que facilita la maniobra de carga y descarga de maquinaria, contenedores o cargas sobredimensionadas.",
+    image: "/img/semi-bajada-bonano.jpg",
     stat: "300+",
     statLabel: "Proyectos completos",
     features: [
-      "Suelo reforzado antideslizante",
-      "Laterales desmontables",
-      "Sistema de amarrado integrado",
+      "Playo con tanque",
+      "Playo Corralonero",
+      "Cuenta con puntos de anclaje para asegurar la carga",
+      "Ideal para abastecimiento en terrenos de difícil acceso",
+    ],
+    details: [
+      {
+        title: "Plataforma plana despejada",
+        text: "Diseño sin barandas laterales que facilita la maniobra de carga y descarga de maquinaria, contenedores o cargas sobredimensionadas. ",
+      },
+      {
+        title: "Sistemas de sujeción estratégicos",
+        text: "Equipado con puntos de anclaje distribuidos para fijar de manera firme y segura mercancías paletizadas de gran volumen. ",
+      },
+      {
+        title: "Funcionalidad mixta con tanque",
+        text: "La versión con tanque combina la plataforma plana tradicional con una cisterna integrada para agua o combustible, optimizando el espacio del chasis ",
+      },
+      {
+        title: "Ideal para operaciones en zonas remotas",
+        text: "Su configuración versátil resulta idónea para tareas de apoyo logístico y abastecimiento en frentes de obra o terrenos de difícil acceso.",
+      },
     ],
     gallery: [
+      "/video/playos.mp4",
       "/img/playo-andina.jpg",
-      "/img/signa-trebol.jpg",
       "/img/semi-bajada-bonano.jpg",
     ],
   },
-  {
-    icon: ArrowUpDown,
-    title: "Volquetes",
-    subtitle: "Granel",
-    description:
-      "Volquetes industriales para materiales a granel. Descarga hidráulica optimizada, capacidad desde 5 hasta 20 metros cúbicos.",
-    image: "/img/volcable-azul.jpg",
-    stat: "150+",
-    statLabel: "Volquetes activos",
-    features: [
-      "Descarga hidráulica optimizada",
-      "Capacidad de 5 a 20 m³",
-      "Diseño industrial para granel",
-    ],
-    gallery: [
-      "/img/volcable-azul.jpg",
-      "/img/volcable-blanco.jpg",
-      "/img/volcable-amarillo.jpg",
-    ],
-  },
+
   {
     icon: Thermometer,
-    title: "Térmicos",
-    subtitle: "Temperatura",
+    iconImage:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870199/6_semiremolque_zonepg.png",
+    title: "Semiremolque",
+    subtitle: "protección y versatilidad",
     description:
-      "Carrocerías térmicas con aislación de alta densidad y circulación forzada. Control de temperatura para cadena de frío.",
+      "Unidades desarrolladas a medida sobre un chasis de alta elasticidad, suspensión balanceada y terminaciones en pintura Airmix de máxima durabilidad. ",
     image: "/img/paquetero-trasera.jpg",
     stat: "80+",
     statLabel: "Flotas equipadas",
     features: [
-      "Aislación de alta densidad",
-      "Circulación forzada",
-      "Control de temperatura para cadena de frío",
+      "Sider / Sider con lona",
+      "Permiten una apertura completa de los laterales",
+      "Facilita las maniobras con cargas paletizadas",
+      "Protege la mercadería del agua, polvo y viento",
+    ],
+    details: [
+      {
+        title: "Alta capacidad y durabilidad para largas distancias",
+        text: "Unidades desarrolladas a medida sobre un chasis de alta elasticidad, suspensión balanceada y terminaciones en pintura Airmix de máxima durabilidad.",
+      },
+      {
+        title: "Sistema de lonas laterales correderas",
+        text: "La versión Sider incorpora lonas de alta resistencia que se desplazan sobre rieles superiores, lo que permite una apertura completa de los laterales.",
+      },
+      {
+        title: "Carga y descarga rápida de paletizados",
+        text: "La apertura total de los costados optimiza los tiempos operativos y simplifica las maniobras en logística urbana e interurbana.",
+      },
+      {
+        title: "Protección hermética y versatilidad",
+        text: "Ofrece acceso ágil combinándolo con la protección integral de la mercadería frente al agua, el polvo y el viento",
+      },
     ],
     gallery: [
-      "/img/paquetero-trasera.jpg",
+      "/video/semiremolque.mp4",
       "/img/paque-blanco.jpg",
       "/img/paquetero-azul.jpg",
     ],
   },
   {
     icon: Wrench,
-    title: "Extensión Chasis",
-    subtitle: "Norma AITA",
+    iconImage:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870200/7_paqueteros_i55cyc.png",
+    title: "Paqueteros",
+    subtitle: "transporte seguro",
     description:
-      "Extensión de chasis bajo norma AITA. Homologación completa incluida, cumplimiento total con la normativa vigente.",
+      "Diseñados como furgones cerrados para el transporte seguro de paquetería, encomiendas y productos secos, resguardando la carga del clima y robos.",
     image: "/img/frame-hierronort.jpg",
     stat: "100%",
     statLabel: "Homologados",
     features: [
-      "Diseñada bajo norma AITA",
-      "Homologación completa incluida",
-      "Cumplimiento total de la normativa vigente",
+      "Protege la carga del clima",
+      "Evita el desplazamiento de la mercadería",
+      "Permiten asegurar y organizar los paquetes",
+      "Portones de apertura ágil para facilitar la carga y descarga",
+    ],
+    details: [
+      {
+        title: "Estructura cerrada y protegida",
+        text: "Diseñados como furgones cerrados para el transporte seguro de paquetería, encomiendas y productos secos, resguardando la carga del clima y robos.",
+      },
+      {
+        title: "Seguridad en el piso",
+        text: "Equipados con piso antideslizante para evitar el desplazamiento no deseado de la mercadería durante el trayecto.",
+      },
+      {
+        title: "Sujeción interna eficiente",
+        text: "Cuentan con rieles de sujeción interna para asegurar y organizar de forma óptima los paquetes dentro de la unidad. ",
+      },
+      {
+        title: "Accesibilidad rápida",
+        text: "Disponen de portones traseros (o laterales) de ágil apertura para agilizar las tareas de carga y descarga.",
+      },
     ],
     gallery: [
-      "/img/frame-hierronort.jpg",
+      "/video/paqueteros.mp4",
       "/img/semi-bajada-bonano.jpg",
-      "/img/signa-trebol.jpg",
+      "/img/paquetero-trasera.jpg",
     ],
   },
 ];
@@ -431,6 +603,17 @@ function ProductPanel({
 }) {
   const ref = useRef(/** @type {HTMLDivElement | null} */ (null));
   const [inView, setInView] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  /* Cerrar el panel de características con Escape */
+  useEffect(() => {
+    if (!detailsOpen) return;
+    const onKey = (/** @type {KeyboardEvent} */ e) => {
+      if (e.key === "Escape") setDetailsOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [detailsOpen]);
 
   /* Fade-in simple solo en modo flujo (reduced motion) */
   useEffect(() => {
@@ -495,7 +678,7 @@ function ProductPanel({
           ref={(el) => {
             if (textRef) textRef(el);
           }}
-          className="max-w-xl"
+          className="relative max-w-xl"
         >
           {/* Eyebrow: punto + línea decorativa */}
           <div className="flex items-center gap-4 mb-3 md:mb-6">
@@ -504,7 +687,18 @@ function ProductPanel({
           </div>
           {/* Badge con ícono */}
           <div className="flex items-center gap-3 mb-2 md:mb-4">
-            <product.icon className="w-5 h-5 md:w-6 md:h-6 text-trebol-400" />
+            {product.iconImage ? (
+              <img
+                src={getLogoUrl(product.iconImage)}
+                alt=""
+                aria-hidden="true"
+                className="w-8 h-8 md:w-12 md:h-12 "
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <product.icon className="w-5 h-5 md:w-6 md:h-6 text-trebol-400" />
+            )}
             <span className="text-gray-400 text-xs md:text-sm tracking-[0.2em] uppercase">
               {product.subtitle}
             </span>
@@ -526,16 +720,28 @@ function ProductPanel({
               </li>
             ))}
           </ul>
-          {/* Estadística destacada + Cotizar */}
+          {/* Estadística destacada / Características + Cotizar */}
           <div className="flex flex-wrap items-center gap-6">
-            <div className="flex items-end gap-3 md:gap-4">
-              <span className="font-heading text-4xl md:text-6xl font-bold text-trebol-400 tracking-tight leading-none">
-                {product.stat}
-              </span>
-              <span className="text-gray-400 text-xs md:text-sm tracking-[0.15em] uppercase pb-1">
-                {product.statLabel}
-              </span>
-            </div>
+            {product.details?.length ? (
+              <button
+                type="button"
+                onClick={() => setDetailsOpen(true)}
+                aria-expanded={detailsOpen}
+                className="inline-flex items-center gap-2 rounded-full border border-trebol-500/40 bg-trebol-500/10 px-5 py-2.5 md:px-6 md:py-3 text-xs md:text-sm font-bold text-trebol-300 tracking-tight transition-colors hover:border-trebol-500/70 hover:bg-trebol-500/20"
+              >
+                <Plus className="h-4 w-4" />
+                Características
+              </button>
+            ) : (
+              <div className="flex items-end gap-3 md:gap-4">
+                <span className="font-heading text-4xl md:text-6xl font-bold text-trebol-400 tracking-tight leading-none">
+                  {product.stat}
+                </span>
+                <span className="text-gray-400 text-xs md:text-sm tracking-[0.15em] uppercase pb-1">
+                  {product.statLabel}
+                </span>
+              </div>
+            )}
             <a
               href="#contacto"
               className="ml-auto inline-flex items-center gap-2 bg-trebol-500 hover:bg-trebol-600 px-5 py-2.5 md:px-6 md:py-3 rounded-full font-bold text-white text-xs md:text-sm tracking-tight transition-colors"
@@ -543,6 +749,47 @@ function ProductPanel({
               Cotizar
             </a>
           </div>
+
+          {/* Panel de características: se despliega hacia arriba sobre el texto */}
+          <AnimatePresence>
+            {detailsOpen && product.details?.length ? (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.45, ease: [0.25, 1, 0.5, 1] }}
+                className="absolute inset-x-0 bottom-0 z-20 overflow-hidden rounded-2xl border border-trebol-500/30 bg-black/85 shadow-elevated backdrop-blur-xl"
+                role="dialog"
+                aria-label={`Características de ${product.title}`}
+              >
+                <div className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-3.5">
+                  <span className="text-[11px] md:text-xs font-bold uppercase tracking-[0.2em] text-trebol-400">
+                    Características
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setDetailsOpen(false)}
+                    aria-label="Cerrar características"
+                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/15 bg-white/5 text-gray-300 transition hover:border-trebol-500 hover:bg-trebol-500/20 hover:text-white"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                <ul className="max-h-[55vh] space-y-4 overflow-y-auto px-5 py-4">
+                  {product.details.map((detail) => (
+                    <li key={detail.title}>
+                      <p className="text-sm font-semibold text-trebol-300">
+                        {detail.title}
+                      </p>
+                      <p className="text-sm leading-relaxed text-gray-300">
+                        {detail.text}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
         </div>
         {/* Carrusel: arriba y centrado en mobile, columna derecha en desktop */}
         <div className="order-first mx-auto w-80 max-w-full shrink-0 md:order-none md:mx-0 md:w-96 lg:w-[32rem] xl:w-[36rem]">
