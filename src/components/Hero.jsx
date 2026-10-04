@@ -55,7 +55,6 @@ export default function Hero() {
           style={{ opacity: overlayOpacity }}
           className="absolute inset-0 bg-black"
         />
-        {/* Cinematic bars */}
         <motion.div
           style={{ opacity: barsOpacity }}
           className="absolute inset-0 pointer-events-none"
@@ -86,18 +85,15 @@ export default function Hero() {
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 1,
-                delay: 0.4,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-              className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white leading-[0.95] mb-6 md:mb-8"
+              initial={{ opacity: 0, x: -50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+              className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-12"
             >
-              <span className="gradient-text">TRÉBOL</span>
+              Calidad y respaldo
               <br />
-              CARROCERÍAS
+              <span>para </span>
+              <span className="gradient-text">potenciar tu flota</span>
             </motion.h1>
 
             <motion.p
@@ -110,8 +106,8 @@ export default function Hero() {
               }}
               className="text-lg md:text-xl lg:text-2xl text-gray-300 max-w-xl md:max-w-2xl leading-relaxed mb-10 md:mb-12 tracking-tight"
             >
-              Soluciones de alta calidad para el transporte de carga. Miembro
-              CAPEMISA, homologación CNTSV.
+              Acompañamos a empresas de transporte de cargas generales y minería
+              que necesitan calidad y una respuesta cercana.
             </motion.p>
 
             <motion.div
