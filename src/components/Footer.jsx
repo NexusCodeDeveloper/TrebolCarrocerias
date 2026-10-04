@@ -76,15 +76,6 @@ export default function Footer() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <motion.a
-                  href="#contacto"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full sm:w-auto bg-trebol-500 hover:bg-trebol-600 text-white font-heading font-bold px-10 py-4 rounded-full text-lg tracking-tight shadow-glow-sm hover:shadow-glow transition-all flex items-center justify-center gap-3"
-                >
-                  Solicitar cotización
-                  <ArrowUp className="w-5 h-5 -rotate-90" />
-                </motion.a>
-                <motion.a
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
