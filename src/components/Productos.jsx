@@ -68,9 +68,10 @@ const products = [
       },
     ],
     gallery: [
-      "/video/volquetes.mp4",
-      "/img/volcable-blanco.jpg",
-      "/img/volcable-azul.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077311/1_i30ret.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077311/1a_evxx4o.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077312/1c_diozol.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077311/1b_mba2uo.jpg",
     ],
   },
   {
@@ -110,9 +111,10 @@ const products = [
       },
     ],
     gallery: [
-      "/video/blockera.mp4",
-      "/img/volcable-blanco.jpg",
-      "/img/volcable-amarillo.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077313/2_mlxf72.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077314/2c_sk6fyw.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077314/2a_vxx8z3.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077315/2d_fvqt6k.mp4",
     ],
   },
   {
@@ -152,9 +154,11 @@ const products = [
       },
     ],
     gallery: [
-      "/video/barandaVolcable.mp4",
-      "/img/volcable-blanco.jpg",
-      "/img/volcable-azul.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077316/3_hw5w6p.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077318/3d_fq961d.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077317/3b_xsbarx.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077318/3c_wuf5zg.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077317/3a_apkdh8.mp4",
     ],
   },
   {
@@ -194,9 +198,10 @@ const products = [
       },
     ],
     gallery: [
-      "/video/termicos.mp4",
-      "/img/paque-blanco.jpg",
-      "/img/paquetero-trasera.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077319/4_sdstkt.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077320/4a_ihfcfj.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077321/4c_az2xdj.mp4",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077320/4b_egmeah.mp4",
     ],
   },
   {
@@ -236,9 +241,10 @@ const products = [
       },
     ],
     gallery: [
-      "/video/playos.mp4",
-      "/img/playo-andina.jpg",
-      "/img/semi-bajada-bonano.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077322/5_umhxvx.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077322/5a_vtllxa.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077323/5b_jzme83.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077323/5c_wrchhy.jpg",
     ],
   },
 
@@ -279,9 +285,10 @@ const products = [
       },
     ],
     gallery: [
-      "/video/semiremolque.mp4",
-      "/img/paque-blanco.jpg",
-      "/img/paquetero-azul.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077324/6_mlfyfz.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077324/6a_tl2mr2.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077289/6b_bad5st.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077290/6c_oo3qdf.jpg",
     ],
   },
   {
@@ -321,9 +328,10 @@ const products = [
       },
     ],
     gallery: [
-      "/video/paqueteros.mp4",
-      "/img/semi-bajada-bonano.jpg",
-      "/img/paquetero-trasera.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077290/7_ioblvp.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077289/7a_o1oh44.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077289/7b_qf8tpd.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077310/7c_wtdmrk.jpg",
     ],
   },
 ];
@@ -537,7 +545,7 @@ export default function Productos() {
   return (
     <section
       id="productos"
-      className="relative overflow-hidden pt-15 pb-32 md:pb-48 md:pt-20"
+      className="relative overflow-hidden pt-15 pb-32 md:pb-0 md:pt-20"
     >
       {/* Background: imagen con patrón de trébol */}
       <div
