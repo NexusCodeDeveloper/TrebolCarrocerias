@@ -41,11 +41,11 @@ export default function QuienesSomos() {
               transition={{ duration: 1, ease: "easeOut" }}
             >
               <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
-                QUIÉNES
+                Quiénes
                 <br />
-                <span className="gradient-text font-bold">SOMOS</span>
+                <span className="gradient-text font-bold">somos</span>
               </h2>
-              <div className="mt-8 h-px w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
+              <div className="mt-8 h-1 w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
             </motion.div>
             {/* Imagen: entra desde la izquierda, 1s después de los textos */}
             <motion.img
