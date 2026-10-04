@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   FoldVertical,
@@ -8,8 +7,6 @@ import {
   Flame,
   Slice,
   SprayCan,
-  Play,
-  X,
 } from "lucide-react";
 import { getImageUrl, getVideoUrl, getVideoPoster } from "../lib/cloudinary";
 
@@ -52,96 +49,34 @@ const videoCorners = [
  * @param {number} [props.delay]
  */
 function VideoCard({ src, isInView, delay = 0 }) {
-  const [open, setOpen] = useState(false);
-
-  /* Modal: Escape + bloqueo de scroll */
-  useEffect(() => {
-    if (!open) return;
-    document.body.style.overflow = "hidden";
-    const onKey = (/** @type {KeyboardEvent} */ e) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, delay }}
-        className="relative"
-      >
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-label="Reproducir video"
-          className="group relative block aspect-video w-full overflow-hidden rounded-lg bg-black ring-1 ring-black/10 shadow-elevated"
-        >
-          <video
-            src={getVideoUrl(src)}
-            poster={getVideoPoster(src)}
-            muted
-            playsInline
-            preload="metadata"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-          <span className="absolute inset-0 bg-black/25 transition-colors duration-300 group-hover:bg-black/40" />
-          <span className="absolute inset-0 grid place-items-center">
-            <span className="pulse-glow grid h-16 w-16 place-items-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition group-hover:border-trebol-500 group-hover:bg-trebol-600">
-              <Play className="h-6 w-6 translate-x-0.5" />
-            </span>
-          </span>
-        </button>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay }}
+      className="relative"
+    >
+      <div className="relative aspect-video overflow-hidden rounded-lg bg-black ring-1 ring-black/10 shadow-elevated">
+        <video
+          src={getVideoUrl(src)}
+          poster={getVideoPoster(src)}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="h-full w-full object-cover"
+        />
+      </div>
 
-        {videoCorners.map((position, i) => (
-          <span
-            key={position}
-            style={{ animationDelay: `${i * 0.35}s` }}
-            className={`corner-pulse pointer-events-none absolute h-6 w-6 border-trebol-500/60 ${position}`}
-          />
-        ))}
-      </motion.div>
-
-      {open &&
-        createPortal(
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Video ampliado"
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/85 p-4 backdrop-blur-md"
-          >
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label="Cerrar"
-              className="absolute right-5 top-5 z-20 grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-white/10 text-white transition hover:rotate-90 hover:bg-white/20"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            <div
-              className="relative w-full max-w-5xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <video
-                src={getVideoUrl(src)}
-                poster={getVideoPoster(src)}
-                controls
-                autoPlay
-                playsInline
-                className="max-h-[80vh] w-full rounded-2xl bg-black object-contain shadow-elevated ring-1 ring-white/10"
-              />
-            </div>
-          </div>,
-          document.body,
-        )}
-    </>
+      {videoCorners.map((position, i) => (
+        <span
+          key={position}
+          style={{ animationDelay: `${i * 0.35}s` }}
+          className={`corner-pulse pointer-events-none absolute h-6 w-6 border-trebol-500/60 ${position}`}
+        />
+      ))}
+    </motion.div>
   );
 }
 
