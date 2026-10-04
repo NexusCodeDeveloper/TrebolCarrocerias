@@ -1,21 +1,21 @@
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView } from "framer-motion";
-import {
-  ShieldCheck,
-  Ruler,
-  Handshake,
-  Wrench,
-  BadgeCheck,
-  Play,
-  Pause,
-  Truck,
-  Plus,
-} from "lucide-react";
-import { getImageUrl, getVideoUrl, getVideoPoster } from "../lib/cloudinary";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { ShieldCheck, Ruler, Handshake, Wrench } from "lucide-react";
+import { getImageUrl } from "../lib/cloudinary";
 
-const VIDEO_URL =
-  "https://res.cloudinary.com/da1hje3a1/video/upload/v1789431363/gruas-hero-gral_wbhvaz.mp4";
+const WATERMARK =
+  "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067601/Recurso_3_zznxnz.svg";
 
+/**
+ * @typedef {Object} Cert
+ * @property {import("lucide-react").LucideIcon} [icon]
+ * @property {string} [image]
+ * @property {string} tag
+ * @property {string} [title]
+ * @property {string} [description]
+ */
+
+/** @type {Cert[]} */
 const certs = [
   {
     icon: ShieldCheck,
@@ -27,7 +27,7 @@ const certs = [
   {
     icon: Ruler,
     tag: "AITA",
-    title: "Extensión de chasis bajo norma",
+    title: "Extensión de chasis",
     description:
       "Realizamos extensión de chasis bajo norma de la Asociación de Ingenieros y Técnicos del Automotor.",
   },
@@ -43,83 +43,44 @@ const certs = [
     title: "Servicio oficial Palfinger",
     description: "Servicio oficial de Hidro-Grubert Palfinger.",
   },
-];
-
-const featured = [
   {
-    icon: Truck,
-    title: "Vinculación de 3er eje neumático",
-    image: "/img/semi-bajada-bonano.jpg",
-    text: "Servicio de ingeniería y montaje para el añadido de un tercer eje neumático al chasis. Permite elevar la capacidad de carga del camión y optimizar la distribución del peso por eje. Incluye sistema de elevación neumático para reducir el desgaste de neumáticos durante los trayectos sin carga.",
+    icon: ShieldCheck,
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791087308/LOGO_IRAM_pic0ju.svg",
+    tag: "IRAM",
   },
-  {
-    icon: Wrench,
-    title: "Servicio integral de grúas y vinculación de grúas",
-    image: "/img/volcable-amarillo.jpg",
-    text: "Servicio de ingeniería y montaje para el añadido de un tercer eje neumático al chasis. Permite elevar la capacidad de carga del camión y optimizar la distribución del peso por eje. Incluye sistema de elevación neumático para reducir el desgaste de neumáticos durante los trayectos sin carga.",
-  },
-];
-
-const corners = [
-  "-top-2 -left-2 border-t-2 border-l-2",
-  "-top-2 -right-2 border-t-2 border-r-2",
-  "-bottom-2 -left-2 border-b-2 border-l-2",
-  "-bottom-2 -right-2 border-b-2 border-r-2",
 ];
 
 export default function Normas() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const featuredRef = useRef(null);
-  const featuredInView = useInView(featuredRef, {
-    once: true,
-    margin: "-80px",
-  });
-  const [openFeatured, setOpenFeatured] = useState(
-    /** @type {number | null} */ (null),
-  );
-  const videoRef = useRef(null);
-  const [reducedMotion] = useState(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
-  const [playing, setPlaying] = useState(() => !reducedMotion);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (playing) {
-      video.play().catch(() => setPlaying(false));
-    } else {
-      video.pause();
-    }
-  }, [playing]);
 
   return (
     <section
       id="normas"
-      className="relative overflow-hidden py-32 md:py-48 px-4"
+      className="relative overflow-hidden py-32 md:pt-25 md:pb-15 px-4 text-center"
     >
-      {/* Background: azul marino profundo - certificación/confianza */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#08101c] via-[#0e1d32] to-[#08101c]" />
-      <div className="absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-blue-600/20 blur-[160px]" />
-      <div className="absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-blue-700/20 blur-[160px]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
-      {/* Grid técnico sutil */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-          maskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)",
-        }}
+      {/* Background: degradado blanco → gris de izquierda a derecha */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-300" />
+
+      {/* Marca de agua: logo grande a la izquierda */}
+      <img
+        src={getImageUrl(WATERMARK)}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-24 top-1/2 w-[36rem] max-w-[80vw] -translate-y-1/2 select-none opacity-[0.05] brightness-0"
+        loading="lazy"
+        decoding="async"
       />
 
-      <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
+      {/* Resplandores ambientales */}
+      <div className="ambient-pulse absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
+      <div className="ambient-pulse absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-trebol-600/10 blur-[160px]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
+
+      {/* Container fluid: usa todo el ancho de la sección */}
+      <div className="w-full relative z-10" ref={ref}>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -127,207 +88,66 @@ export default function Normas() {
           transition={{ duration: 0.8 }}
           className="mb-16 md:mb-20"
         >
-          <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
+          <span className="text-trebol-600 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
             Respaldo y Certificaciones
           </span>
-          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
+          <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
             Normas que nos
             <br />
-            <span className="gradient-text">avalan</span>
+            <span className="gradient-text font-bold">avalan</span>
           </h2>
-          <p className="mt-6 max-w-2xl text-gray-400 text-base md:text-lg leading-relaxed tracking-tight">
+          <p className=" mt-6 max-w-2xl text-black font-bold text-base md:text-lg leading-relaxed tracking-tight mx-auto text-center">
             Cumplimos con las normativas vigentes y contamos con el respaldo de
             organismos y cámaras del sector.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
-          {/* Columna izquierda: video + banners destacados */}
-          <div className="space-y-8">
-            {/* Video */}
+        {/* Certificaciones: una al lado de la otra debajo de los textos */}
+        <div className="animate-marquee  grid gap-6 text-left sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {certs.map((cert, i) => (
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
+              key={cert.tag}
+              initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
+              transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
+              className=" group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-r from-trebol-600 via-trebol-600 to-[#9BC53D] p-6 shadow-elevated transition-all duration-500 hover:border-white/50"
             >
-              <div className="absolute -inset-10 rounded-[3rem] bg-trebol-500/20 blur-3xl" />
-
-              <div className="relative aspect-video overflow-hidden rounded-3xl bg-dark-800 ring-1 ring-white/10 shadow-elevated">
-                <video
-                  ref={videoRef}
-                  src={getVideoUrl(VIDEO_URL)}
-                  poster={getVideoPoster(VIDEO_URL)}
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="h-full w-full object-cover"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
-
-                {!playing && (
-                  <button
-                    type="button"
-                    onClick={() => setPlaying(true)}
-                    aria-label="Reproducir video"
-                    className="absolute inset-0 z-20 grid place-items-center"
-                  >
-                    <span className="grid h-16 w-16 place-items-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition hover:border-trebol-500 hover:bg-trebol-600">
-                      <Play className="h-6 w-6 translate-x-0.5" />
-                    </span>
-                  </button>
-                )}
-
-                <div className="absolute left-4 top-4 z-20 flex items-center gap-2 rounded-full border border-white/10 bg-black/50 px-4 py-2 backdrop-blur">
-                  <BadgeCheck className="h-4 w-4 text-trebol-400" />
-                  <span className="text-xs font-medium tracking-tight text-white">
-                    Respaldo oficial
+              <div className="relative z-10">
+                <div className="flex items-center gap-4">
+                  {cert.icon ? (
+                    <div className="icon-pulse grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-green-950 ring-1 ring-trebol-500/30">
+                      <cert.icon className="h-5 w-5 text-green-400" />
+                    </div>
+                  ) : null}
+                  <span className="font-heading text-xs font-bold tracking-[0.2em] text-white/70">
+                    {cert.tag}
                   </span>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setPlaying((p) => !p)}
-                  aria-label={playing ? "Pausar video" : "Reproducir video"}
-                  className="absolute bottom-4 right-4 z-20 grid h-12 w-12 place-items-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur transition hover:border-trebol-500 hover:bg-trebol-600"
-                >
-                  {playing ? (
-                    <Pause className="h-5 w-5" />
+                <div className="mt-4">
+                  {cert.image ? (
+                    /* IRAM: el logo grande ocupa el lugar de título y descripción */
+                    <img
+                      src={getImageUrl(cert.image)}
+                      alt={cert.tag}
+                      className="w-full object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   ) : (
-                    <Play className="h-5 w-5 translate-x-px" />
+                    <>
+                      <h3 className="font-heading text-lg font-bold leading-snug tracking-tight text-white">
+                        {cert.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed tracking-tight text-white/85">
+                        {cert.description}
+                      </p>
+                    </>
                   )}
-                </button>
-              </div>
-
-              {corners.map((position) => (
-                <span
-                  key={position}
-                  className={`pointer-events-none absolute h-6 w-6 border-trebol-500/60 ${position}`}
-                />
-              ))}
-            </motion.div>
-
-            {/* Banners destacados: aparecen debajo del video con delay tipo publicidad */}
-            <div ref={featuredRef} className="space-y-5">
-              {featured.map((item, i) => {
-                const open = openFeatured === i;
-                return (
-                  <motion.article
-                    key={item.title}
-                    initial={{ opacity: 0, y: 40, scale: 0.97 }}
-                    animate={
-                      featuredInView ? { opacity: 1, y: 0, scale: 1 } : {}
-                    }
-                    transition={{
-                      duration: 0.7,
-                      delay: 1 + i * 0.3,
-                      ease: [0.25, 1, 0.5, 1],
-                    }}
-                    className="group relative overflow-hidden rounded-3xl border border-white/40 bg-white/90 shadow-elevated backdrop-blur-md"
-                  >
-                    <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-trebol-500/10 blur-3xl transition-opacity duration-500 group-hover:opacity-80" />
-
-                    <div className="relative z-10 p-5 md:p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-trebol-500/10 ring-1 ring-trebol-500/30">
-                          <item.icon className="h-5 w-5 text-trebol-600" />
-                        </div>
-                        <div>
-                          <span className="mb-1.5 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-trebol-600">
-                            Destacado
-                          </span>
-                          <h3 className="font-heading text-lg font-bold tracking-tight text-gray-900 md:text-xl">
-                            {item.title}
-                          </h3>
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => setOpenFeatured(open ? null : i)}
-                        aria-expanded={open}
-                        className="mt-4 inline-flex items-center gap-2 rounded-full border border-trebol-500/40 bg-trebol-500/5 px-4 py-2 text-xs font-bold tracking-tight text-trebol-700 transition-colors hover:border-trebol-500 hover:bg-trebol-500/15"
-                      >
-                        <Plus
-                          className={`h-4 w-4 transition-transform duration-300 ${
-                            open ? "rotate-45" : ""
-                          }`}
-                        />
-                        Más información
-                      </button>
-
-                      <AnimatePresence initial={false}>
-                        {open ? (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{
-                              duration: 0.45,
-                              ease: [0.25, 1, 0.5, 1],
-                            }}
-                            className="overflow-hidden"
-                          >
-                            <div className="mt-4 grid gap-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] sm:items-start">
-                              <img
-                                src={getImageUrl(item.image)}
-                                alt={item.title}
-                                className="aspect-video w-full rounded-2xl object-cover ring-1 ring-black/10"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                              <p className="text-sm leading-relaxed tracking-tight text-gray-700">
-                                {item.text}
-                              </p>
-                            </div>
-                          </motion.div>
-                        ) : null}
-                      </AnimatePresence>
-                    </div>
-                  </motion.article>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Certificaciones */}
-          <div className="space-y-5">
-            {certs.map((cert, i) => (
-              <motion.div
-                key={cert.tag}
-                initial={{ opacity: 0, x: 50 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
-                className="group relative overflow-hidden rounded-3xl border border-white/[0.06] bg-dark-800/60 p-6 backdrop-blur-sm transition-all duration-500 hover:border-trebol-500/30 hover:bg-dark-800/80 md:p-7"
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-trebol-500/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                <span className="pointer-events-none absolute -bottom-4 right-4 select-none font-heading text-7xl font-bold text-white/[0.03]">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-
-                <div className="relative z-10 flex items-start gap-5">
-                  <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-trebol-500/10 ring-1 ring-trebol-500/30">
-                    <cert.icon className="h-6 w-6 text-trebol-400" />
-                  </div>
-                  <div>
-                    <div className="mb-2 flex items-center gap-3">
-                      <span className="font-heading text-sm font-bold tracking-[0.2em] text-trebol-400">
-                        {cert.tag}
-                      </span>
-                      <span className="h-px flex-1 bg-gradient-to-r from-trebol-500/40 to-transparent" />
-                    </div>
-                    <h3 className="mb-2 font-heading text-lg font-bold tracking-tight text-white md:text-xl">
-                      {cert.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed tracking-tight text-gray-400 md:text-base">
-                      {cert.description}
-                    </p>
-                  </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
