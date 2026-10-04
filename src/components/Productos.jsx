@@ -626,7 +626,7 @@ export default function Productos() {
                     decoding="async"
                   />
                   {/* Dorso: nombre del producto (mantiene el blanco y el tamaño) */}
-                  <span className="absolute inset-0 grid place-items-center overflow-hidden rounded-2xl bg-white p-2 text-center font-heading text-[10px] font-bold uppercase leading-tight tracking-tight text-trebol-800 [backface-visibility:hidden] [transform:rotateY(180deg)] lg:text-xs">
+                  <span className="absolute inset-0 grid place-items-center overflow-hidden rounded-2xl bg-white p-2 text-center font-heading text-[10px] font-bold uppercase leading-tight tracking-tight text-trebol-800 [backface-visibility:hidden] [transform:rotateY(180deg)] lg:text-[15px]">
                     {product.title}
                   </span>
                 </span>
