@@ -2,17 +2,17 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import QuienesSomos from "./components/QuienesSomos";
 import Productos from "./components/Productos";
-import Galeria from "./components/Galeria";
 import ComoLoHacemos from "./components/ComoLoHacemos";
 import Normas from "./components/Normas";
 import Testimonios from "./components/Testimonios";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
-import { lazy, Suspense } from "react";
+/* import Gallery from "./components/GaleriaNueva";
+import { lazy, Suspense } from "react"; */
 
-const Gallery = lazy(() =>
-  import("./components/GaleriaNueva").then((m) => ({ default: m.Gallery }))
-);
+/* const Gallery = lazy(() =>
+  import("./components/GaleriaNueva").then((m) => ({ default: m.Gallery })),
+); */
 
 export default function App() {
   return (
@@ -22,9 +22,9 @@ export default function App() {
       <QuienesSomos />
       <Productos />
       {/* <Galeria /> */}
-      <Suspense fallback={<div style={{ minHeight: "50vh" }} />}>
+      {/* <Suspense fallback={<div style={{ minHeight: "50vh" }} />}>
         <Gallery />
-      </Suspense>
+      </Suspense> */}
       <ComoLoHacemos />
       <Normas />
       <Testimonios />
