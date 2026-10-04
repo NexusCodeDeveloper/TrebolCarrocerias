@@ -58,7 +58,7 @@ export default function Normas() {
   return (
     <section
       id="normas"
-      className="relative overflow-hidden py-32 md:pt-25 md:pb-15 px-4 text-center"
+      className="relative overflow-hidden py-32 md:pt-15 md:pb-12 px-4 text-center"
     >
       {/* Background: degradado blanco → gris de izquierda a derecha */}
       <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-300" />
@@ -88,9 +88,6 @@ export default function Normas() {
           transition={{ duration: 0.8 }}
           className="mb-16 md:mb-20"
         >
-          <span className="text-trebol-600 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
-            Respaldo y Certificaciones
-          </span>
           <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
             Normas que nos
             <br />
@@ -103,14 +100,17 @@ export default function Normas() {
         </motion.div>
 
         {/* Certificaciones: una al lado de la otra debajo de los textos */}
-        <div className="animate-marquee  grid gap-6 text-left sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {certs.map((cert, i) => (
+        <div className="animate-marquee flex w-max gap-6">
+          {[...certs, ...certs].map((cert, i) => (
             <motion.div
-              key={cert.tag}
+              key={`${cert.tag}-${i}`}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }}
-              className=" group relative overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-r from-trebol-600 via-trebol-600 to-[#9BC53D] p-6 shadow-elevated transition-all duration-500 hover:border-white/50"
+              transition={{
+                duration: 0.6,
+                delay: 0.3 + (i % certs.length) * 0.15,
+              }}
+              className="group relative w-[300px] shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-gradient-to-br from-trebol-900 via-trebol-700 to-[#279d3e] p-6 shadow-elevated transition-all duration-500 hover:border-white/50"
             >
               <div className="relative z-10">
                 <div className="flex items-center gap-4">
@@ -119,6 +119,7 @@ export default function Normas() {
                       <cert.icon className="h-5 w-5 text-green-400" />
                     </div>
                   ) : null}
+
                   <span className="font-heading text-xs font-bold tracking-[0.2em] text-white/70">
                     {cert.tag}
                   </span>
@@ -126,20 +127,22 @@ export default function Normas() {
 
                 <div className="mt-4">
                   {cert.image ? (
-                    /* IRAM: el logo grande ocupa el lugar de título y descripción */
                     <img
                       src={getImageUrl(cert.image)}
                       alt={cert.tag}
+                      width={300}
+                      height={150}
                       className="w-full object-contain"
                       loading="lazy"
                       decoding="async"
                     />
                   ) : (
                     <>
-                      <h3 className="font-heading text-lg font-bold leading-snug tracking-tight text-white">
+                      <h3 className="font-heading text-lg font-bold leading-snug tracking-tight text-white text-left">
                         {cert.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-relaxed tracking-tight text-white/85">
+
+                      <p className="mt-2 text-sm leading-relaxed tracking-tight text-white/85 text-left">
                         {cert.description}
                       </p>
                     </>
