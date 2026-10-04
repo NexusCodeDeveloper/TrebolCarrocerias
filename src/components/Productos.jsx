@@ -132,8 +132,8 @@ const products = [
     features: [
       "Transporta distintos tipos de carga",
       "Barandas de abatimiento rápido y seguro",
+      "Cierres de traba mecánica con resortes",
       "Estructura liviana que aumenta la carga útil",
-      "Construcción robusta para soportar altas exigencias",
     ],
     details: [
       {
@@ -143,6 +143,10 @@ const products = [
       {
         title: "Apertura lateral ágil y segura",
         text: "Posee un sistema de herrajes y cierres herméticos que facilitan el abatimiento rápido de las barandas para operar con comodidad.",
+      },
+      {
+        title: "Resortes de traba mecánica",
+        text: "Absorbe vibraciones, permite desmontar las puertas con más facilidad, cierre más firme.",
       },
       {
         title: "Eficiencia en capacidad de carga",
@@ -241,7 +245,7 @@ const products = [
       },
     ],
     gallery: [
-      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077322/5_umhxvx.mp4",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791134514/WhatsApp_Video_2026-10-04_at_1.36.16_PM_1_q8bdsh.mp4",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077322/5a_vtllxa.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077323/5b_jzme83.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077323/5c_wrchhy.jpg",
@@ -252,7 +256,7 @@ const products = [
     icon: Thermometer,
     iconImage:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/6_g5zmvs.png",
-    title: "Semiremolque",
+    title: "Sider",
     subtitle: "protección y versatilidad",
     description:
       "Unidades desarrolladas a medida sobre un chasis de alta elasticidad, suspensión balanceada y terminaciones en pintura Airmix de máxima durabilidad. ",
@@ -286,9 +290,9 @@ const products = [
     ],
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077324/6_mlfyfz.mp4",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077324/6a_tl2mr2.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077289/6b_bad5st.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077290/6c_oo3qdf.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077289/6b_bad5st.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077324/6a_tl2mr2.jpg",
     ],
   },
   {
@@ -328,10 +332,10 @@ const products = [
       },
     ],
     gallery: [
-      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077290/7_ioblvp.mp4",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077289/7a_o1oh44.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077289/7b_qf8tpd.jpg",
+      "https://res.cloudinary.com/da1hje3a1/video/upload/v1791134514/WhatsApp_Video_2026-10-04_at_1.36.16_PM_zueptr.mp4",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077310/7c_wtdmrk.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791134412/7b-OK.jpg_thpfa5.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791134412/7a-OK.jpg_wr7igk.jpg",
     ],
   },
 ];
@@ -360,6 +364,9 @@ export default function Productos() {
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
   const [areaHeight, setAreaHeight] = useState(0);
+  const [selectedLogo, setSelectedLogo] = useState(
+    /** @type {number | null} */ (null),
+  );
 
   /* prefers-reduced-motion */
   useEffect(() => {
@@ -588,19 +595,41 @@ export default function Productos() {
               <button
                 key={product.title}
                 type="button"
-                onClick={() => scrollToProduct(i)}
+                onClick={() => {
+                  setSelectedLogo(i);
+                  scrollToProduct(i);
+                }}
                 aria-label={`Ver ${product.title}`}
+                aria-pressed={selectedLogo === i}
                 title={product.title}
-                className="group shrink-0 rounded-2xl transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trebol-400"
+                className={`group shrink-0 rounded-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trebol-400 [perspective:1000px] ${
+                  selectedLogo === i
+                    ? "ring-1 ring-white/20 shadow-[0_0_45px_rgba(255,255,255,0.20)]"
+                    : "hover:-translate-y-1"
+                }`}
               >
-                <img
-                  src={getLogoUrl(product.iconImage ?? "")}
-                  alt=""
-                  aria-hidden="true"
-                  className="h-20 w-20 object-contain transition-transform duration-300 group-hover:scale-95 sm:h-16 sm:w-16 lg:h-24 lg:w-24 xl:h-36 xl:w-36"
-                  loading="lazy"
-                  decoding="async"
-                />
+                {/* Gira en hover o cuando queda seleccionado */}
+                <span
+                  className={`relative grid h-20 w-20 place-items-center transition-transform duration-500 [transform-style:preserve-3d] sm:h-16 sm:w-16 lg:h-24 lg:w-24 xl:h-36 xl:w-36 ${
+                    selectedLogo === i
+                      ? "[transform:rotateY(180deg)]"
+                      : "group-hover:[transform:rotateY(180deg)]"
+                  }`}
+                >
+                  {/* Frente: logo */}
+                  <img
+                    src={getLogoUrl(product.iconImage ?? "")}
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute inset-0 h-full w-full object-contain [backface-visibility:hidden]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {/* Dorso: nombre del producto (mantiene el blanco y el tamaño) */}
+                  <span className="absolute inset-0 grid place-items-center rounded-2xl bg-white p-2 text-center font-heading text-[10px] lg:text-[20px] font-bold  leading-tight  text-trebol-600 [backface-visibility:hidden] [transform:rotateY(180deg)] ">
+                    {product.title}
+                  </span>
+                </span>
               </button>
             ))}
           </motion.div>
