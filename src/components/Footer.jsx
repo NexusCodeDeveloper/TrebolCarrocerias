@@ -45,23 +45,50 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden py-20 md:py-28 px-4">
+    <footer className="relative overflow-hidden py-20 md:py-10 px-4">
       {/* Background: negro con acento marca - cierre */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#041506] via-[#020802] to-black" />
       <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-trebol-600/15 blur-[160px]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
 
       {/* Contacto */}
-      <div id="contacto" className="relative py-20 md:py-28 px-4">
+      <div id="contacto" className="relative py-20 md:pt-0 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="max-w-5xl mx-auto rounded-[2rem] p-px bg-gradient-to-b from-white/10 via-white/[0.04] to-transparent"
+            className="max-w-5xl mx-auto  p-px"
           >
-            <div className="rounded-[calc(2rem-1px)] bg-dark-900/90 backdrop-blur-sm px-6 py-14 md:px-16 md:py-20 text-center">
+            <div className=" px-6 py-14 md:px-16 md:py-20 text-center">
+              <span className="text-trebol-400 text-xs md:text-sm font-medium tracking-[0.3em] uppercase mb-5 block">
+                Contacto
+              </span>
+              <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">
+                ¿Listo para optimizar
+                <br />
+                tu <span className="gradient-text">flota de transporte</span>?
+              </h2>
+              <p className="text-gray-400 text-lg md:text-xl tracking-tight mb-10 max-w-xl mx-auto">
+                Cotizaciones personalizadas, asesoramiento gratuito y soluciones
+                a medida.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-bounce">
+                <motion.a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className=" w-full sm:w-auto border border-white/10 hover:border-trebol-500/30 bg-dark-700 text-white font-heading font-bold px-10 py-4 rounded-full text-lg tracking-tight transition-all flex items-center justify-center gap-3"
+                >
+                  <WhatsAppIcon className="w-5 h-5 text-trebol-400 animate-pulse" />
+                  WhatsApp
+                </motion.a>
+              </div>
+            </div>
+            {/* <div className="rounded-[calc(2rem-1px)] bg-dark-900/90 backdrop-blur-sm px-6 py-14 md:px-16 md:py-20 text-center">
               <span className="text-trebol-400 text-xs md:text-sm font-medium tracking-[0.3em] uppercase mb-5 block">
                 Contacto
               </span>
@@ -87,11 +114,11 @@ export default function Footer() {
                   WhatsApp
                 </motion.a>
               </div>
-            </div>
+            </div> */}
           </motion.div>
 
           {/* Contact cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 animate-float">
             {/* Click to call */}
             <motion.a
               href="tel:+543875021303"
