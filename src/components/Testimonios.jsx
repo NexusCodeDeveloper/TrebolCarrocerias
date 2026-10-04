@@ -113,7 +113,7 @@ export default function Testimonios() {
   return (
     <section
       id="testimonios"
-      className="relative overflow-hidden py-32 md:py-48 px-4"
+      className="relative overflow-hidden py-32 md:py-25 px-4"
     >
       {/* Background: verde esmeralda brillante - confianza/éxito */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#031d12] via-[#06331e] to-[#031d12]" />
@@ -130,33 +130,27 @@ export default function Testimonios() {
           transition={{ duration: 0.8 }}
           className="mb-16 md:mb-20"
         >
-          <span className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
-            Confianza
-          </span>
-          <h2 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
+          <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-white leading-[1.05]">
             Empresas que nos
             <br />
-            <span className="gradient-text">eligen</span>
+            <span className="gradient-text font-bold">eligen</span>
           </h2>
         </motion.div>
 
-        {/* Logos de clientes */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        {/* Logos de clientes: 2 por fila en mobile, 5 en PC */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-10">
           {clients.map((client, i) => (
             <motion.div
               key={client.name}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group relative aspect-[2/1] rounded-3xl border border-white/[0.06] bg-dark-800/60 backdrop-blur-sm hover:border-trebol-500/30 hover:bg-dark-800/80 transition-all duration-500 overflow-hidden flex items-center justify-center"
+              transition={{ duration: 0.6, delay: i * 0.04 }}
+              className="group flex items-center justify-center"
             >
-              {/* Glow on hover */}
-              <div className="absolute inset-0 bg-gradient-to-b from-trebol-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
               <img
                 src={getLogoUrl(client.logo)}
                 alt={client.name}
-                className="relative z-10 max-h-16 md:max-h-20 max-w-[85%] object-contain opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105"
+                className="max-h-10 w-auto max-w-[85%] object-contain opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100 lg:max-h-12"
                 loading="lazy"
                 decoding="async"
                 onError={(e) => {
