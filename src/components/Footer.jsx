@@ -27,7 +27,7 @@ const productLinks = [
 
 const companyLinks = [
   { name: "Quiénes Somos", href: "#quienes-somos" },
-  { name: "Galería", href: "#galeria" },
+  // { name: "Galería", href: "#galeria" },
   { name: "Proceso", href: "#como-lo-hacemos" },
   { name: "Normas", href: "#normas" },
   { name: "Clientes", href: "#testimonios" },
