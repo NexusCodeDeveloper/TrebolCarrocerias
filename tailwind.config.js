@@ -40,7 +40,7 @@ export default {
       animation: {
         gradient: "gradient 6s ease infinite",
         float: "float 6s ease-in-out infinite",
-        marquee: "marquee 40s linear infinite",
+        marquee: "marquee 90s linear infinite",
       },
       keyframes: {
         gradient: {
