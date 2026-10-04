@@ -24,8 +24,8 @@ export default function QuienesSomos() {
       id="quienes-somos"
       className="relative overflow-hidden py-20 md:pt-40 md:pb-12 px-5"
     >
-      {/* Background: blanco */}
-      <div className="absolute inset-0 bg-white/100" />
+      {/* Background: degradado blanco → gris de izquierda a derecha */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white to-zinc-300" />
       <div className="absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
       <div className="absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
@@ -34,25 +34,31 @@ export default function QuienesSomos() {
       <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center lg:items-start">
           {/* Título + imagen */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
-              QUIÉNES
-              <br />
-              <span className="gradient-text font-bold">SOMOS</span>
-            </h2>
-            <div className="mt-8 h-px w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
-            <img
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 1, ease: "easeOut" }}
+            >
+              <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
+                QUIÉNES
+                <br />
+                <span className="gradient-text font-bold">SOMOS</span>
+              </h2>
+              <div className="mt-8 h-px w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
+            </motion.div>
+            {/* Imagen: entra desde la izquierda, 1s después de los textos */}
+            <motion.img
+              initial={{ opacity: 0, x: -80 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
               src={getImageUrl(QUIENES_IMG)}
               alt="Carrocería Trébol"
               className="mt-10 w-full max-w-2xl object-contain"
               loading="lazy"
               decoding="async"
             />
-          </motion.div>
+          </div>
 
           {/* Logo + texto */}
           <motion.div
