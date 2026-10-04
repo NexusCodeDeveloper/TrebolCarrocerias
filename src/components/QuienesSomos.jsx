@@ -1,6 +1,12 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import { getImageUrl } from "../lib/cloudinary";
+
+const QUIENES_IMG =
+  "https://res.cloudinary.com/da1hje3a1/image/upload/v1791062230/Recurso_4_xutkdu.png";
+const QUIENES_LOGO =
+  "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067601/Recurso_4_xxrqtt.svg";
 
 const paragraphs = [
   "Somos una empresa salteña que cuenta con un equipo de profesionales altamente calificados para la fabricación de carrocerías.",
@@ -16,38 +22,52 @@ export default function QuienesSomos() {
   return (
     <section
       id="quienes-somos"
-      className="relative overflow-hidden py-32 md:py-48 px-4"
+      className="relative overflow-hidden py-20 md:pt-40 md:pb-12 px-5"
     >
-      {/* Background: verde bosque profundo - color pleno */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#051a0a] via-[#0a2e12] to-[#051a0a]" />
-      <div className="absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-trebol-600/20 blur-[160px]" />
-      <div className="absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-trebol-700/20 blur-[160px]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
+      {/* Background: blanco */}
+      <div className="absolute inset-0 bg-white/100" />
+      <div className="absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
+      <div className="absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
 
       <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-          {/* Título */}
+        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center lg:items-start">
+          {/* Título + imagen */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.05]">
+            <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
               QUIÉNES
               <br />
-              <span className="gradient-text">SOMOS</span>
+              <span className="gradient-text font-bold">SOMOS</span>
             </h2>
             <div className="mt-8 h-px w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
+            <img
+              src={getImageUrl(QUIENES_IMG)}
+              alt="Carrocería Trébol"
+              className="mt-10 w-full max-w-2xl object-contain"
+              loading="lazy"
+              decoding="async"
+            />
           </motion.div>
 
-          {/* Texto */}
+          {/* Logo + texto */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-5"
+            className="space-y-9"
           >
+            <img
+              src={getImageUrl(QUIENES_LOGO)}
+              alt="Trébol Carrocerías"
+              className="hidden h-40 w-auto lg:block"
+              loading="lazy"
+              decoding="async"
+            />
             {paragraphs.map((text, i) => (
               <div key={text} className="flex items-start gap-4">
                 <motion.span
@@ -67,7 +87,7 @@ export default function QuienesSomos() {
                     strokeWidth={2.5}
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="h-4 w-4 text-trebol-400"
+                    className="h-4 w-4 text-trebol-500"
                   >
                     <motion.path
                       d="M20 6 9 17l-5-5"
@@ -89,7 +109,7 @@ export default function QuienesSomos() {
                     delay: 0.3 + i * 0.2,
                     ease: "easeOut",
                   }}
-                  className="text-gray-300 text-base md:text-lg leading-relaxed tracking-tight"
+                  className="text-black font-medium text-base md:text-lg leading-relaxed tracking-tight"
                 >
                   {text}
                 </motion.p>
