@@ -12,14 +12,16 @@ const featured = [
   {
     icon: Truck,
     title: "Vinculación de 3er eje neumático",
-    image: "/img/semi-bajada-bonano.jpg",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791138551/3er-eje.jpg_g5af0k.jpg",
     text: "Servicio de ingeniería y montaje para el añadido de un tercer eje neumático al chasis. Permite elevar la capacidad de carga del camión y optimizar la distribución del peso por eje. Incluye sistema de elevación neumático para reducir el desgaste de neumáticos durante los trayectos sin carga.",
   },
   {
     icon: Wrench,
     title: "Servicio integral de grúas y vinculación de grúas",
-    image: "/img/volcable-amarillo.jpg",
-    text: "Servicio de ingeniería y montaje para el añadido de un tercer eje neumático al chasis. Permite elevar la capacidad de carga del camión y optimizar la distribución del peso por eje. Incluye sistema de elevación neumático para reducir el desgaste de neumáticos durante los trayectos sin carga.",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791138481/WhatsApp_Image_2026-10-04_at_1.52.52_PM_xxdigj.jpg",
+    text: "En Trébol Carrocerías brindamos soluciones integrales para potenciar la operatividad y rendimiento de sus equipos. Nos especializamos en la venta, instalación profesional y servicio técnico especializado de grúas articuladas Hidro-Grubert Palfinger, garantizando el respaldo de repuestos originales, asesoramiento experto y un mantenimiento adecuado para asegurar la máxima seguridad, durabilidad y eficiencia en cada trabajo de carga.",
   },
 ];
 
@@ -112,7 +114,7 @@ export default function Destacadas() {
                             <img
                               src={getImageUrl(item.image)}
                               alt={item.title}
-                              className="aspect-video w-full rounded-2xl object-cover ring-1 ring-black/10"
+                              className=" w-full rounded-2xl object-cover"
                               loading="lazy"
                               decoding="async"
                             />
