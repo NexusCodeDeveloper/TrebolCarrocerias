@@ -34,12 +34,13 @@ const products = [
   {
     icon: ArrowUpDown,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870197/1_volquete_rbncgx.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065245/1_fmo1ht.png",
     title: "Volquetes",
     subtitle: "Granel",
     description:
       "Diseñados para el transporte de materiales a granel en sectores exigentes como minería, construcción y obras viales. ",
-    image: "/img/volcable-azul.jpg",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/1_fg5zvp.jpg",
     stat: "150+",
     statLabel: "Volquetes activos",
     features: [
@@ -75,12 +76,13 @@ const products = [
   {
     icon: ArrowUpDown,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870198/2_batea_roquera_luurf8.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/2_mwaaub.png",
     title: "Bateas Rockeras",
     subtitle: "Robustez",
     description:
       "Diseño robusto orientado a la extracción y traslado de rocas, áridos y minerales de gran tamaño.",
-    image: "/img/volcable-amarillo.jpg",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/2_fsys74.jpg",
     stat: "150+",
     statLabel: "Volquetes activos",
     features: [
@@ -116,12 +118,13 @@ const products = [
   {
     icon: Truck,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870198/3_baranda_volcable_kvbsls.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/3_ma9hvw.png",
     title: "Baranda Volcable",
     subtitle: "abatimiento rápido",
     description:
       "Apta para transportar una amplia variedad de cargas, incluyendo carga general, granos a granel o productos paletizados.",
-    image: "/img/volcable-amarillo.jpg",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/3_vayvix.jpg",
     stat: "500+",
     statLabel: "Unidades fabricadas",
     features: [
@@ -157,12 +160,13 @@ const products = [
   {
     icon: Package,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870198/4_T%C3%A9rmicos_uwfwis.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/4_jzzvnj.png",
     title: "Térmicos",
     subtitle: "Temperatura",
     description:
       "Cuentan con un aislamiento de alta densidad y paneles monolíticos que conservan la cadena de frío.",
-    image: "/img/paquetero-azul.jpg",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/4_nt5sqr.jpg",
     stat: "200+",
     statLabel: "Entregas realizadas",
     features: [
@@ -198,12 +202,13 @@ const products = [
   {
     icon: Box,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870199/5_playos_r7wrhg.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/5_okt5xy.png",
     title: "Playos",
     subtitle: "Carga y descarga",
     description:
       "Diseño sin barandas laterales que facilita la maniobra de carga y descarga de maquinaria, contenedores o cargas sobredimensionadas.",
-    image: "/img/semi-bajada-bonano.jpg",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/c_fill,w_2000,h_800/v1791069144/5_bu8asr.jpg",
     stat: "300+",
     statLabel: "Proyectos completos",
     features: [
@@ -240,12 +245,13 @@ const products = [
   {
     icon: Thermometer,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870199/6_semiremolque_zonepg.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/6_g5zmvs.png",
     title: "Semiremolque",
     subtitle: "protección y versatilidad",
     description:
       "Unidades desarrolladas a medida sobre un chasis de alta elasticidad, suspensión balanceada y terminaciones en pintura Airmix de máxima durabilidad. ",
-    image: "/img/paquetero-trasera.jpg",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/6_mv21px.jpg",
     stat: "80+",
     statLabel: "Flotas equipadas",
     features: [
@@ -281,12 +287,13 @@ const products = [
   {
     icon: Wrench,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1790870200/7_paqueteros_i55cyc.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/7_ymz3hp.png",
     title: "Paqueteros",
     subtitle: "transporte seguro",
     description:
       "Diseñados como furgones cerrados para el transporte seguro de paquetería, encomiendas y productos secos, resguardando la carga del clima y robos.",
-    image: "/img/frame-hierronort.jpg",
+    image:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/7_ldcol6.jpg",
     stat: "100%",
     statLabel: "Homologados",
     features: [
@@ -327,6 +334,8 @@ const SEGMENT_HOLD = 0.45; // % del tramo con la card quieta para leer antes de 
 const FINAL_SCALE = 0.92; // escala del panel tapado
 const FINAL_DIM = 0.35; // opacidad del overlay negro del panel tapado
 const FINAL_OFFSET_Y = -30; // px, desplazamiento vertical del panel tapado
+const PRODUCTOS_BG =
+  "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065116/fdo_trebol_f0lntj.png";
 
 export default function Productos() {
   const areaRef = useRef(/** @type {HTMLDivElement | null} */ (null));
@@ -528,35 +537,37 @@ export default function Productos() {
   return (
     <section
       id="productos"
-      className="relative overflow-hidden py-32 md:py-48 px-4"
+      className="relative overflow-hidden pt-15 pb-32 md:pb-48 md:pt-20"
     >
-      {/* Background: azul petróleo/teal - color pleno distinto */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#06181e] via-[#0a2d3a] to-[#06181e]" />
-      <div className="absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-teal-600/20 blur-[160px]" />
-      <div className="absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-teal-700/20 blur-[160px]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/40 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/40 to-transparent" />
+      {/* Background: imagen con patrón de trébol */}
+      <div
+        className="absolute inset-x-0 top-0 h-screen bg-cover bg-center"
+        style={{ backgroundImage: `url(${getImageUrl(PRODUCTOS_BG)})` }}
+      />
+      <div className="absolute inset-x-0 top-0 h-screen bg-black/40" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
 
       {/* Header - scroll normal */}
       <div className="relative z-10 pt-16 pb-8 px-4 max-w-7xl mx-auto">
         <div ref={headerRef}>
-          <motion.span
+          {/* <motion.span
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block"
           >
             Nuestros Productos
-          </motion.span>
+          </motion.span> */}
           <motion.h2
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-            className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-12"
+            className="font-heading font-medium text-4xl md:text-7xl lg:text-6xl  tracking-tight text-black mb-12"
           >
             Soluciones que
             <br />
-            <span className="gradient-text">mueven al transporte</span>
+            <span className="text-white font-bold">mueven al transporte</span>
           </motion.h2>
           {/* Accesos rápidos: logos clickeables de los 7 productos */}
           <motion.div
@@ -572,13 +583,13 @@ export default function Productos() {
                 onClick={() => scrollToProduct(i)}
                 aria-label={`Ver ${product.title}`}
                 title={product.title}
-                className="group shrink-0 rounded-2xl border border-white/10 bg-white/5 p-2.5 transition-all duration-300 hover:-translate-y-1 hover:border-trebol-500/60 hover:bg-trebol-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trebol-400 sm:p-3 lg:p-4"
+                className="group shrink-0 rounded-2xl transition-transform duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trebol-400"
               >
                 <img
                   src={getLogoUrl(product.iconImage ?? "")}
                   alt=""
                   aria-hidden="true"
-                  className="h-14 w-14 rounded-xl object-contain transition-transform duration-300 group-hover:scale-110 sm:h-16 sm:w-16 lg:h-20 lg:w-20"
+                  className="h-20 w-20 object-contain transition-transform duration-300 group-hover:scale-95 sm:h-16 sm:w-16 lg:h-24 lg:w-24 xl:h-36 xl:w-36"
                   loading="lazy"
                   decoding="async"
                 />
@@ -710,7 +721,7 @@ function ProductPanel({
         }}
         src={getImageUrl(product.image)}
         alt={product.title}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full "
         loading="lazy"
         decoding="async"
         onError={(e) => {
@@ -719,7 +730,7 @@ function ProductPanel({
       />
 
       {/* Overlay opaco: nunca menos de 0.55; más fuerte del lado del texto */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/55 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/70 lg:to-black/55" />
+      {/*  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/55 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/70 lg:to-black/55" /> */}
 
       {/* Overlay de oscurecimiento (opacity animada por JS, sin filter/repintado) */}
       <div
@@ -764,15 +775,15 @@ function ProductPanel({
             <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-3 md:mb-6">
               {product.title}
             </h3>
-            <p className="text-gray-300 text-base md:text-xl leading-relaxed tracking-tight mb-4 md:mb-8 max-w-lg">
+            <p className="text-gray-400 font-semibold md:text-xl leading-relaxed tracking-tight mb-4 md:mb-8 max-w-lg">
               {product.description}
             </p>
             {/* Características */}
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-3 mb-5 md:mb-10">
               {product.features.map((feature) => (
                 <li key={feature} className="flex items-start gap-3">
-                  <Check className="w-4 h-4 text-trebol-400 mt-0.5 shrink-0" />
-                  <span className="text-gray-300 text-sm md:text-base leading-relaxed tracking-tight">
+                  <Check className="w-6 h-6 text-trebol-500  mt-0.5 shrink-0" />
+                  <span className="text-white text-sm md:text-base leading-relaxed tracking-tight">
                     {feature}
                   </span>
                 </li>
@@ -785,7 +796,7 @@ function ProductPanel({
                   type="button"
                   onClick={() => setDetailsOpen(true)}
                   aria-expanded={detailsOpen}
-                  className="inline-flex items-center gap-2 rounded-full border border-trebol-500/40 bg-trebol-500/10 px-5 py-2.5 md:px-6 md:py-3 text-xs md:text-sm font-bold text-trebol-300 tracking-tight transition-colors hover:border-trebol-500/70 hover:bg-trebol-500/20"
+                  className="inline-flex items-center gap-2 rounded-full border border-trebol-500/40 bg-trebol-500/50 px-5 py-2.5 md:px-6 md:py-3 text-xs md:text-sm font-bold text-white tracking-tight transition-colors hover:border-trebol-500/70 hover:bg-trebol-500/20"
                 >
                   <Plus className="h-4 w-4" />
                   Características
@@ -802,7 +813,7 @@ function ProductPanel({
               )}
               <a
                 href="#contacto"
-                className="ml-auto inline-flex items-center gap-2 bg-trebol-500 hover:bg-trebol-600 px-5 py-2.5 md:px-6 md:py-3 rounded-full font-bold text-white text-xs md:text-sm tracking-tight transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-trebol-500/40 bg-trebol-500/50 px-5 py-2.5 md:px-6 md:py-3 text-xs md:text-sm font-bold text-white tracking-tight transition-colors hover:border-trebol-500/70 hover:bg-trebol-500/20"
               >
                 Cotizar
               </a>
