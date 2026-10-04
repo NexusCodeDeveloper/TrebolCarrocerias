@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { WhatsAppIcon, FacebookIcon, InstagramIcon, XIcon } from "./Icons";
 import { getImageUrl } from "../lib/cloudinary";
+import { useState } from "react";
 
 const socialLinks = [
   { name: "Facebook", href: "", icon: FacebookIcon },
@@ -17,12 +18,13 @@ const socialLinks = [
 ];
 
 const productLinks = [
-  { name: "Baranda Volcable", href: "#productos" },
-  { name: "Paqueteros", href: "#productos" },
-  { name: "Playos", href: "#productos" },
   { name: "Volquetes", href: "#productos" },
+  { name: "Bateas Rockeras", href: "#productos" },
+  { name: "Baranda Volcable", href: "#productos" },
   { name: "Térmicos", href: "#productos" },
-  { name: "Extensión Chasis", href: "#productos" },
+  { name: "Playos", href: "#productos" },
+  { name: "Sider", href: "#productos" },
+  { name: "Paqueteros", href: "#productos" },
 ];
 
 const companyLinks = [
@@ -35,13 +37,42 @@ const companyLinks = [
 ];
 
 const MAPS_URL =
-  "https://maps.google.com/?q=Ruta+Nacional+51+Km+6+El+Enc%C3%B3n+Salta";
+  "https://maps.google.com/?q=-24.859000,-65.531400&entry=gps&g_ep=CAESCTExLjk1LjMwMBgAINeCAyoSNDcwNjg2MTUsLDQ3MDc1OTE1QgJBUg%3D%3D&shorturl=1";
 const WHATSAPP_URL =
   "https://wa.me/543875021303?text=Hola,%20me%20interesa%20una%20cotización%20para%20una%20carrocería.";
 
 export default function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const [copiedTop, setCopiedTop] = useState(false);
+  const [copiedBottom, setCopiedBottom] = useState(false);
+
+  const copyEmailTop = async () => {
+    try {
+      await navigator.clipboard.writeText("ventas@trebolcarrocerias.com.ar");
+      setCopiedTop(true);
+
+      setTimeout(() => {
+        setCopiedTop(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Error al copiar el email:", error);
+    }
+  };
+
+  const copyEmailBottom = async () => {
+    try {
+      await navigator.clipboard.writeText("ventas@trebolcarrocerias.com.ar");
+      setCopiedBottom(true);
+
+      setTimeout(() => {
+        setCopiedBottom(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Error al copiar el email:", error);
+    }
   };
 
   return (
@@ -88,40 +119,12 @@ export default function Footer() {
                 </motion.a>
               </div>
             </div>
-            {/* <div className="rounded-[calc(2rem-1px)] bg-dark-900/90 backdrop-blur-sm px-6 py-14 md:px-16 md:py-20 text-center">
-              <span className="text-trebol-400 text-xs md:text-sm font-medium tracking-[0.3em] uppercase mb-5 block">
-                Contacto
-              </span>
-              <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">
-                ¿Listo para optimizar
-                <br />
-                tu <span className="gradient-text">flota de transporte</span>?
-              </h2>
-              <p className="text-gray-400 text-lg md:text-xl tracking-tight mb-10 max-w-xl mx-auto">
-                Cotizaciones personalizadas, asesoramiento gratuito y soluciones
-                a medida.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <motion.a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full sm:w-auto border border-white/10 hover:border-trebol-500/30 bg-dark-700 text-white font-heading font-bold px-10 py-4 rounded-full text-lg tracking-tight transition-all flex items-center justify-center gap-3"
-                >
-                  <WhatsAppIcon className="w-5 h-5 text-trebol-400" />
-                  WhatsApp
-                </motion.a>
-              </div>
-            </div> */}
           </motion.div>
 
           {/* Contact cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 animate-float">
             {/* Click to call */}
             <motion.a
-              href="tel:+543875021303"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -169,7 +172,11 @@ export default function Footer() {
 
             {/* Email */}
             <motion.a
-              href="mailto:ventas@trebolcarrocerias.com.ar"
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                copyEmailTop();
+              }}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -181,17 +188,25 @@ export default function Footer() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
-                  Email
+                  {copiedTop ? "¡Copiado!" : "Email"}
                 </div>
                 <div className="text-white font-heading font-bold text-xs tracking-tight truncate">
                   ventas@trebolcarrocerias.com.ar
                 </div>
               </div>
-              <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-trebol-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+              <ChevronRight
+                className={`w-4 h-4 transition-all flex-shrink-0 ${
+                  copiedTop
+                    ? "text-trebol-400"
+                    : "text-gray-600 group-hover:text-trebol-400 group-hover:translate-x-1"
+                }`}
+              />
             </motion.a>
 
             {/* Address / Hours */}
-            <motion.div
+            <motion.a
+              href={MAPS_URL}
+              target="_blank"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -212,7 +227,7 @@ export default function Footer() {
                   Lun - Vie: 8:00 – 18:00
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           </div>
         </div>
       </div>
@@ -299,10 +314,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-trebol-400 flex-shrink-0" />
-                <a
-                  href="tel:+543875021303"
-                  className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight"
-                >
+                <a className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight">
                   (0387) 155 021 303
                 </a>
               </li>
@@ -320,10 +332,18 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-trebol-400 flex-shrink-0 mt-0.5" />
                 <a
-                  href="mailto:ventas@trebolcarrocerias.com.ar"
-                  className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight break-all"
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    copyEmailBottom();
+                  }}
+                  className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight truncate"
                 >
-                  ventas@trebolcarrocerias.com.ar
+                  <div className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight  mb-1">
+                    {copiedBottom
+                      ? "¡Copiado!"
+                      : "ventas@trebolcarrocerias.com.ar"}
+                  </div>
                 </a>
               </li>
               <li className="flex items-start gap-3">
