@@ -8,7 +8,8 @@ import { getVideoUrl, getVideoPoster } from "../lib/cloudinary";
  * - Archivo local: subilo a `public/video/` y usá la ruta, ej. "/video/hero.mp4"
  * - Cloudinary: URL completa o public ID, ej. "trebol/hero"
  */
-const HERO_VIDEO = "/video/hero.mp4";
+const HERO_VIDEO =
+  "https://res.cloudinary.com/da1hje3a1/video/upload/v1791076265/Hero_rfgdr0.mp4";
 
 export default function Hero() {
   const sectionRef = useRef(null);
