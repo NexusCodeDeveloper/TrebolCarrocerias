@@ -4,6 +4,7 @@ import QuienesSomos from "./components/QuienesSomos";
 import Productos from "./components/Productos";
 import ComoLoHacemos from "./components/ComoLoHacemos";
 import Normas from "./components/Normas";
+import Destacadas from "./components/Destacadas";
 import Testimonios from "./components/Testimonios";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
@@ -27,6 +28,7 @@ export default function App() {
       </Suspense> */}
       <ComoLoHacemos />
       <Normas />
+      <Destacadas />
       <Testimonios />
       <Footer />
       <WhatsAppButton />
