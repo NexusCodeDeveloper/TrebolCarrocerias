@@ -6,7 +6,7 @@ import { getImageUrl } from "../lib/cloudinary";
 const navLinks = [
   { name: "Inicio", href: "#inicio" },
   { name: "Productos", href: "#productos" },
-  { name: "Galería", href: "#galeria" },
+  // { name: "Galería", href: "#galeria" },
   { name: "Proceso", href: "#como-lo-hacemos" },
   { name: "Normas", href: "#normas" },
   { name: "Clientes", href: "#testimonios" },
@@ -34,7 +34,7 @@ export default function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-2">
         <div className="flex items-center justify-between h-20">
           <motion.a
             href="#inicio"
@@ -44,7 +44,7 @@ export default function Navbar() {
             <div className="flex flex-col">
               <img
                 src={getImageUrl(
-                  "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067601/Recurso_4_xxrqtt.svg",
+                  "https://res.cloudinary.com/da1hje3a1/image/upload/v1791061252/logo2_i8ovgm.svg",
                 )}
                 alt="Trébol Carrocerías"
                 className="h-10 w-auto"
