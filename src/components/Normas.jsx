@@ -59,7 +59,7 @@ const certs = [
 ];
 
 const CARD_STEP = 300 + 24; // ancho de tarjeta + margen
-const SPEED = 40; // px por segundo del loop automático
+const SPEED = 90; // px por segundo del loop automático
 
 export default function Normas() {
   const ref = useRef(null);
@@ -168,7 +168,9 @@ export default function Normas() {
   };
 
   /* Swipe / arrastre (mobile y mouse) */
-  const onPointerDown = (/** @type {React.PointerEvent<HTMLDivElement>} */ e) => {
+  const onPointerDown = (
+    /** @type {React.PointerEvent<HTMLDivElement>} */ e,
+  ) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
     dragRef.current = { startX: e.clientX, startOffset: offsetRef.current };
     targetRef.current = null;
@@ -178,7 +180,9 @@ export default function Normas() {
       /* pointer no activo (eventos sintéticos) */
     }
   };
-  const onPointerMove = (/** @type {React.PointerEvent<HTMLDivElement>} */ e) => {
+  const onPointerMove = (
+    /** @type {React.PointerEvent<HTMLDivElement>} */ e,
+  ) => {
     const d = dragRef.current;
     if (!d) return;
     let off = d.startOffset - (e.clientX - d.startX);
