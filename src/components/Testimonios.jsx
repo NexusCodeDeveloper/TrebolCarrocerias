@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { getLogoUrl } from "../lib/cloudinary";
 
 const clients = [
@@ -109,16 +109,19 @@ const clients = [
 export default function Testimonios() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
 
   return (
     <section
       id="testimonios"
-      className="relative overflow-hidden py-32 md:py-25 px-4"
+      className="relative overflow-hidden pt-12 pb-12 md:pt-32 md:pb-32 px-4"
     >
       {/* Background: verde esmeralda brillante - confianza/éxito */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#031d12] via-[#06331e] to-[#031d12]" />
-      <div className="absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-emerald-500/20 blur-[160px]" />
-      <div className="absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-emerald-600/20 blur-[160px]" />
+      <div className="hidden md:block absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-emerald-500/20 blur-[160px]" />
+      <div className="hidden md:block absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-emerald-600/20 blur-[160px]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent" />
 
@@ -142,7 +145,7 @@ export default function Testimonios() {
           {clients.map((client, i) => (
             <motion.div
               key={client.name}
-              initial={{ opacity: 0, y: 40 }}
+              initial={isMobile ? false : { opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.04 }}
               className="group flex items-center justify-center"
