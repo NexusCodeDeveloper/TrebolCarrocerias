@@ -357,7 +357,6 @@ const products = [
 
 /* Config del efecto */
 const SEGMENTS_SCROLL = 2; // × altura de viewport por transición (más alto = más lento)
-const SEGMENTS_SCROLL_MOBILE = 0.5; // mobile: un deslizamiento = un producto
 const SEGMENT_HOLD = 0.45; // % del tramo con la card quieta para leer antes de transicionar
 const FINAL_SCALE = 0.92; // escala del panel tapado
 const FINAL_DIM = 0.35; // opacidad del overlay negro del panel tapado
@@ -410,11 +409,10 @@ export default function Productos() {
   /* Altura del área de scroll (recalculada en resize). En mobile el tramo es más corto. */
   useEffect(() => {
     const update = () => {
+      /* En mobile el flujo no usa el área de stack: evitamos re-renders en resize */
+      if (window.matchMedia("(max-width: 767px)").matches) return;
       const vh = window.innerHeight;
-      const segments = window.matchMedia("(max-width: 767px)").matches
-        ? SEGMENTS_SCROLL_MOBILE
-        : SEGMENTS_SCROLL;
-      setAreaHeight(Math.round(vh * (1 + (products.length - 1) * segments)));
+      setAreaHeight(Math.round(vh * (1 + (products.length - 1) * SEGMENTS_SCROLL)));
     };
     update();
     window.addEventListener("resize", update);
@@ -690,10 +688,10 @@ export default function Productos() {
     >
       {/* Background: imagen con patrón de trébol (en mobile se suaviza con blur suave) */}
       <div
-        className="absolute inset-x-0 top-0 h-dvh scale-105 bg-cover bg-center blur-sm md:scale-100 md:blur-0"
+        className="absolute inset-x-0 top-0 h-dvh scale-105 bg-cover bg-center blur-sm max-md:h-lvh md:scale-100 md:blur-0"
         style={{ backgroundImage: `url(${getImageUrl(PRODUCTOS_BG)})` }}
       />
-      <div className="absolute inset-x-0 top-0 h-dvh bg-black/40" />
+      <div className="absolute inset-x-0 top-0 h-dvh bg-black/40 max-md:h-lvh" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
 
@@ -772,7 +770,7 @@ export default function Productos() {
 
       {flow ? (
         /* Mobile / reduced motion: flujo normal, un producto debajo del otro */
-        <div className="bg-green-900 max-md:space-y-2">
+        <div /* className="bg-green-900 max-md:space-y-2" */>
           {products.map((product, i) => (
             <ProductPanel
               key={product.title}
@@ -844,7 +842,6 @@ function ProductPanel({
   textRef,
 }) {
   const ref = useRef(/** @type {HTMLDivElement | null} */ (null));
-  const [inView, setInView] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
 
   /* Cerrar el panel de características con Escape */
@@ -857,19 +854,6 @@ function ProductPanel({
     return () => window.removeEventListener("keydown", onKey);
   }, [detailsOpen]);
 
-  /* Fade-in simple solo en modo flujo (reduced motion) */
-  useEffect(() => {
-    if (mode !== "flow") return;
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.15 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [mode]);
-
   return (
     <div
       id={mode === "flow" ? `producto-${index}` : undefined}
@@ -879,14 +863,10 @@ function ProductPanel({
       }}
       className={
         mode === "flow"
-          ? "relative min-h-dvh w-full overflow-hidden"
+          ? "relative min-h-svh w-full overflow-hidden"
           : "absolute inset-0 overflow-hidden"
       }
-      style={{
-        zIndex: index + 1,
-        opacity: mode === "flow" ? (inView ? 1 : 0) : undefined,
-        transition: mode === "flow" ? "opacity 0.8s ease" : undefined,
-      }}
+      style={{ zIndex: index + 1 }}
     >
       {/* Imagen de fondo full-bleed */}
       <img
@@ -920,7 +900,7 @@ function ProductPanel({
       {/* Contenido: texto + carrusel */}
       <div
         className={`relative z-10 flex flex-col justify-between px-6 pb-8 pt-28 md:justify-center md:gap-8 md:px-12 md:pt-0 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pb-0 lg:px-16 xl:gap-12 xl:px-28 ${
-          mode === "flow" ? "min-h-dvh" : "h-full"
+          mode === "flow" ? "min-h-svh" : "h-full"
         }`}
       >
         <div className="relative max-w-xl md:max-w-2xl lg:max-w-xl">
