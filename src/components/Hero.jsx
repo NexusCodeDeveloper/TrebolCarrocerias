@@ -31,7 +31,7 @@ export default function Hero() {
     <section
       id="inicio"
       ref={sectionRef}
-      className="relative h-[110vh] overflow-hidden"
+      className="relative h-[110dvh] overflow-hidden"
     >
       {/* Video background */}
       <motion.div
@@ -60,8 +60,8 @@ export default function Hero() {
           style={{ opacity: barsOpacity }}
           className="absolute inset-0 pointer-events-none"
         >
-          <div className="absolute top-0 left-0 right-0 h-[12vh] bg-gradient-to-b from-black via-black/50 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-[12vh] bg-gradient-to-t from-black via-black/50 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-[12dvh] bg-gradient-to-b from-black via-black/50 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-[12dvh] bg-gradient-to-t from-black via-black/50 to-transparent" />
         </motion.div>
       </motion.div>
 

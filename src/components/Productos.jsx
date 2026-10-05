@@ -22,6 +22,7 @@ import { getImageUrl, getLogoUrl } from "../lib/cloudinary";
  * @property {string} subtitle
  * @property {string} description
  * @property {string} image
+ * @property {string} [imageMobile]
  * @property {string} stat
  * @property {string} statLabel
  * @property {string[]} features
@@ -41,6 +42,8 @@ const products = [
       "Diseñados para el transporte de materiales a granel en sectores exigentes como minería, construcción y obras viales. ",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/1_fg5zvp.jpg",
+    imageMobile:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/1_lmkfsp.jpg",
     stat: "150+",
     statLabel: "Volquetes activos",
     features: [
@@ -84,6 +87,8 @@ const products = [
       "Diseño robusto orientado a la extracción y traslado de rocas, áridos y minerales de gran tamaño.",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/2_fsys74.jpg",
+    imageMobile:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/2_puefla.jpg",
     stat: "150+",
     statLabel: "Volquetes activos",
     features: [
@@ -127,6 +132,8 @@ const products = [
       "Apta para transportar una amplia variedad de cargas, incluyendo carga general, granos a granel o productos paletizados.",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/3_vayvix.jpg",
+    imageMobile:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230468/3_uwmi7z.jpg",
     stat: "500+",
     statLabel: "Unidades fabricadas",
     features: [
@@ -175,6 +182,8 @@ const products = [
       "Cuentan con un aislamiento de alta densidad y paneles monolíticos que conservan la cadena de frío.",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/4_nt5sqr.jpg",
+    imageMobile:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230468/4_lsul3j.jpg",
     stat: "200+",
     statLabel: "Entregas realizadas",
     features: [
@@ -218,6 +227,8 @@ const products = [
       "Diseño sin barandas laterales que facilita la maniobra de carga y descarga de maquinaria, contenedores o cargas sobredimensionadas.",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/c_fill,w_2000,h_800/v1791069144/5_bu8asr.jpg",
+    imageMobile:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/5_ncunbm.jpg",
     stat: "300+",
     statLabel: "Proyectos completos",
     features: [
@@ -262,6 +273,8 @@ const products = [
       "Unidades desarrolladas a medida sobre un chasis de alta elasticidad, suspensión balanceada y terminaciones en pintura Airmix de máxima durabilidad. ",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/6_mv21px.jpg",
+    imageMobile:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/6_qyescf.jpg",
     stat: "80+",
     statLabel: "Flotas equipadas",
     features: [
@@ -305,6 +318,8 @@ const products = [
       "Diseñados como furgones cerrados para el transporte seguro de paquetería, encomiendas y productos secos, resguardando la carga del clima y robos.",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/7_ldcol6.jpg",
+    imageMobile:
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/7_ogmxgl.jpg",
     stat: "100%",
     statLabel: "Homologados",
     features: [
@@ -675,10 +690,10 @@ export default function Productos() {
     >
       {/* Background: imagen con patrón de trébol (en mobile se suaviza con blur suave) */}
       <div
-        className="absolute inset-x-0 top-0 h-screen scale-105 bg-cover bg-center blur-sm md:scale-100 md:blur-0"
+        className="absolute inset-x-0 top-0 h-dvh scale-105 bg-cover bg-center blur-sm md:scale-100 md:blur-0"
         style={{ backgroundImage: `url(${getImageUrl(PRODUCTOS_BG)})` }}
       />
-      <div className="absolute inset-x-0 top-0 h-screen bg-black/40" />
+      <div className="absolute inset-x-0 top-0 h-dvh bg-black/40" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/40 to-transparent" />
 
@@ -757,13 +772,14 @@ export default function Productos() {
 
       {flow ? (
         /* Mobile / reduced motion: flujo normal, un producto debajo del otro */
-        <div className="bg-black">
+        <div className="bg-green-900 max-md:space-y-2">
           {products.map((product, i) => (
             <ProductPanel
               key={product.title}
               product={product}
               index={i}
               mode="flow"
+              isMobile={isMobile}
             />
           ))}
         </div>
@@ -777,7 +793,7 @@ export default function Productos() {
         >
           <div
             ref={stageRef}
-            className="absolute inset-x-0 top-0 h-screen overflow-hidden"
+            className="absolute inset-x-0 top-0 h-dvh overflow-hidden"
           >
             {products.map((product, i) => (
               <ProductPanel
@@ -811,6 +827,7 @@ export default function Productos() {
  * @param {Product} props.product
  * @param {number} props.index
  * @param {"flow" | "stack"} props.mode
+ * @param {boolean} [props.isMobile]
  * @param {(el: HTMLDivElement | null) => void} [props.panelRef]
  * @param {(el: HTMLImageElement | null) => void} [props.imgRef]
  * @param {(el: HTMLDivElement | null) => void} [props.dimRef]
@@ -820,6 +837,7 @@ function ProductPanel({
   product,
   index,
   mode,
+  isMobile = false,
   panelRef,
   imgRef,
   dimRef,
@@ -861,7 +879,7 @@ function ProductPanel({
       }}
       className={
         mode === "flow"
-          ? "relative min-h-screen w-full overflow-hidden"
+          ? "relative min-h-dvh w-full overflow-hidden"
           : "absolute inset-0 overflow-hidden"
       }
       style={{
@@ -875,7 +893,9 @@ function ProductPanel({
         ref={(el) => {
           if (imgRef) imgRef(el);
         }}
-        src={getImageUrl(product.image)}
+        src={getImageUrl(
+          isMobile && product.imageMobile ? product.imageMobile : product.image,
+        )}
         alt={product.title}
         className="absolute inset-0 w-full h-full "
         loading="lazy"
@@ -900,7 +920,7 @@ function ProductPanel({
       {/* Contenido: texto + carrusel */}
       <div
         className={`relative z-10 flex flex-col justify-between px-6 pb-8 pt-28 md:justify-center md:gap-8 md:px-12 md:pt-0 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pb-0 lg:px-16 xl:gap-12 xl:px-28 ${
-          mode === "flow" ? "min-h-screen" : "h-full"
+          mode === "flow" ? "min-h-dvh" : "h-full"
         }`}
       >
         <div className="relative max-w-xl md:max-w-2xl lg:max-w-xl">
