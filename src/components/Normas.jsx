@@ -75,6 +75,9 @@ export default function Normas() {
   const [reducedMotion] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
+  const [isMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
 
   /* Loop infinito con rAF + transform. Solo corre cuando la sección es visible. */
   useEffect(() => {
@@ -85,6 +88,7 @@ export default function Normas() {
     let rafId = /** @type {number | null} */ (null);
     let last = 0;
     let visible = false;
+    let lastWritten = -1;
 
     const measure = () => {
       halfRef.current = track.scrollWidth / 2;
@@ -106,7 +110,8 @@ export default function Normas() {
           target = null;
           targetRef.current = null;
         }
-      } else if (!dragRef.current && !reducedMotion) {
+      } else if (!dragRef.current && !reducedMotion && !isMobile) {
+        /* En mobile no hay loop automático: solo flechas/swipe */
         offset += SPEED * dt;
       }
 
@@ -125,7 +130,11 @@ export default function Normas() {
       }
 
       offsetRef.current = offset;
-      track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+      /* Solo escribimos el transform si cambió (menos trabajo cuando está quieto) */
+      if (offset !== lastWritten) {
+        lastWritten = offset;
+        track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+      }
     };
 
     const start = () => {
@@ -159,7 +168,7 @@ export default function Normas() {
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", measure);
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, isMobile]);
 
   /* Flechas: mueven al siguiente/anterior con suavizado, luego retoma el loop */
   const move = (/** @type {number} */ dir) => {
