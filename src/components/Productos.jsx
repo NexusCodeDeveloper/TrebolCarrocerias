@@ -770,7 +770,7 @@ export default function Productos() {
 
       {flow ? (
         /* Mobile / reduced motion: flujo normal, un producto debajo del otro */
-        <div /* className="bg-green-900 max-md:space-y-2" */>
+        <div className="max-md:px-3 max-md:space-y-4 max-md:py-4">
           {products.map((product, i) => (
             <ProductPanel
               key={product.title}
@@ -863,7 +863,7 @@ function ProductPanel({
       }}
       className={
         mode === "flow"
-          ? "relative min-h-svh w-full overflow-hidden"
+          ? "relative min-h-svh w-full overflow-hidden max-md:rounded-3xl"
           : "absolute inset-0 overflow-hidden"
       }
       style={{ zIndex: index + 1 }}
@@ -887,6 +887,9 @@ function ProductPanel({
 
       {/* Overlay opaco: nunca menos de 0.55; más fuerte del lado del texto */}
       {/*  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/55 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/70 lg:to-black/55" /> */}
+
+      {/* Overlay sutil de lectura (solo mobile) */}
+      <div className="pointer-events-none absolute inset-0 max-md:bg-gradient-to-b max-md:from-black/30 max-md:via-black/20 max-md:to-black/50" />
 
       {/* Overlay de oscurecimiento (opacity animada por JS, sin filter/repintado) */}
       <div
