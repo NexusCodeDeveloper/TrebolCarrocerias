@@ -58,7 +58,7 @@ export default function ImageCarousel({ images, alt }) {
     >
       <div
         onClick={() => setOpen(true)}
-        className="relative aspect-video cursor-zoom-in overflow-hidden rounded-2xl bg-black/40 ring-1 ring-white/10 shadow-elevated"
+        className="relative aspect-video cursor-zoom-in overflow-hidden rounded-2xl bg-black/40 ring-1 ring-white/10 shadow-elevated max-md:ring-0"
       >
         {images.map((src, i) => {
           if (isVideo(src)) {
