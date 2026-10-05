@@ -368,12 +368,26 @@ export default function Productos() {
   const [selectedLogo, setSelectedLogo] = useState(
     /** @type {number | null} */ (null),
   );
+  /* Mobile: productos en flujo normal (sin efecto de apilado) */
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
+  const flow = reducedMotion || isMobile;
 
   /* prefers-reduced-motion */
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const onChange = (/** @type {MediaQueryListEvent} */ e) =>
       setReducedMotion(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  /* Mobile: listener para rotación/resize */
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const onChange = (/** @type {MediaQueryListEvent} */ e) =>
+      setIsMobile(e.matches);
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
@@ -394,7 +408,7 @@ export default function Productos() {
 
   /* Mobile: imán de a un producto por deslizamiento (en PC no hace nada) */
   useEffect(() => {
-    if (reducedMotion) return;
+    if (flow) return;
 
     let timer = /** @type {number | null} */ (null);
     let rafId = /** @type {number | null} */ (null);
@@ -475,11 +489,11 @@ export default function Productos() {
       window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [reducedMotion]);
+  }, [flow]);
 
   /* Salto directo al producto desde los logos del header */
   const scrollToProduct = (/** @type {number} */ index) => {
-    if (reducedMotion) {
+    if (flow) {
       document
         .getElementById(`producto-${index}`)
         ?.scrollIntoView({ behavior: "instant", block: "start" });
@@ -498,7 +512,7 @@ export default function Productos() {
 
   /* Motor del efecto: stage + paneles calculados a mano (sin sticky) */
   useEffect(() => {
-    if (reducedMotion) return;
+    if (flow) return;
     const LERP = 0.5; // suavizado mínimo de notchs: pegado al scroll, sin retraso visible
     let rafId = /** @type {number | null} */ (null);
     let current = 0; // progreso suavizado
@@ -652,7 +666,7 @@ export default function Productos() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
     };
-  }, [reducedMotion]);
+  }, [flow]);
 
   return (
     <section
@@ -741,8 +755,8 @@ export default function Productos() {
         </div>
       </div>
 
-      {reducedMotion ? (
-        /* Reduced motion: flujo normal + fade-in simple */
+      {flow ? (
+        /* Mobile / reduced motion: flujo normal, un producto debajo del otro */
         <div className="bg-black">
           {products.map((product, i) => (
             <ProductPanel
@@ -847,7 +861,7 @@ function ProductPanel({
       }}
       className={
         mode === "flow"
-          ? "relative h-screen w-full overflow-hidden"
+          ? "relative min-h-screen w-full overflow-hidden"
           : "absolute inset-0 overflow-hidden"
       }
       style={{
@@ -884,7 +898,11 @@ function ProductPanel({
       />
 
       {/* Contenido: texto + carrusel */}
-      <div className="relative z-10 flex h-full flex-col justify-between px-6 pb-8 pt-28 md:justify-center md:gap-8 md:px-12 md:pt-0 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pb-0 lg:px-16 xl:gap-12 xl:px-28">
+      <div
+        className={`relative z-10 flex flex-col justify-between px-6 pb-8 pt-28 md:justify-center md:gap-8 md:px-12 md:pt-0 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pb-0 lg:px-16 xl:gap-12 xl:px-28 ${
+          mode === "flow" ? "min-h-screen" : "h-full"
+        }`}
+      >
         <div className="relative max-w-xl md:max-w-2xl lg:max-w-xl">
           <div
             ref={(el) => {
