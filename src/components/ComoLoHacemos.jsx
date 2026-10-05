@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   FoldVertical,
@@ -7,6 +7,7 @@ import {
   Flame,
   Slice,
   SprayCan,
+  Play,
 } from "lucide-react";
 import { getImageUrl, getVideoUrl, getVideoPoster } from "../lib/cloudinary";
 
@@ -47,8 +48,22 @@ const videoCorners = [
  * @param {string} props.src
  * @param {boolean} props.isInView
  * @param {number} [props.delay]
+ * @param {boolean} [props.isPlaying]
+ * @param {() => void} [props.onPlay]
  */
-function VideoCard({ src, isInView, delay = 0 }) {
+function VideoCard({ src, isInView, delay = 0, isPlaying = false, onPlay }) {
+  /* Mobile: no reproducimos 3 videos a la vez (jank/touch). Poster + play manual. */
+  const [isMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
+  const videoRef = useRef(/** @type {HTMLVideoElement | null} */ (null));
+
+  /* Al tocar play, arranca el video (con gesto de usuario) */
+  useEffect(() => {
+    if (!isPlaying) return;
+    videoRef.current?.play().catch(() => {});
+  }, [isPlaying]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -57,16 +72,50 @@ function VideoCard({ src, isInView, delay = 0 }) {
       className="relative"
     >
       <div className="relative aspect-video overflow-hidden rounded-lg bg-black ring-1 ring-black/10 shadow-elevated">
-        <video
-          src={getVideoUrl(src)}
-          poster={getVideoPoster(src)}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="h-full w-full object-cover"
-        />
+        {isMobile ? (
+          isPlaying ? (
+            <video
+              ref={videoRef}
+              src={getVideoUrl(src)}
+              poster={getVideoPoster(src)}
+              autoPlay
+              controls
+              playsInline
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={onPlay}
+              aria-label="Reproducir video"
+              className="group absolute inset-0 h-full w-full"
+            >
+              <img
+                src={getVideoPoster(src)}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <span className="absolute inset-0 grid place-items-center">
+                <span className="grid h-14 w-14 place-items-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition group-hover:border-trebol-500 group-hover:bg-trebol-600">
+                  <Play className="h-6 w-6 translate-x-0.5" />
+                </span>
+              </span>
+            </button>
+          )
+        ) : (
+          <video
+            src={getVideoUrl(src)}
+            poster={getVideoPoster(src)}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="h-full w-full object-cover"
+          />
+        )}
       </div>
 
       {videoCorners.map((position, i) => (
@@ -83,33 +132,37 @@ function VideoCard({ src, isInView, delay = 0 }) {
 export default function ComoLoHacemos() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  /* Mobile: solo un video reproduce a la vez */
+  const [playingVideo, setPlayingVideo] = useState(
+    /** @type {number | null} */ (null),
+  );
 
   return (
     <section
       id="como-lo-hacemos"
-      className="relative overflow-hidden py-32 md:pt-30 md:pb-30 px-4"
+      className="relative overflow-hidden pt-12 pb-12  md:pt-40 md:pb-40 px-4"
     >
       {/* Background: degradado blanco → gris de izquierda a derecha */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-300" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-300 " />
 
       {/* Resplandores ambientales */}
-      <div className="ambient-pulse absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
-      <div className="ambient-pulse absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-trebol-600/10 blur-[160px]" />
+      <div className="hidden md:block ambient-pulse absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
+      <div className="hidden md:block ambient-pulse absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-trebol-600/10 blur-[160px]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
 
-      {/* Esquinas HUD */}
+      {/* Esquinas HUD (solo PC) */}
       {sectionCorners.map((position, i) => (
         <span
           key={position}
           style={{ animationDelay: `${i * 0.35}s` }}
-          className={`corner-pulse pointer-events-none absolute h-8 w-8 border-trebol-500/60 ${position}`}
+          className={`corner-pulse pointer-events-none absolute hidden h-8 w-8 border-trebol-500/60 md:block ${position}`}
         />
       ))}
 
       <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
         {/* Textos + Equipamiento / Imagen */}
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center ">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -186,6 +239,8 @@ export default function ComoLoHacemos() {
                 src={src}
                 isInView={isInView}
                 delay={0.4 + i * 0.1}
+                isPlaying={playingVideo === i}
+                onPlay={() => setPlayingVideo(i)}
               />
             ))}
           </div>
