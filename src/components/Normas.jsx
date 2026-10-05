@@ -206,10 +206,10 @@ export default function Normas() {
   return (
     <section
       id="normas"
-      className="relative overflow-hidden py-32 md:pt-15 md:pb-12 px-4 text-center"
+      className="relative overflow-hidden pt-12 pb-12 md:pt-20 md:pb-12 px-4 text-center"
     >
       {/* Background: degradado blanco → gris de izquierda a derecha */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-300" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-300 " />
 
       {/* Marca de agua: logo grande a la izquierda */}
       <img
@@ -222,8 +222,8 @@ export default function Normas() {
       />
 
       {/* Resplandores ambientales */}
-      <div className="ambient-pulse absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
-      <div className="ambient-pulse absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-trebol-600/10 blur-[160px]" />
+      <div className="hidden md:block ambient-pulse absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
+      <div className="hidden md:block ambient-pulse absolute -bottom-32 -right-32 w-[30rem] h-[30rem] rounded-full bg-trebol-600/10 blur-[160px]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
 
@@ -236,7 +236,7 @@ export default function Normas() {
           transition={{ duration: 0.8 }}
           className="mb-16 md:mb-20"
         >
-          <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
+          <h2 className="pt-0 font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
             Normas que nos
             <br />
             <span className="gradient-text font-bold">avalan</span>
