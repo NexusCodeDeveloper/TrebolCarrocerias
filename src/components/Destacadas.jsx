@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { Truck, Wrench, Plus } from "lucide-react";
 import { getImageUrl } from "../lib/cloudinary";
@@ -37,6 +37,14 @@ export default function Destacadas() {
     /** @type {number | null} */ (null),
   );
 
+  /* Precarga de las imágenes de las tarjetas: aparecen al instante al abrir el panel */
+  useEffect(() => {
+    featured.forEach((item) => {
+      const img = new Image();
+      img.src = getImageUrl(item.image);
+    });
+  }, []);
+
   return (
     <section
       id="destacadas"
@@ -65,14 +73,14 @@ export default function Destacadas() {
                     delay: 1 + i * 0.3,
                     ease: [0.25, 1, 0.5, 1],
                   }}
-                  className="group relative overflow-hidden rounded-3xl border border-white/40 bg-white/90 shadow-elevated backdrop-blur-md"
+                  className="group relative overflow-hidden rounded-3xl border border-white/40 bg-white/90 shadow-elevated md:backdrop-blur-md"
                 >
                   <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-trebol-500/10 blur-3xl transition-opacity duration-500 group-hover:opacity-80" />
 
                   <div className="relative z-10 p-5 md:p-6">
                     <div className="flex items-start gap-4">
-                      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-trebol-500/10 ring-1 ring-trebol-500/30">
-                        <item.icon className="h-5 w-5 text-trebol-600" />
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-green-950 ring-1 ring-trebol-500/30">
+                        <item.icon className="h-5 w-5 text-green-400" />
                       </div>
                       <div>
                         <span className="mb-1.5 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-trebol-600">
@@ -115,8 +123,6 @@ export default function Destacadas() {
                               src={getImageUrl(item.image)}
                               alt={item.title}
                               className=" w-full rounded-2xl object-cover"
-                              loading="lazy"
-                              decoding="async"
                             />
                             <p className="text-sm leading-relaxed tracking-tight text-gray-700">
                               {item.text}
@@ -141,8 +147,6 @@ export default function Destacadas() {
             <img
               src={getImageUrl(DESTACADAS_IMG)}
               alt="Destacados Trébol Carrocerías"
-              loading="lazy"
-              decoding="async"
             />
           </motion.div>
         </div>
