@@ -75,9 +75,6 @@ export default function Normas() {
   const [reducedMotion] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
-  const [isMobile] = useState(
-    () => window.matchMedia("(max-width: 767px)").matches,
-  );
 
   /* Loop infinito con rAF + transform. Solo corre cuando la sección es visible. */
   useEffect(() => {
@@ -110,8 +107,7 @@ export default function Normas() {
           target = null;
           targetRef.current = null;
         }
-      } else if (!dragRef.current && !reducedMotion && !isMobile) {
-        /* En mobile no hay loop automático: solo flechas/swipe */
+      } else if (!dragRef.current && !reducedMotion) {
         offset += SPEED * dt;
       }
 
@@ -168,7 +164,7 @@ export default function Normas() {
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", measure);
     };
-  }, [reducedMotion, isMobile]);
+  }, [reducedMotion]);
 
   /* Flechas: mueven al siguiente/anterior con suavizado, luego retoma el loop */
   const move = (/** @type {number} */ dir) => {
