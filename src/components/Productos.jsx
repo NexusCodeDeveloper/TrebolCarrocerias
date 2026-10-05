@@ -412,7 +412,9 @@ export default function Productos() {
       /* En mobile el flujo no usa el área de stack: evitamos re-renders en resize */
       if (window.matchMedia("(max-width: 767px)").matches) return;
       const vh = window.innerHeight;
-      setAreaHeight(Math.round(vh * (1 + (products.length - 1) * SEGMENTS_SCROLL)));
+      setAreaHeight(
+        Math.round(vh * (1 + (products.length - 1) * SEGMENTS_SCROLL)),
+      );
     };
     update();
     window.addEventListener("resize", update);
@@ -889,7 +891,7 @@ function ProductPanel({
       {/*  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/55 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/70 lg:to-black/55" /> */}
 
       {/* Overlay sutil de lectura (solo mobile) */}
-      <div className="pointer-events-none absolute inset-0 max-md:bg-gradient-to-b max-md:from-black/30 max-md:via-black/20 max-md:to-black/50" />
+      <div className="pointer-events-none absolute inset-0 max-md:bg-gradient-to-b max-md:from-black/10 max-md:via-black/50 max-md:to-black/50" />
 
       {/* Overlay de oscurecimiento (opacity animada por JS, sin filter/repintado) */}
       <div
