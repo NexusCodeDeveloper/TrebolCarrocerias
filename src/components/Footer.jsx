@@ -7,14 +7,21 @@ import {
   Clock,
   ChevronRight,
 } from "lucide-react";
-import { WhatsAppIcon, FacebookIcon, InstagramIcon, XIcon } from "./Icons";
+import { WhatsAppIcon, FacebookIcon, InstagramIcon } from "./Icons";
 import { getImageUrl } from "../lib/cloudinary";
 import { useState } from "react";
 
 const socialLinks = [
-  { name: "Facebook", href: "", icon: FacebookIcon },
-  { name: "Instagram", href: "", icon: InstagramIcon },
-  { name: "X", href: "", icon: XIcon },
+  {
+    name: "Facebook",
+    href: "https://www.facebook.com/trebol.carrocerias",
+    icon: FacebookIcon,
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/carroceriastrebol/",
+    icon: InstagramIcon,
+  },
 ];
 
 const productLinks = [
@@ -76,10 +83,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden py-20 md:py-10 px-4">
+    <footer className="relative overflow-hidden pt-12  pb-20 md:py-10 px-4">
       {/* Background: negro con acento marca - cierre */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#041506] via-[#020802] to-black" />
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-trebol-600/15 blur-[160px]" />
+      <div className="hidden md:block absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-trebol-600/15 blur-[160px]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
 
       {/* Contacto */}
@@ -92,7 +99,7 @@ export default function Footer() {
             transition={{ duration: 0.8 }}
             className="max-w-5xl mx-auto  p-px"
           >
-            <div className=" px-6 py-14 md:px-16 md:py-20 text-center">
+            <div className=" px-6  md:px-16 md:py-20 text-center">
               <span className="text-trebol-400 text-xs md:text-sm font-medium tracking-[0.3em] uppercase mb-5 block">
                 Contacto
               </span>
@@ -114,7 +121,7 @@ export default function Footer() {
                   whileTap={{ scale: 0.95 }}
                   className=" w-full sm:w-auto border border-white/10 hover:border-trebol-500/30 bg-dark-700 text-white font-heading font-bold px-10 py-4 rounded-full text-lg tracking-tight transition-all flex items-center justify-center gap-3"
                 >
-                  <WhatsAppIcon className="w-5 h-5 text-trebol-400 animate-pulse" />
+                  <WhatsAppIcon className="w-5 h-5 text-trebol-400 icon-pulse" />
                   WhatsApp
                 </motion.a>
               </div>
@@ -129,12 +136,12 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="group flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
+              className="icon-pulse group flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
             >
               <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center group-hover:bg-trebol-500/20 transition-colors flex-shrink-0">
                 <Phone className="w-6 h-6 text-trebol-400" />
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 ">
                 <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
                   Llamanos
                 </div>
@@ -154,9 +161,9 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="group flex items-center gap-4 p-6 rounded-3xl border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/40 transition-all duration-500"
+              className="icon-pulse group flex items-center gap-4 p-6 rounded-3xl border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/40 transition-all duration-500"
             >
-              <div className="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
+              <div className=" w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
                 <WhatsAppIcon className="w-6 h-6 fill-green-400" />
               </div>
               <div className="flex-1">
@@ -181,7 +188,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="group flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
+              className="icon-pulse group flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
             >
               <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center group-hover:bg-trebol-500/20 transition-colors flex-shrink-0">
                 <Mail className="w-6 h-6 text-trebol-400" />
@@ -211,7 +218,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800"
+              className="icon-pulse flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800"
             >
               <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-6 h-6 text-trebol-400" />
@@ -376,7 +383,17 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} Trébol Carrocerías. Todos los
               derechos reservados.
             </p>
-            <p>Desarrollo Web by NexusCode</p>
+            <p>
+              Desarrollo Web by{" "}
+              <a
+                href="https://www.instagram.com/nexuscode.desarrollo/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-trebol-400 transition-colors hover:text-trebol-300"
+              >
+                NexusCode
+              </a>
+            </p>
           </div>
           <motion.button
             onClick={scrollToTop}
