@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { getVideoUrl, getVideoPoster } from "../lib/cloudinary";
@@ -16,6 +16,19 @@ export default function Hero() {
   const textRef = useRef(null);
   const isInView = useInView(textRef);
 
+  /* Mobile: se desactivan los transforms atados al scroll (fluidez) */
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const onChange = (/** @type {MediaQueryListEvent} */ e) =>
+      setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
@@ -31,11 +44,13 @@ export default function Hero() {
     <section
       id="inicio"
       ref={sectionRef}
-      className="relative h-[110dvh] overflow-hidden"
+      className="relative h-[110lvh] overflow-hidden"
     >
       {/* Video background */}
       <motion.div
-        style={{ scale: videoScale, opacity: videoOpacity }}
+        style={
+          isMobile ? undefined : { scale: videoScale, opacity: videoOpacity }
+        }
         className="absolute inset-0"
       >
         <video
@@ -53,22 +68,26 @@ export default function Hero() {
           <source src={getVideoUrl(HERO_VIDEO)} />
         </video>
         <motion.div
-          style={{ opacity: overlayOpacity }}
+          style={isMobile ? { opacity: 0.55 } : { opacity: overlayOpacity }}
           className="absolute inset-0 bg-black"
         />
         <motion.div
-          style={{ opacity: barsOpacity }}
+          style={isMobile ? undefined : { opacity: barsOpacity }}
           className="absolute inset-0 pointer-events-none"
         >
-          <div className="absolute top-0 left-0 right-0 h-[12dvh] bg-gradient-to-b from-black via-black/50 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-[12dvh] bg-gradient-to-t from-black via-black/50 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-[12lvh] bg-gradient-to-b from-black via-black/50 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-[12lvh] bg-gradient-to-t from-black via-black/50 to-transparent" />
         </motion.div>
       </motion.div>
 
       {/* Content: bloque izquierdo como referencia */}
       <div className="relative h-full flex items-center px-6 lg:px-10 z-10">
         <div className="w-full max-w-7xl mx-auto">
-          <motion.div style={{ y: textY }} className="max-w-3xl" ref={textRef}>
+          <motion.div
+            style={isMobile ? undefined : { y: textY }}
+            className="max-w-3xl"
+            ref={textRef}
+          >
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
