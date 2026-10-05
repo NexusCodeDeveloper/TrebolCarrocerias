@@ -865,7 +865,7 @@ function ProductPanel({
       }}
       className={
         mode === "flow"
-          ? "relative min-h-svh w-full overflow-hidden max-md:rounded-3xl"
+          ? "relative min-h-lvh w-full overflow-hidden max-md:rounded-3xl"
           : "absolute inset-0 overflow-hidden"
       }
       style={{ zIndex: index + 1 }}
@@ -904,8 +904,8 @@ function ProductPanel({
 
       {/* Contenido: texto + carrusel */}
       <div
-        className={`relative z-10 flex flex-col justify-between px-6 pb-8 pt-28 md:justify-center md:gap-8 md:px-12 md:pt-0 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pb-0 lg:px-16 xl:gap-12 xl:px-28 ${
-          mode === "flow" ? "min-h-svh" : "h-full"
+        className={`relative z-10 flex flex-col justify-between max-md:gap-12 px-6 pb-8 pt-28 md:justify-center md:gap-8 md:px-12 md:pt-0 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:pb-0 lg:px-16 xl:gap-12 xl:px-28 ${
+          mode === "flow" ? "min-h-lvh" : "h-full"
         }`}
       >
         <div className="relative max-w-xl md:max-w-2xl lg:max-w-xl">
@@ -915,7 +915,7 @@ function ProductPanel({
             }}
           >
             {/* Eyebrow: punto + línea decorativa */}
-            <div className="flex items-center gap-4 mb-3 md:mb-6">
+            <div className="flex items-center gap-4 mb-5 md:mb-6">
               <div className="w-3 h-3 rounded-full bg-trebol-500" />
               <div className="h-px flex-1 bg-gradient-to-r from-trebol-500/50 to-transparent" />
             </div>
@@ -937,14 +937,14 @@ function ProductPanel({
                 {product.subtitle}
               </span>
             </div>
-            <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-3 md:mb-6">
+            <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-4 md:mb-6">
               {product.title}
             </h3>
-            <p className="text-gray-200 font-semibold md:text-xl leading-relaxed tracking-tight mb-4 md:mb-8 max-w-lg">
+            <p className="text-gray-200 font-semibold md:text-xl leading-relaxed tracking-tight mb-6 md:mb-8 max-w-lg">
               {product.description}
             </p>
             {/* Características */}
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 md:gap-y-3 mb-5 md:mb-10">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 mb-7 md:mb-10">
               {product.features.map((feature) => (
                 <li key={feature} className="flex items-start gap-3">
                   <Check className="w-6 h-6 text-trebol-500  mt-0.5 shrink-0" />
