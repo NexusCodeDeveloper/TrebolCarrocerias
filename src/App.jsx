@@ -32,7 +32,10 @@ export default function App() {
   }, []);
 
   return (
-    <MotionConfig reducedMotion={isMobile ? "always" : "user"}>
+    <MotionConfig
+      reducedMotion={isMobile ? "always" : "user"}
+      skipAnimations={isMobile}
+    >
       <div className="min-h-screen bg-black">
         <Navbar />
         <Hero />
