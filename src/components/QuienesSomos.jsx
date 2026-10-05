@@ -22,7 +22,7 @@ export default function QuienesSomos() {
   return (
     <section
       id="quienes-somos"
-      className="relative overflow-hidden py-20 md:pt-40 md:pb-12 px-5"
+      className="relative overflow-hidden py-12 md:pt-40 md:pb-12 px-5"
     >
       {/* Background: degradado blanco → gris de izquierda a derecha */}
       <div className="absolute inset-0 bg-gradient-to-r from-white to-zinc-300" />
@@ -40,7 +40,7 @@ export default function QuienesSomos() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 1, ease: "easeOut" }}
             >
-              <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
+              <h2 className="font-heading font-medium text-4xl pt-0 md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
                 Quiénes
                 <br />
                 <span className="gradient-text font-bold">somos</span>
