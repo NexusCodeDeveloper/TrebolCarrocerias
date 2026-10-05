@@ -218,3 +218,15 @@ body {
     animation: none;
   }
 }
+
+/* Mobile: apagar animaciones costosas (blur, drop-shadow, pulsos) para liberar el scroll/touch */
+@media (max-width: 767px) {
+  .ambient-pulse,
+  .corner-pulse,
+  .icon-pulse,
+  .pulse-glow,
+  .pulse-ring,
+  .whatsapp-pulse {
+    animation: none;
+  }
+}
