@@ -229,4 +229,9 @@ body {
   .whatsapp-pulse {
     animation: none;
   }
+
+  /* En mobile el arrastre nativo va mejor sin scroll suave global */
+  html {
+    scroll-behavior: auto;
+  }
 }

@@ -398,6 +398,7 @@ export default function Productos() {
 
     let timer = /** @type {number | null} */ (null);
     let rafId = /** @type {number | null} */ (null);
+    let touching = false;
 
     const cancelAnim = () => {
       if (rafId !== null) {
@@ -419,7 +420,12 @@ export default function Productos() {
       const ease = (/** @type {number} */ t) => 1 - Math.pow(1 - t, 3);
       const tick = (/** @type {number} */ now) => {
         const t = Math.min(1, (now - t0) / dur);
-        window.scrollTo(0, startY + dist * ease(t));
+        /* behavior instant: evita que el scroll suave del CSS pelee con la animación */
+        window.scrollTo({
+          top: startY + dist * ease(t),
+          left: 0,
+          behavior: "instant",
+        });
         rafId = t < 1 ? requestAnimationFrame(tick) : null;
       };
       if (rafId !== null) cancelAnimationFrame(rafId);
@@ -431,6 +437,7 @@ export default function Productos() {
       timer = window.setTimeout(() => {
         timer = null;
         if (rafId !== null) return;
+        if (touching) return; // nunca acomodar con el dedo apoyado
         if (window.innerWidth >= 768) return;
         const area = areaRef.current;
         if (!area) return;
@@ -449,12 +456,24 @@ export default function Productos() {
       }, 150);
     };
 
+    const onTouchStart = () => {
+      touching = true;
+      cancelAnim();
+    };
+    const onTouchEnd = () => {
+      touching = false;
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("touchstart", cancelAnim, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
     return () => {
       cancelAnim();
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("touchstart", cancelAnim);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
     };
   }, [reducedMotion]);
 
@@ -591,10 +610,12 @@ export default function Productos() {
     };
 
     const onScroll = () => {
+      if (!active) return;
       target = getTarget();
       startLoop();
     };
     const onResize = () => {
+      if (!active) return;
       target = getTarget();
       startLoop();
     };
@@ -606,12 +627,28 @@ export default function Productos() {
       apply(current);
     };
 
+    /* Solo trabaja cuando el área está cerca/en pantalla:
+       fuera de Productos no corre ningún rAF (scroll más fluido en el resto) */
+    let active = false;
+    const area = areaRef.current;
+    const obs = area
+      ? new IntersectionObserver(
+          ([entry]) => {
+            active = entry.isIntersecting;
+            if (active) onScroll();
+          },
+          { rootMargin: "50% 0px 50% 0px" },
+        )
+      : null;
+    if (area) obs?.observe(area);
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
     onScroll();
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
       jumpRef.current = null;
+      obs?.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
     };
@@ -622,9 +659,9 @@ export default function Productos() {
       id="productos"
       className="relative overflow-hidden pt-15 pb-0 md:pb-0 md:pt-20"
     >
-      {/* Background: imagen con patrón de trébol (en mobile se suaviza con blur) */}
+      {/* Background: imagen con patrón de trébol (en mobile se suaviza con blur suave) */}
       <div
-        className="absolute inset-x-0 top-0 h-screen scale-110 bg-cover bg-center blur-md md:scale-100 md:blur-0"
+        className="absolute inset-x-0 top-0 h-screen scale-105 bg-cover bg-center blur-sm md:scale-100 md:blur-0"
         style={{ backgroundImage: `url(${getImageUrl(PRODUCTOS_BG)})` }}
       />
       <div className="absolute inset-x-0 top-0 h-screen bg-black/40" />
