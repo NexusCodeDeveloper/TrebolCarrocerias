@@ -342,6 +342,7 @@ const products = [
 
 /* Config del efecto */
 const SEGMENTS_SCROLL = 2; // × altura de viewport por transición (más alto = más lento)
+const SEGMENTS_SCROLL_MOBILE = 0.5; // mobile: un deslizamiento = un producto
 const SEGMENT_HOLD = 0.45; // % del tramo con la card quieta para leer antes de transicionar
 const FINAL_SCALE = 0.92; // escala del panel tapado
 const FINAL_DIM = 0.35; // opacidad del overlay negro del panel tapado
@@ -377,18 +378,85 @@ export default function Productos() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  /* Altura del área de scroll (recalculada en resize) */
+  /* Altura del área de scroll (recalculada en resize). En mobile el tramo es más corto. */
   useEffect(() => {
     const update = () => {
       const vh = window.innerHeight;
-      setAreaHeight(
-        Math.round(vh * (1 + (products.length - 1) * SEGMENTS_SCROLL)),
-      );
+      const segments = window.matchMedia("(max-width: 767px)").matches
+        ? SEGMENTS_SCROLL_MOBILE
+        : SEGMENTS_SCROLL;
+      setAreaHeight(Math.round(vh * (1 + (products.length - 1) * segments)));
     };
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
+
+  /* Mobile: imán de a un producto por deslizamiento (en PC no hace nada) */
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    let timer = /** @type {number | null} */ (null);
+    let rafId = /** @type {number | null} */ (null);
+
+    const cancelAnim = () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      if (timer !== null) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    };
+
+    const animateTo = (/** @type {number} */ top) => {
+      const startY = window.scrollY;
+      const dist = top - startY;
+      if (Math.abs(dist) < 1) return;
+      const dur = Math.min(500, Math.max(220, Math.abs(dist) * 0.45));
+      const t0 = performance.now();
+      const ease = (/** @type {number} */ t) => 1 - Math.pow(1 - t, 3);
+      const tick = (/** @type {number} */ now) => {
+        const t = Math.min(1, (now - t0) / dur);
+        window.scrollTo(0, startY + dist * ease(t));
+        rafId = t < 1 ? requestAnimationFrame(tick) : null;
+      };
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(tick);
+    };
+
+    const onScroll = () => {
+      if (timer !== null) clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        timer = null;
+        if (rafId !== null) return;
+        if (window.innerWidth >= 768) return;
+        const area = areaRef.current;
+        if (!area) return;
+        const vh = window.innerHeight;
+        const range = area.offsetHeight - vh;
+        if (range <= 0) return;
+        const pinStart = area.getBoundingClientRect().top + window.scrollY;
+        const pinEnd = pinStart + range;
+        const y = window.scrollY;
+        if (y < pinStart - 2 || y > pinEnd + 2) return;
+        const p = Math.min(1, Math.max(0, (y - pinStart) / range));
+        const global = p * (products.length - 1);
+        const nearest = Math.round(global);
+        if (Math.abs(global - nearest) < 0.03) return;
+        animateTo(pinStart + (nearest / (products.length - 1)) * range);
+      }, 150);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("touchstart", cancelAnim, { passive: true });
+    return () => {
+      cancelAnim();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("touchstart", cancelAnim);
+    };
+  }, [reducedMotion]);
 
   /* Salto directo al producto desde los logos del header */
   const scrollToProduct = (/** @type {number} */ index) => {
@@ -552,11 +620,11 @@ export default function Productos() {
   return (
     <section
       id="productos"
-      className="relative overflow-hidden pt-15 pb-32 md:pb-0 md:pt-20"
+      className="relative overflow-hidden pt-15 pb-0 md:pb-0 md:pt-20"
     >
-      {/* Background: imagen con patrón de trébol */}
+      {/* Background: imagen con patrón de trébol (en mobile se suaviza con blur) */}
       <div
-        className="absolute inset-x-0 top-0 h-screen bg-cover bg-center"
+        className="absolute inset-x-0 top-0 h-screen scale-110 bg-cover bg-center blur-md md:scale-100 md:blur-0"
         style={{ backgroundImage: `url(${getImageUrl(PRODUCTOS_BG)})` }}
       />
       <div className="absolute inset-x-0 top-0 h-screen bg-black/40" />
@@ -798,7 +866,7 @@ function ProductPanel({
                   src={getLogoUrl(product.iconImage)}
                   alt=""
                   aria-hidden="true"
-                  className="w-8 h-8 md:w-12 md:h-12 "
+                  className="w-12 h-12 md:w-18 md:h-18 "
                   loading="lazy"
                   decoding="async"
                 />
