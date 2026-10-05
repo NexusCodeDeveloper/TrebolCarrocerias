@@ -26,8 +26,8 @@ export default function QuienesSomos() {
     >
       {/* Background: degradado blanco → gris de izquierda a derecha */}
       <div className="absolute inset-0 bg-gradient-to-r from-white to-zinc-300" />
-      <div className="absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
-      <div className="absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
+      <div className="hidden md:block absolute -top-32 right-0 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
+      <div className="hidden md:block absolute -bottom-32 left-0 w-[30rem] h-[30rem] rounded-full bg-trebol-500/10 blur-[160px]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-trebol-500/30 to-transparent" />
 
