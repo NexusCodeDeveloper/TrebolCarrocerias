@@ -153,7 +153,7 @@ export default function Testimonios() {
               <img
                 src={getLogoUrl(client.logo)}
                 alt={client.name}
-                className="max-h-10 w-auto max-w-[85%] object-contain opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100 lg:max-h-12"
+                className="h-10 w-28 object-contain opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100 sm:w-32 lg:h-12 lg:w-40"
                 loading="lazy"
                 decoding="async"
                 onError={(e) => {
