@@ -891,7 +891,7 @@ function ProductPanel({
       {/*  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/55 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/70 lg:to-black/55" /> */}
 
       {/* Overlay sutil de lectura (solo mobile) */}
-      <div className="pointer-events-none absolute inset-0 max-md:bg-gradient-to-b max-md:from-black/10 max-md:via-black/50 max-md:to-black/50" />
+      <div className="pointer-events-none absolute inset-0 max-md:bg-gradient-to-b max-md:from-black/30 max-md:via-black/20 max-md:to-black/5" />
 
       {/* Overlay de oscurecimiento (opacity animada por JS, sin filter/repintado) */}
       <div
@@ -940,7 +940,7 @@ function ProductPanel({
             <h3 className="font-heading text-3xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-3 md:mb-6">
               {product.title}
             </h3>
-            <p className="text-gray-400 font-semibold md:text-xl leading-relaxed tracking-tight mb-4 md:mb-8 max-w-lg">
+            <p className="text-gray-200 font-semibold md:text-xl leading-relaxed tracking-tight mb-4 md:mb-8 max-w-lg">
               {product.description}
             </p>
             {/* Características */}
