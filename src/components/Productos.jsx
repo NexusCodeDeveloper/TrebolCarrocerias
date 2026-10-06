@@ -43,7 +43,7 @@ const products = [
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/1_fg5zvp.jpg",
     imageMobile:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/1_lmkfsp.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/c_crop,w_601,h_1074/v1791230469/1_lmkfsp.jpg",
     stat: "150+",
     statLabel: "Volquetes activos",
     features: [
@@ -88,7 +88,7 @@ const products = [
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/2_fsys74.jpg",
     imageMobile:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/2_puefla.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/c_crop,w_601,h_1074/v1791230469/2_puefla.jpg",
     stat: "150+",
     statLabel: "Volquetes activos",
     features: [
@@ -133,7 +133,7 @@ const products = [
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/3_vayvix.jpg",
     imageMobile:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230468/3_uwmi7z.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/c_crop,w_602,h_1074/v1791230468/3_uwmi7z.jpg",
     stat: "500+",
     statLabel: "Unidades fabricadas",
     features: [
@@ -183,7 +183,7 @@ const products = [
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/4_nt5sqr.jpg",
     imageMobile:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230468/4_lsul3j.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/c_crop,w_601,h_1074/v1791230468/4_lsul3j.jpg",
     stat: "200+",
     statLabel: "Entregas realizadas",
     features: [
@@ -228,7 +228,7 @@ const products = [
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/c_fill,w_2000,h_800/v1791069144/5_bu8asr.jpg",
     imageMobile:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/5_ncunbm.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/c_crop,w_601,h_1074/v1791230469/5_ncunbm.jpg",
     stat: "300+",
     statLabel: "Proyectos completos",
     features: [
@@ -274,7 +274,7 @@ const products = [
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/6_mv21px.jpg",
     imageMobile:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/6_qyescf.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/c_crop,w_601,h_1074/v1791230469/6_qyescf.jpg",
     stat: "80+",
     statLabel: "Flotas equipadas",
     features: [
@@ -319,7 +319,7 @@ const products = [
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/7_ldcol6.jpg",
     imageMobile:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791230469/7_ogmxgl.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/c_crop,w_602,h_1074/v1791230469/7_ogmxgl.jpg",
     stat: "100%",
     statLabel: "Homologados",
     features: [
