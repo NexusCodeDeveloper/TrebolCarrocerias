@@ -48,24 +48,63 @@ const videoCorners = [
  * @param {string} props.src
  * @param {boolean} props.isInView
  * @param {number} [props.delay]
- * @param {boolean} [props.isPlaying]
- * @param {() => void} [props.onPlay]
  */
-function VideoCard({ src, isInView, delay = 0, isPlaying = false, onPlay }) {
-  /* Mobile: no reproducimos 3 videos a la vez (jank/touch). Poster + play manual. */
+function VideoCard({ src, isInView, delay = 0 }) {
+  /* Mobile: autoplay en loop mudo, solo cuando la tarjeta está en pantalla.
+     Carga diferida del src y pausa al salir para no interferir con el scroll. */
   const [isMobile] = useState(
     () => window.matchMedia("(max-width: 767px)").matches,
   );
   const videoRef = useRef(/** @type {HTMLVideoElement | null} */ (null));
+  const cardRef = useRef(/** @type {HTMLDivElement | null} */ (null));
+  const [near, setNear] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [needsTap, setNeedsTap] = useState(false);
 
-  /* Al tocar play, arranca el video (con gesto de usuario) */
   useEffect(() => {
-    if (!isPlaying) return;
-    videoRef.current?.play().catch(() => {});
-  }, [isPlaying]);
+    if (!isMobile) return;
+    const el = cardRef.current;
+    if (!el) return;
+
+    const nearObs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setNear(true);
+          nearObs.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" },
+    );
+    const visObs = new IntersectionObserver(
+      ([entry]) => setVisible(entry.intersectionRatio >= 0.6),
+      { threshold: [0, 0.6] },
+    );
+    nearObs.observe(el);
+    visObs.observe(el);
+    return () => {
+      nearObs.disconnect();
+      visObs.disconnect();
+    };
+  }, [isMobile]);
+
+  /* Reproduce al entrar en pantalla y pausa al salir (1 a la vez en el uso normal) */
+  useEffect(() => {
+    if (!isMobile) return;
+    const video = videoRef.current;
+    if (!video) return;
+    if (visible) video.play().catch(() => setNeedsTap(true));
+    else video.pause();
+  }, [isMobile, near, visible]);
+
+  /* Fallback: si el navegador bloquea el autoplay, el botón lo arranca con el toque */
+  const handleTapPlay = () => {
+    setNeedsTap(false);
+    videoRef.current?.play().catch(() => setNeedsTap(true));
+  };
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay }}
@@ -73,23 +112,19 @@ function VideoCard({ src, isInView, delay = 0, isPlaying = false, onPlay }) {
     >
       <div className="relative aspect-video overflow-hidden rounded-lg bg-black ring-1 ring-black/10 shadow-elevated">
         {isMobile ? (
-          isPlaying ? (
-            <video
-              ref={videoRef}
-              src={getVideoUrl(src)}
-              poster={getVideoPoster(src)}
-              autoPlay
-              controls
-              playsInline
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <button
-              type="button"
-              onClick={onPlay}
-              aria-label="Reproducir video"
-              className="group absolute inset-0 h-full w-full"
-            >
+          <>
+            {near ? (
+              <video
+                ref={videoRef}
+                src={getVideoUrl(src)}
+                poster={getVideoPoster(src)}
+                muted
+                loop
+                playsInline
+                preload="none"
+                className="h-full w-full object-cover"
+              />
+            ) : (
               <img
                 src={getVideoPoster(src)}
                 alt=""
@@ -97,13 +132,22 @@ function VideoCard({ src, isInView, delay = 0, isPlaying = false, onPlay }) {
                 loading="lazy"
                 decoding="async"
               />
-              <span className="absolute inset-0 grid place-items-center">
-                <span className="grid h-14 w-14 place-items-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition group-hover:border-trebol-500 group-hover:bg-trebol-600">
-                  <Play className="h-6 w-6 translate-x-0.5" />
+            )}
+            {needsTap && (
+              <button
+                type="button"
+                onClick={handleTapPlay}
+                aria-label="Reproducir video"
+                className="group absolute inset-0 h-full w-full"
+              >
+                <span className="absolute inset-0 grid place-items-center">
+                  <span className="grid h-14 w-14 place-items-center rounded-full border border-white/20 bg-black/60 text-white backdrop-blur transition group-hover:border-trebol-500 group-hover:bg-trebol-600">
+                    <Play className="h-6 w-6 translate-x-0.5" />
+                  </span>
                 </span>
-              </span>
-            </button>
-          )
+              </button>
+            )}
+          </>
         ) : (
           <video
             src={getVideoUrl(src)}
@@ -132,10 +176,6 @@ function VideoCard({ src, isInView, delay = 0, isPlaying = false, onPlay }) {
 export default function ComoLoHacemos() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  /* Mobile: solo un video reproduce a la vez */
-  const [playingVideo, setPlayingVideo] = useState(
-    /** @type {number | null} */ (null),
-  );
 
   return (
     <section
@@ -239,8 +279,6 @@ export default function ComoLoHacemos() {
                 src={src}
                 isInView={isInView}
                 delay={0.4 + i * 0.1}
-                isPlaying={playingVideo === i}
-                onPlay={() => setPlayingVideo(i)}
               />
             ))}
           </div>
