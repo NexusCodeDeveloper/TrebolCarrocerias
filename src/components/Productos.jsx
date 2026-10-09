@@ -35,11 +35,11 @@ const products = [
   {
     icon: ArrowUpDown,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065245/1_fmo1ht.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791581875/Recurso_54_rjtwms.png",
     title: "Volquetes",
     subtitle: "Granel",
     description:
-      "Diseñados para el transporte de materiales a granel en sectores exigentes como minería, construcción y obras viales. ",
+      "Volquetes vuelco trasero. Diseñados para el transporte de materiales a granel en sectores exigentes como minería, construcción y obras viales. ",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069145/1_fg5zvp.jpg",
     imageMobile:
@@ -47,16 +47,12 @@ const products = [
     stat: "150+",
     statLabel: "Volquetes activos",
     features: [
-      "Volquete 8m3/10 toneladas",
+      "Volquete 8 m³ / 10 tn para camión 4x2",
       "Pickups playo baranda volcable",
-      "Pickups volquete 1.0 TN",
+      "Pickups volquete 1.0 tn",
       "Volcado hidráulico de alta precisión",
     ],
     details: [
-      {
-        title: "Uso especializado",
-        text: "Diseñados para el transporte de materiales a granel en sectores exigentes como minería, construcción y obras viales.",
-      },
       {
         title: "Estructura reforzada",
         text: "Fabricados con acero de alta resistencia que soporta cargas pesadas y la fricción constante del trabajo duro.",
@@ -92,16 +88,12 @@ const products = [
     stat: "150+",
     statLabel: "Volquetes activos",
     features: [
-      "Capacidad: 17 m³ / 28 toneladas ",
-      "Estructura: Chapa antidesgaste de alta resistencia (Hardox 450)",
+      "Capacidad: 17 m³",
+      "Estructura: Chapa antidesgaste HARDROX y SAE 1010",
       "Tratamiento superficial: Limpieza y desengrase con fosfatizante",
-      "Base y Acabado: Primer bicomponente y esmalte poliuretánico de alta adherencia",
+      "Base y Acabado: PRIMER bicomponente y esmalte poliuretánico de alta adherencia",
     ],
     details: [
-      {
-        title: "Especialización en material pesado",
-        text: "Diseño robusto orientado a la extracción y traslado de rocas, áridos y minerales de gran tamaño. ",
-      },
       {
         title: "Resistencia a la abrasión",
         text: "Construidas con placas de acero de alta abrasión para resistir el desgaste constante de los materiales pesados. ",
@@ -126,7 +118,7 @@ const products = [
     icon: Truck,
     iconImage:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/3_ma9hvw.png",
-    title: "Baranda Volcable",
+    title: "Baranda Baja",
     subtitle: "abatimiento rápido",
     description:
       "Apta para transportar una amplia variedad de cargas, incluyendo carga general, granos a granel o productos paletizados.",
@@ -137,16 +129,12 @@ const products = [
     stat: "500+",
     statLabel: "Unidades fabricadas",
     features: [
+      "Opcional: Porta Estacas",
       "Transporta distintos tipos de carga",
       "Barandas de abatimiento rápido y seguro",
       "Cierres de traba mecánica con resortes",
-      "Estructura liviana que aumenta la carga útil",
     ],
     details: [
-      {
-        title: "Versatilidad de carga",
-        text: "Apta para transportar una amplia variedad de cargas incluyendo carga general, granos a granel o productos paletizados. ",
-      },
       {
         title: "Apertura lateral ágil y segura",
         text: "Posee un sistema de herrajes y cierres herméticos que facilitan el abatimiento rápido de las barandas para operar con comodidad.",
@@ -166,9 +154,10 @@ const products = [
     ],
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077316/3_hw5w6p.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791586126/barandaBaja1_vyujyu.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077318/3d_fq961d.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077317/3b_xsbarx.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077318/3c_wuf5zg.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791586126/barandaBaja2_e0wcdg.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791584678/WhatsApp_Image_2026-10-09_at_7.22.27_PM_oy0zmn.jpg",
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077317/3a_apkdh8.mp4",
     ],
   },
@@ -179,7 +168,7 @@ const products = [
     title: "Térmicos",
     subtitle: "Temperatura",
     description:
-      "Cuentan con un aislamiento de alta densidad y paneles monolíticos que conservan la cadena de frío.",
+      "Cuentan con un aislamiento de alta densidad y paneles monolíticos que conservan la cadena de frío para alimentos, carnes y productos perecederos (frío, congelados, supercongelados y carnicero).",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/4_nt5sqr.jpg",
     imageMobile:
@@ -189,14 +178,10 @@ const products = [
     features: [
       "Conserva la cadena de frío de productos perecederos",
       "Sellado hermético que reduce el consumo del equipo de frío",
-      "Materiales higiénicos y de fácil limpieza",
+      "Herrajes Inox",
       "Concesión oficial de Industrias Bonano",
     ],
     details: [
-      {
-        title: "Aislamiento térmico superior",
-        text: "Cuentan con un aislamiento de alta densidad y paneles monolíticos que conservan la cadena de frío para alimentos, carnes y productos perecederos (frío, congelados, supercongelados y carnicero). ",
-      },
       {
         title: "Eficiencia energética",
         text: "Incorporan sellados herméticos que optimizan el rendimiento y reducen el consumo del equipo de frío. ",
@@ -212,6 +197,7 @@ const products = [
     ],
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077319/4_sdstkt.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791134412/7a-OK.jpg_wr7igk.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077320/4a_ihfcfj.jpg",
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077321/4c_az2xdj.mp4",
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077320/4b_egmeah.mp4",
@@ -239,10 +225,6 @@ const products = [
     ],
     details: [
       {
-        title: "Plataforma plana despejada",
-        text: "Diseño sin barandas laterales que facilita la maniobra de carga y descarga de maquinaria, contenedores o cargas sobredimensionadas. ",
-      },
-      {
         title: "Sistemas de sujeción estratégicos",
         text: "Equipado con puntos de anclaje distribuidos para fijar de manera firme y segura mercancías paletizadas de gran volumen. ",
       },
@@ -259,7 +241,9 @@ const products = [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791134514/WhatsApp_Video_2026-10-04_at_1.36.16_PM_1_q8bdsh.mp4",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077322/5a_vtllxa.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077323/5b_jzme83.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791585007/WhatsApp_Image_2026-10-09_at_7.27.09_PM_1_yfa0hn.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077323/5c_wrchhy.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791585007/WhatsApp_Image_2026-10-09_at_7.27.09_PM_f22jfr.jpg",
     ],
   },
 
@@ -270,7 +254,7 @@ const products = [
     title: "Sider",
     subtitle: "protección y versatilidad",
     description:
-      "Unidades desarrolladas a medida sobre un chasis de alta elasticidad, suspensión balanceada y terminaciones en pintura Airmix de máxima durabilidad. ",
+      "Unidades desarrolladas a medida sobre un chasis de alta elasticidad, suspensión balanceada y terminaciones en pintura base PRIMER de máxima durabilidad. ",
     image:
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791069144/6_mv21px.jpg",
     imageMobile:
@@ -280,14 +264,10 @@ const products = [
     features: [
       "Sider / Sider con lona",
       "Permiten una apertura completa de los laterales",
-      "Facilita las maniobras con cargas paletizadas",
-      "Protege la mercadería del agua, polvo y viento",
+      "Aplicación de fosfatizante y desengrasante",
+      "Pintura Poliuretánica - alto brillo",
     ],
     details: [
-      {
-        title: "Alta capacidad y durabilidad para largas distancias",
-        text: "Unidades desarrolladas a medida sobre un chasis de alta elasticidad, suspensión balanceada y terminaciones en pintura Airmix de máxima durabilidad.",
-      },
       {
         title: "Sistema de lonas laterales correderas",
         text: "La versión Sider incorpora lonas de alta resistencia que se desplazan sobre rieles superiores, lo que permite una apertura completa de los laterales.",
@@ -303,9 +283,9 @@ const products = [
     ],
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077324/6_mlfyfz.mp4",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077290/6c_oo3qdf.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791584844/WhatsApp_Image_2026-10-09_at_7.25.46_PM_yecnsr.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077289/6b_bad5st.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077324/6a_tl2mr2.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791584843/WhatsApp_Image_2026-10-09_at_7.25.46_PM_1_yjfj7o.jpg",
     ],
   },
   {
@@ -323,16 +303,12 @@ const products = [
     stat: "100%",
     statLabel: "Homologados",
     features: [
-      "Protege la carga del clima",
-      "Evita el desplazamiento de la mercadería",
+      "Opciones: Puerta trasera libro / Puertas laterales / Todo puertas",
+      "Paqueteros con techo o con arcos para lona",
       "Permiten asegurar y organizar los paquetes",
       "Portones de apertura ágil para facilitar la carga y descarga",
     ],
     details: [
-      {
-        title: "Estructura cerrada y protegida",
-        text: "Diseñados como furgones cerrados para el transporte seguro de paquetería, encomiendas y productos secos, resguardando la carga del clima y robos.",
-      },
       {
         title: "Seguridad en el piso",
         text: "Equipados con piso antideslizante para evitar el desplazamiento no deseado de la mercadería durante el trayecto.",
@@ -350,7 +326,7 @@ const products = [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791134514/WhatsApp_Video_2026-10-04_at_1.36.16_PM_zueptr.mp4",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077310/7c_wtdmrk.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791134412/7b-OK.jpg_thpfa5.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791134412/7a-OK.jpg_wr7igk.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791584706/WhatsApp_Image_2026-10-09_at_7.23.54_PM_zilw9z.jpg",
     ],
   },
 ];
