@@ -10,6 +10,8 @@ import {
   Check,
   Plus,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import ImageCarousel from "./ImageCarousel";
 import { getImageUrl, getLogoUrl } from "../lib/cloudinary";
@@ -340,6 +342,64 @@ const FINAL_OFFSET_Y = -30; // px, desplazamiento vertical del panel tapado
 const PRODUCTOS_BG =
   "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065116/fdo_trebol_f0lntj.png";
 
+/**
+ * Logo clickeable de producto (flipea al hover o cuando queda seleccionado).
+ * @param {Object} props
+ * @param {Product} props.product
+ * @param {number} props.index
+ * @param {number | null} props.selected
+ * @param {(i: number) => void} props.onSelect
+ * @param {string} [props.sizeClass]
+ * @param {string} [props.backTextClass]
+ */
+function LogoTile({ product, index, selected, onSelect, sizeClass, backTextClass }) {
+  const isSelected = selected === index;
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(index)}
+      aria-label={`Ver ${product.title}`}
+      aria-pressed={isSelected}
+      title={product.title}
+      className={`group shrink-0 rounded-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trebol-400 [perspective:1000px] ${
+        isSelected
+          ? "ring-1 ring-white/20 shadow-[0_0_45px_rgba(255,255,255,0.20)]"
+          : "hover:-translate-y-1"
+      }`}
+    >
+      {/* Gira en hover o cuando queda seleccionado */}
+      <span
+        className={`relative grid place-items-center transition-transform duration-500 [transform-style:preserve-3d] ${
+          sizeClass ||
+          "h-20 w-20 sm:h-16 sm:w-16 lg:h-24 lg:w-24 xl:h-36 xl:w-36"
+        } ${
+          isSelected
+            ? "[transform:rotateY(180deg)]"
+            : "group-hover:[transform:rotateY(180deg)]"
+        }`}
+      >
+        {/* Frente: logo */}
+        <img
+          src={getLogoUrl(product.iconImage ?? "")}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-contain [backface-visibility:hidden]"
+          loading="lazy"
+          decoding="async"
+        />
+        {/* Dorso: nombre del producto (mantiene el blanco y el tamaño) */}
+        <span
+          className={`absolute inset-0 grid place-items-center overflow-hidden rounded-2xl bg-white p-2 text-center font-heading font-bold uppercase leading-tight tracking-tight text-trebol-800 [backface-visibility:hidden] [transform:rotateY(180deg)] ${
+            backTextClass || "text-[10px] lg:text-[15px]"
+          }`}
+        >
+          {product.title}
+        </span>
+      </span>
+    </button>
+  );
+}
+
 export default function Productos() {
   const areaRef = useRef(/** @type {HTMLDivElement | null} */ (null));
   const stageRef = useRef(/** @type {HTMLDivElement | null} */ (null));
@@ -363,6 +423,15 @@ export default function Productos() {
     () => window.matchMedia("(max-width: 767px)").matches,
   );
   const flow = reducedMotion || isMobile;
+
+  /* Carrusel de logos (solo mobile): un logo por vez */
+  const [logoIndex, setLogoIndex] = useState(0);
+
+  /* Selección de logo: flipea y salta al producto */
+  const handleSelectLogo = (/** @type {number} */ i) => {
+    setSelectedLogo(i);
+    scrollToProduct(i);
+  };
 
   /* prefers-reduced-motion */
   useEffect(() => {
@@ -694,106 +763,120 @@ export default function Productos() {
             <br />
             <span className="text-white font-bold">mueven al transporte</span>
           </motion.h2>
-          {/* Accesos rápidos: logos clickeables de los 7 productos */}
+          {/* Accesos rápidos: un logo por vez en mobile, fila completa en PC */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.25 }}
-            className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:gap-4 md:justify-center md:gap-4 lg:gap-6 lg:overflow-visible lg:pb-0 xl:justify-between [&::-webkit-scrollbar]:hidden"
           >
-            {products.map((product, i) => (
-              <button
-                key={product.title}
-                type="button"
-                onClick={() => {
-                  setSelectedLogo(i);
-                  scrollToProduct(i);
-                }}
-                aria-label={`Ver ${product.title}`}
-                aria-pressed={selectedLogo === i}
-                title={product.title}
-                className={`group shrink-0 rounded-2xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-trebol-400 [perspective:1000px] ${
-                  selectedLogo === i
-                    ? "ring-1 ring-white/20 shadow-[0_0_45px_rgba(255,255,255,0.20)]"
-                    : "hover:-translate-y-1"
-                }`}
-              >
-                {/* Gira en hover o cuando queda seleccionado */}
-                <span
-                  className={`relative grid h-20 w-20 place-items-center transition-transform duration-500 [transform-style:preserve-3d] sm:h-16 sm:w-16 lg:h-24 lg:w-24 xl:h-36 xl:w-36 ${
-                    selectedLogo === i
-                      ? "[transform:rotateY(180deg)]"
-                      : "group-hover:[transform:rotateY(180deg)]"
-                  }`}
+            {isMobile ? (
+              <div className="relative mx-auto max-w-xs">
+                <div className="mx-auto w-40 overflow-hidden py-2">
+                  <div
+                    className="slide-anim flex gap-2"
+                    style={{ transform: `translateX(-${logoIndex * 168}px)` }}
+                  >
+                    {products.map((product, i) => (
+                      <LogoTile
+                        key={product.title}
+                        product={product}
+                        index={i}
+                        selected={selectedLogo}
+                        onSelect={handleSelectLogo}
+                        sizeClass="h-40 w-40"
+                        backTextClass="text-sm"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setLogoIndex(
+                      (i) => (i - 1 + products.length) % products.length,
+                    )
+                  }
+                  aria-label="Logo anterior"
+                  className="absolute left-0 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur transition"
                 >
-                  {/* Frente: logo */}
-                  <img
-                    src={getLogoUrl(product.iconImage ?? "")}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute inset-0 h-full w-full object-contain [backface-visibility:hidden]"
-                    loading="lazy"
-                    decoding="async"
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLogoIndex((i) => (i + 1) % products.length)}
+                  aria-label="Logo siguiente"
+                  className="absolute right-0 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/60 text-white backdrop-blur transition"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            ) : (
+              <div className="-mx-4 flex items-center gap-2 px-4 pb-2 sm:gap-4 md:justify-center md:gap-4 lg:gap-6 lg:pb-0 xl:justify-between">
+                {products.map((product, i) => (
+                  <LogoTile
+                    key={product.title}
+                    product={product}
+                    index={i}
+                    selected={selectedLogo}
+                    onSelect={handleSelectLogo}
                   />
-                  {/* Dorso: nombre del producto (mantiene el blanco y el tamaño) */}
-                  <span className="absolute inset-0 grid place-items-center overflow-hidden rounded-2xl bg-white p-2 text-center font-heading text-[10px] font-bold uppercase leading-tight tracking-tight text-trebol-800 [backface-visibility:hidden] [transform:rotateY(180deg)] lg:text-[15px]">
-                    {product.title}
-                  </span>
-                </span>
-              </button>
-            ))}
+                ))}
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
 
-      {flow ? (
-        /* Mobile / reduced motion: flujo normal, un producto debajo del otro */
-        <div className="max-md:px-3 max-md:space-y-4 max-md:py-4">
-          {products.map((product, i) => (
-            <ProductPanel
-              key={product.title}
-              product={product}
-              index={i}
-              mode="flow"
-              isMobile={isMobile}
-            />
-          ))}
-        </div>
-      ) : (
-        /* Stacking cards: scroll-area → stage → paneles */
-        <div
-          id="scroll-area"
-          ref={areaRef}
-          className="relative bg-black"
-          style={{ height: areaHeight || undefined }}
-        >
-          <div
-            ref={stageRef}
-            className="absolute inset-x-0 top-0 h-dvh overflow-hidden"
-          >
+      <div data-back-products>
+        {flow ? (
+          /* Mobile / reduced motion: flujo normal, un producto debajo del otro */
+          <div className="max-md:px-3 max-md:space-y-4 max-md:py-4">
             {products.map((product, i) => (
               <ProductPanel
                 key={product.title}
                 product={product}
                 index={i}
-                mode="stack"
-                panelRef={(el) => {
-                  panelsRef.current[i] = el;
-                }}
-                imgRef={(el) => {
-                  imgRefs.current[i] = el;
-                }}
-                dimRef={(el) => {
-                  dimRefs.current[i] = el;
-                }}
-                textRef={(el) => {
-                  textRefs.current[i] = el;
-                }}
+                mode="flow"
+                isMobile={isMobile}
               />
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          /* Stacking cards: scroll-area → stage → paneles */
+          <div
+            id="scroll-area"
+            ref={areaRef}
+            className="relative bg-black"
+            style={{ height: areaHeight || undefined }}
+          >
+            <div
+              ref={stageRef}
+              className="absolute inset-x-0 top-0 h-dvh overflow-hidden"
+            >
+              {products.map((product, i) => (
+                <ProductPanel
+                  key={product.title}
+                  product={product}
+                  index={i}
+                  mode="stack"
+                  panelRef={(el) => {
+                    panelsRef.current[i] = el;
+                  }}
+                  imgRef={(el) => {
+                    imgRefs.current[i] = el;
+                  }}
+                  dimRef={(el) => {
+                    dimRefs.current[i] = el;
+                  }}
+                  textRef={(el) => {
+                    textRefs.current[i] = el;
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
