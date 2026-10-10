@@ -4,12 +4,14 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import QuienesSomos from "./components/QuienesSomos";
 import Productos from "./components/Productos";
+import ProductosDestacados from "./components/ProductosDestacados";
 import ComoLoHacemos from "./components/ComoLoHacemos";
 import Normas from "./components/Normas";
 import Destacadas from "./components/Destacadas";
 import Testimonios from "./components/Testimonios";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
+import BackToProducts from "./components/BackToProducts";
 /* import Gallery from "./components/GaleriaNueva";
 import { lazy, Suspense } from "react"; */
 
@@ -41,6 +43,7 @@ export default function App() {
         <Hero />
         <QuienesSomos />
         <Productos />
+        <ProductosDestacados />
         {/* <Galeria /> */}
         {/* <Suspense fallback={<div style={{ minHeight: "50vh" }} />}>
           <Gallery />
@@ -51,6 +54,7 @@ export default function App() {
         <Testimonios />
         <Footer />
         <WhatsAppButton />
+        <BackToProducts />
       </div>
     </MotionConfig>
   );
