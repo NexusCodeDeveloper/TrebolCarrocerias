@@ -247,12 +247,6 @@ body {
   }
 }
 
-/* Excepción: fundido de las tarjetas de Destacadas (hover/tap) en mobile.
-   Es una interacción puntual, no afecta la fluidez del scroll. */
-.fade-anim {
-  transition: opacity 500ms ease !important;
-}
-
 /* Excepción: deslizamiento del carrusel de logos (Productos) en mobile. */
 .slide-anim {
   transition: transform 350ms cubic-bezier(0.25, 1, 0.5, 1) !important;
