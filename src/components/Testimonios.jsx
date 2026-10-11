@@ -1,109 +1,62 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import { getLogoUrl } from "../lib/cloudinary";
 
+import hidrotec from "../assets/clientes/01-hidrotec.png";
+import serminca from "../assets/clientes/02-serminca.png";
+import hierronort from "../assets/clientes/03-hierronort.png";
+import aramis from "../assets/clientes/04-aramis.png";
+import kajai from "../assets/clientes/05-kajai.png";
+import siates from "../assets/clientes/06-siates.png";
+import cnGrupo from "../assets/clientes/07-cn-grupo.png";
+import laEstrella from "../assets/clientes/08-la-estrella.png";
+import andina from "../assets/clientes/09-andina.png";
+import galaKo from "../assets/clientes/10-gala-ko.png";
+import smc from "../assets/clientes/11-smc.png";
+import controlAndina from "../assets/clientes/12-control-andina.png";
+import rq from "../assets/clientes/13-rq.png";
+import cronec from "../assets/clientes/14-cronec.png";
+import shamana from "../assets/clientes/15-shamana.png";
+import imeca from "../assets/clientes/16-imeca.png";
+import saltaPerforaciones from "../assets/clientes/17-salta-perforaciones.png";
+import geoMix from "../assets/clientes/18-geo-mix.png";
+import municipalidad from "../assets/clientes/19-municipalidad.png";
+import noaGeneracion from "../assets/clientes/20-noa-generacion.png";
+import jmg from "../assets/clientes/21-jmg.png";
+import mei from "../assets/clientes/22-mei.png";
+import nubicom from "../assets/clientes/23-nubicom.png";
+import saltapor from "../assets/clientes/24-saltapor.png";
+import saltaMunicipalidad from "../assets/clientes/25-salta-municipalidad.png";
+
+/** @typedef {{ name: string, logo: string }} Client */
+
+/** @type {Client[]} */
 const clients = [
-  {
-    name: "Hidrotec",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067543/Recurso_15_coulbk.png",
-  },
-  {
-    name: "Serminca Servicios Mineros",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067547/Recurso_17_bzmqhj.png",
-  },
-  {
-    name: "Hierronort",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067544/Recurso_14_bgw8qd.png",
-  },
-  {
-    name: "Aramis Servicios Mineros",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067546/Recurso_11_kje7w3.png",
-  },
-  {
-    name: "Kajai Ingeniería",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067545/Recurso_16_bcdl1f.png",
-  },
-  {
-    name: "Siates S.A.",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067542/Recurso_10_v90cgt.png",
-  },
-  {
-    name: "CN Grupo",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067541/Recurso_13_hpb84w.png",
-  },
-  {
-    name: "La Estrella Catering y Hotelería",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1789067541/Recurso_12_j5ioti.png",
-  },
-  {
-    name: "andina",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_19_yumvu9.png",
-  },
-  {
-    name: "Gala ko",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_20_votbqo.png",
-  },
-  {
-    name: "smc",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_26_w1odtm.png",
-  },
-  {
-    name: "Control Andina",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_21_wbffza.png",
-  },
-  {
-    name: "RQ",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_25_kii98f.png",
-  },
-  {
-    name: "Cronec SRL",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_18_mzpfxa.png",
-  },
-  {
-    name: "Shamana",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_27_ilok36.png",
-  },
-  {
-    name: "Imeca",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_23_ayxkmr.png",
-  },
-  {
-    name: "Salta Perforaciones",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_28_pwgc1a.png",
-  },
-  {
-    name: "Geo Mix",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_24_qks6jy.png",
-  },
-  {
-    name: "Municipalidad",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_29_kgzboa.png",
-  },
-  {
-    name: "Noa Generación",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868053/Recurso_22_hymouz.png",
-  },
-  {
-    name: "JMG",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_30_qdfjda.png",
-  },
-  {
-    name: "Mei",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_32_ljzpgi.png",
-  },
-  {
-    name: "Nubicom",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868054/Recurso_31_ajanbo.png",
-  },
-  {
-    name: "Saltapor",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868055/Recurso_33_fqjxab.png",
-  },
-  {
-    name: "Salta Municipalidad",
-    logo: "https://res.cloudinary.com/da1hje3a1/image/upload/v1790868056/Recurso_34_n5xcvw.png",
-  },
+  { name: "Hidrotec", logo: hidrotec },
+  { name: "Serminca Servicios Mineros", logo: serminca },
+  { name: "Hierronort", logo: hierronort },
+  { name: "Aramis Servicios Mineros", logo: aramis },
+  { name: "Kajai Ingeniería", logo: kajai },
+  { name: "Siates S.A.", logo: siates },
+  { name: "CN Grupo", logo: cnGrupo },
+  { name: "La Estrella Catering y Hotelería", logo: laEstrella },
+  { name: "andina", logo: andina },
+  { name: "Gala ko", logo: galaKo },
+  { name: "smc", logo: smc },
+  { name: "Control Andina", logo: controlAndina },
+  { name: "RQ", logo: rq },
+  { name: "Cronec SRL", logo: cronec },
+  { name: "Shamana", logo: shamana },
+  { name: "Imeca", logo: imeca },
+  { name: "Salta Perforaciones", logo: saltaPerforaciones },
+  { name: "Geo Mix", logo: geoMix },
+  { name: "Municipalidad", logo: municipalidad },
+  { name: "Noa Generación", logo: noaGeneracion },
+  { name: "JMG", logo: jmg },
+  { name: "Mei", logo: mei },
+  { name: "Nubicom", logo: nubicom },
+  { name: "Saltapor", logo: saltapor },
+  { name: "Salta Municipalidad", logo: saltaMunicipalidad },
 ];
 
 export default function Testimonios() {
@@ -140,8 +93,10 @@ export default function Testimonios() {
           </h2>
         </motion.div>
 
-        {/* Logos de clientes: 2 por fila en mobile, 5 en PC */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-10">
+        {/* Logos de clientes: 2 por fila en mobile, 5 en PC.
+            Se muestran tal cual vienen (lienzos cuadrados con su margen
+            transparente, que genera la separación entre ellos). */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-0 lg:gap-y-0">
           {clients.map((client, i) => (
             <motion.div
               key={client.name}
@@ -151,14 +106,11 @@ export default function Testimonios() {
               className="group flex items-center justify-center"
             >
               <img
-                src={getLogoUrl(client.logo)}
+                src={client.logo}
                 alt={client.name}
-                className="h-10 w-28 object-contain opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100 sm:w-32 lg:h-12 lg:w-40"
+                className="h-20 w-20 object-contain opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100 sm:h-24 sm:w-24 lg:h-40 lg:w-40"
                 loading="lazy"
                 decoding="async"
-                onError={(e) => {
-                  e.currentTarget.src = `https://placehold.co/240x120/0A0A0A/0D7C3E?text=${client.name}`;
-                }}
               />
             </motion.div>
           ))}
