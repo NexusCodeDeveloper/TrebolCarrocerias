@@ -203,34 +203,44 @@ export default function ComoLoHacemos() {
       <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
         {/* Textos + Equipamiento / Imagen */}
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center ">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
-            {/* <span className="text-trebol-600 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
-              Nuestro Proceso
-            </span> */}
-            <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
-              Cómo lo
-              <br />
-              <span className="gradient-text font-bold">hacemos</span>
-            </h2>
-            <div className="mt-8 h-1 w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
-            <p className="mt-6 max-w-2xl text-black font-semibold text-base md:text-lg leading-relaxed tracking-tight">
-              Combinamos equipamiento CNC de última generación con un equipo de
-              profesionales para lograr precisión y terminaciones de calidad en
-              cada unidad.
-            </p>
+          <div>
+            {/* Título (entra primero) */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8 }}
+            >
+              {/* <span className="text-trebol-600 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
+                Nuestro Proceso
+              </span> */}
+              <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
+                Cómo lo
+                <br />
+                <span className="gradient-text font-bold">hacemos</span>
+              </h2>
+            </motion.div>
 
-            {/* Equipamiento: solo íconos + textos */}
-            <ul className="mt-10 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+            {/* Resto de textos + equipamiento (entran después de la imagen) */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 1 }}
+            >
+              <div className="mt-8 h-1 w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
+              <p className="mt-6 max-w-2xl text-black font-semibold text-base md:text-lg leading-relaxed tracking-tight">
+                Combinamos equipamiento CNC de última generación con un equipo de
+                profesionales para lograr precisión y terminaciones de calidad en
+                cada unidad.
+              </p>
+
+              {/* Equipamiento: solo íconos + textos */}
+              <ul className="mt-10 grid gap-x-8 gap-y-4 sm:grid-cols-2">
               {equipment.map((item, i) => (
                 <motion.li
                   key={item.name}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.45 + i * 0.1 }}
+                  transition={{ duration: 0.5, delay: 1.3 + i * 0.1 }}
                   style={{ animationDelay: `${0.9 + i * 0.18}s` }}
                   className="equipment-float group flex items-center gap-3"
                 >
@@ -245,14 +255,15 @@ export default function ComoLoHacemos() {
                   </span>
                 </motion.li>
               ))}
-            </ul>
-          </motion.div>
+              </ul>
+            </motion.div>
+          </div>
 
           {/* Imagen */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 1 }}
+            transition={{ duration: 0.7, delay: 0.5 }}
             className="relative"
           >
             <img
