@@ -786,14 +786,6 @@ export default function Productos() {
       {/* Header - scroll normal */}
       <div className="relative z-10 pt-16 pb-8 px-4 max-w-7xl mx-auto">
         <div ref={headerRef}>
-          {/* <motion.span
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="text-trebol-400 text-sm font-medium tracking-[0.3em] uppercase mb-4 block"
-          >
-            Nuestros Productos
-          </motion.span> */}
           <motion.h2
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
