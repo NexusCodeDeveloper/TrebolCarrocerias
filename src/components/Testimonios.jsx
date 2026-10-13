@@ -108,7 +108,7 @@ export default function Testimonios() {
               <img
                 src={client.logo}
                 alt={client.name}
-                className="h-20 w-20 object-contain opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100 sm:h-24 sm:w-24 lg:h-40 lg:w-40"
+                className="h-[110px] w-[110px] object-contain opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100 sm:h-24 sm:w-24 lg:h-40 lg:w-40"
                 loading="lazy"
                 decoding="async"
               />
