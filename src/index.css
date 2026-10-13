@@ -252,6 +252,11 @@ body {
   transition: transform 350ms cubic-bezier(0.25, 1, 0.5, 1) !important;
 }
 
+/* Excepción: fundido del carrusel de imágenes de Destacadas en mobile. */
+.carousel-fade {
+  transition: opacity 700ms ease !important;
+}
+
 /* Reubicado sin animación para el loop infinito del carrusel de logos. */
 .slide-anim.slide-reset {
   transition: none !important;
