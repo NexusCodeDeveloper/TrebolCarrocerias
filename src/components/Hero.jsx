@@ -38,7 +38,7 @@ export default function Hero() {
   const videoOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
   const textY = useTransform(scrollYProgress, [0, 0.3], [0, -80]);
   const barsOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3], [0.55, 0.85]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0], [0.0, 0.0]);
 
   return (
     <section
@@ -68,8 +68,8 @@ export default function Hero() {
           <source src={getVideoUrl(HERO_VIDEO)} />
         </video>
         <motion.div
-          style={isMobile ? { opacity: 0.55 } : { opacity: overlayOpacity }}
-          className="absolute inset-0 bg-black"
+        /*  style={isMobile ? { opacity: 0.55 } : { opacity: overlayOpacity }} */
+        /* className="absolute inset-0 bg-black" */
         />
         <motion.div
           style={isMobile ? undefined : { opacity: barsOpacity }}
