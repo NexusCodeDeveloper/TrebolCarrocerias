@@ -201,40 +201,57 @@ export default function ComoLoHacemos() {
       ))}
 
       <div className="max-w-7xl mx-auto relative z-10" ref={ref}>
-        {/* Textos + Equipamiento / Imagen */}
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center ">
-          <div>
-            {/* Título (entra primero) */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
-            >
-              {/* <span className="text-trebol-600 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
-                Nuestro Proceso
-              </span> */}
-              <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
-                Cómo lo
-                <br />
-                <span className="gradient-text font-bold">hacemos</span>
-              </h2>
-            </motion.div>
+        {/* Orden mobile: título → imagen → textos/tags (en PC, dos columnas) */}
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-x-16 lg:gap-y-0 items-center">
+          {/* Título (entra primero) */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="lg:col-start-1 lg:row-start-1"
+          >
+            {/* <span className="text-trebol-600 text-sm font-medium tracking-[0.3em] uppercase mb-4 block">
+              Nuestro Proceso
+            </span> */}
+            <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl  tracking-tight text-gray-900 leading-[1.05]">
+              Cómo lo
+              <br />
+              <span className="gradient-text font-bold">hacemos</span>
+            </h2>
+          </motion.div>
 
-            {/* Resto de textos + equipamiento (entran después de la imagen) */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8, delay: 1 }}
-            >
-              <div className="mt-8 h-1 w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
-              <p className="mt-6 max-w-2xl text-black font-semibold text-base md:text-lg leading-relaxed tracking-tight">
-                Combinamos equipamiento CNC de última generación con un equipo de
-                profesionales para lograr precisión y terminaciones de calidad en
-                cada unidad.
-              </p>
+          {/* Imagen (entra segundo) */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.5 }}
+            className="relative lg:col-start-2 lg:row-start-1 lg:row-span-2"
+          >
+            <img
+              src={getImageUrl(COMO_IMG)}
+              alt="Equipamiento CNC de Trébol Carrocerías"
+              className="w-full object-contain"
+              loading="lazy"
+              decoding="async"
+            />
+          </motion.div>
 
-              {/* Equipamiento: solo íconos + textos */}
-              <ul className="mt-10 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+          {/* Resto de textos + equipamiento (entra tercero) */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 1 }}
+            className="lg:col-start-1 lg:row-start-2"
+          >
+            <div className="mt-8 h-1 w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
+            <p className="mt-6 max-w-2xl text-black font-semibold text-base md:text-lg leading-relaxed tracking-tight">
+              Combinamos equipamiento CNC de última generación con un equipo de
+              profesionales para lograr precisión y terminaciones de calidad en
+              cada unidad.
+            </p>
+
+            {/* Equipamiento: solo íconos + textos */}
+            <ul className="mt-10 grid gap-x-8 gap-y-4 sm:grid-cols-2">
               {equipment.map((item, i) => (
                 <motion.li
                   key={item.name}
@@ -255,24 +272,7 @@ export default function ComoLoHacemos() {
                   </span>
                 </motion.li>
               ))}
-              </ul>
-            </motion.div>
-          </div>
-
-          {/* Imagen */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.5 }}
-            className="relative"
-          >
-            <img
-              src={getImageUrl(COMO_IMG)}
-              alt="Equipamiento CNC de Trébol Carrocerías"
-              className="w-full object-contain"
-              loading="lazy"
-              decoding="async"
-            />
+            </ul>
           </motion.div>
         </div>
 
