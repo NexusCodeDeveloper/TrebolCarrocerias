@@ -70,6 +70,8 @@ const products = [
     ],
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077311/1_i30ret.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791926403/WhatsApp_Image_2026-10-13_at_6.10.15_PM_stamic.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791926629/WhatsApp_Image_2026-10-13_at_6.11.43_PM_abt9yd.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077311/1a_evxx4o.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077312/1c_diozol.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077311/1b_mba2uo.jpg",
@@ -156,6 +158,8 @@ const products = [
     ],
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077316/3_hw5w6p.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791926489/WhatsApp_Image_2026-10-13_at_6.10.31_PM_k2obno.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791926535/WhatsApp_Image_2026-10-13_at_6.10.40_PM_xnrcy5.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791586126/barandaBaja1_vyujyu.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077318/3d_fq961d.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791586126/barandaBaja2_e0wcdg.jpg",
@@ -199,8 +203,10 @@ const products = [
     ],
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077319/4_sdstkt.mp4",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791926689/WhatsApp_Image_2026-10-13_at_6.11.08_PM_hl76l4.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791134412/7a-OK.jpg_wr7igk.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791077320/4a_ihfcfj.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791926707/WhatsApp_Image_2026-10-13_at_6.11.14_PM_ygjjhi.jpg",
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077321/4c_az2xdj.mp4",
       "https://res.cloudinary.com/da1hje3a1/video/upload/v1791077320/4b_egmeah.mp4",
     ],
