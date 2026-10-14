@@ -218,6 +218,7 @@ export default function ComoLoHacemos() {
               <br />
               <span className="gradient-text font-bold">hacemos</span>
             </h2>
+            <div className="mt-8 h-1 w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
           </motion.div>
 
           {/* Imagen (entra segundo) */}
@@ -243,7 +244,6 @@ export default function ComoLoHacemos() {
             transition={{ duration: 0.8, delay: 1 }}
             className="lg:col-start-1 lg:row-start-2"
           >
-            <div className="mt-8 h-1 w-32 bg-gradient-to-r from-trebol-500 to-transparent" />
             <p className="mt-6 max-w-2xl text-black font-semibold text-base md:text-lg leading-relaxed tracking-tight">
               Combinamos equipamiento CNC de última generación con un equipo de
               profesionales para lograr precisión y terminaciones de calidad en
