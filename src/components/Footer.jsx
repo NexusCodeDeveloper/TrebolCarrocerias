@@ -27,7 +27,7 @@ const socialLinks = [
 const productLinks = [
   { name: "Volquetes", href: "#productos" },
   { name: "Bateas Rockeras", href: "#productos" },
-  { name: "Baranda Volcable", href: "#productos" },
+  { name: "Baranda Baja", href: "#productos" },
   { name: "Térmicos", href: "#productos" },
   { name: "Playos", href: "#productos" },
   { name: "Sider", href: "#productos" },
@@ -231,7 +231,11 @@ export default function Footer() {
                   Ruta Nacional 51 - Km 6,5 — El Encón, Salta
                 </div>
                 <div className="text-gray-500 text-xs mt-1">
-                  Lun - Vie: 8:00 – 18:00
+                  Lunes - Jueves: 8:00 – 18:00
+                  <br />
+                  Viernes: 8:00 – 17:00
+                  <br />
+                  Horario corrido
                 </div>
               </div>
             </motion.a>
@@ -367,7 +371,11 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Clock className="w-4 h-4 text-trebol-400 flex-shrink-0 mt-0.5" />
                 <span className="text-gray-500 text-sm tracking-tight">
-                  Lun - Vie: 8:00 – 18:00
+                  Lunes - Jueves: 8:00 – 18:00
+                  <br />
+                  Viernes: 8:00 – 17:00
+                  <br />
+                  Horario corrido
                 </span>
               </li>
             </ul>
