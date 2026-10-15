@@ -121,7 +121,7 @@ const products = [
   {
     icon: Truck,
     iconImage:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791065246/3_ma9hvw.png",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1792097405/baranda_baja_icono_x9hl4l.png",
     title: "Baranda Baja",
     subtitle: "abatimiento rápido",
     description:
