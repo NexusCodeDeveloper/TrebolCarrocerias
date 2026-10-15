@@ -79,9 +79,10 @@ export const getVideoPoster = (path) => {
  * Como `getImageUrl` pero además recorta los bordes transparentes
  * (`e_trim`). Pensado para logos, que suelen traer mucho margen.
  * @param {string} path
- * @param {{ cropTileShadow?: boolean }} [options] - `cropTileShadow`: recorta el
- *   margen con la sombra incrustada de los iconos de producto (deja 175×175
- *   desde x=3, y=0 sobre el resultado del `e_trim`).
+ * @param {{ cropTileShadow?: boolean }} [options] - `cropTileShadow`: escala el
+ *   resultado del `e_trim` a 181px de ancho (para aceptar subidas a cualquier
+ *   resolución) y luego recorta la sombra incrustada de los iconos de producto
+ *   (deja 175×175 desde x=3, y=0).
  * @returns {string}
  */
 export const getLogoUrl = (path, options = {}) => {
@@ -92,7 +93,9 @@ export const getLogoUrl = (path, options = {}) => {
     ? path
     : `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${path}`;
 
-  const crop = options.cropTileShadow ? "/c_crop,x_3,y_0,w_175,h_175" : "";
+  const crop = options.cropTileShadow
+    ? "/c_scale,w_181/c_crop,x_3,y_0,w_175,h_175"
+    : "";
 
   if (url.includes("e_trim")) return url;
   if (url.includes("f_auto")) {
