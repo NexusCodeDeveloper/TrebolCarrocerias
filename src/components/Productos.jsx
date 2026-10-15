@@ -322,8 +322,8 @@ const products = [
         text: "Equipados con piso antideslizante para evitar el desplazamiento no deseado de la mercadería durante el trayecto.",
       },
       {
-        title: "Sujeción interna eficiente",
-        text: "Cuentan con rieles de sujeción interna para asegurar y organizar de forma óptima los paquetes dentro de la unidad. ",
+        title: "Puntos para amarre",
+        text: "Cuenta con puntos de amarre distribuidos para sujeción de la carga. ",
       },
       {
         title: "Accesibilidad rápida",
