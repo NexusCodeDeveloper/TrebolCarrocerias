@@ -145,8 +145,8 @@ export default function Footer() {
                 <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
                   Llamanos
                 </div>
-                <div className="text-white font-heading font-bold tracking-tight">
-                  (0387) 155 021 303
+                <div className="text-white font-heading font-bold tracking-tight text-sm">
+                  +54 9 387 502-1303
                 </div>
               </div>
               <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-trebol-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
@@ -326,7 +326,7 @@ export default function Footer() {
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-trebol-400 flex-shrink-0" />
                 <a className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight">
-                  (0387) 155 021 303
+                  +54 9 387 502-1303
                 </a>
               </li>
               <li className="flex items-center gap-3">
