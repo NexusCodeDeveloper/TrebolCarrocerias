@@ -43,8 +43,9 @@ const cards = [
     front: "Elementos de izaje",
     back: "Elementos de sujeción e izaje de carga: eslinga de amarre con criquet traca y eslinga de izaje.",
     images: [
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791927498/WhatsApp_Image_2026-10-13_at_6.30.54_PM_2_cjlpaq.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791927480/WhatsApp_Image_2026-10-13_at_6.30.54_PM_1_yvta3y.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1792096381/WhatsApp_Image_2026-10-15_at_5.24.01_PM_mfmdef.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1792096397/WhatsApp_Image_2026-10-15_at_5.24.01_PM_1_hll12w.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1792096412/WhatsApp_Image_2026-10-15_at_5.24.01_PM_2_wv4bpa.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791927150/WhatsApp_Image_2026-10-13_at_6.30.54_PM_x6nblx.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791927513/WhatsApp_Image_2026-10-13_at_6.30.54_PM_3_wcwdgp.jpg",
     ],
