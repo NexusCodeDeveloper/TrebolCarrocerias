@@ -46,7 +46,6 @@ const products = [
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791138551/3er-eje.jpg_g5af0k.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791930945/WhatsApp_Image_2026-10-13_at_7.33.01_PM_qdwejt.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791930965/WhatsApp_Image_2026-10-13_at_7.33.02_PM_a4g0iv.jpg",
     ],
   },
   {
@@ -71,8 +70,6 @@ const products = [
     details: [],
     gallery: [
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791927043/WhatsApp_Image_2026-10-13_at_6.25.51_PM_pm75cx.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791932899/WhatsApp_Image_2026-10-13_at_7.56.56_PM_3_fzi9f4.jpg",
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791932878/WhatsApp_Image_2026-10-13_at_7.56.56_PM_2_uqaedv.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791932852/WhatsApp_Image_2026-10-13_at_7.56.56_PM_1_mtumch.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791932847/WhatsApp_Image_2026-10-13_at_7.56.56_PM_zpsurp.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791586392/grua3_dliw2f.jpg",
