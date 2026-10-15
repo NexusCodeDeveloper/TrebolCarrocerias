@@ -69,7 +69,7 @@ const products = [
     ],
     details: [],
     gallery: [
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791927043/WhatsApp_Image_2026-10-13_at_6.25.51_PM_pm75cx.jpg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1792096421/WhatsApp_Image_2026-10-15_at_5.24.27_PM_mykawq.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791932852/WhatsApp_Image_2026-10-13_at_7.56.56_PM_1_mtumch.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791932847/WhatsApp_Image_2026-10-13_at_7.56.56_PM_zpsurp.jpg",
       "https://res.cloudinary.com/da1hje3a1/image/upload/v1791586392/grua3_dliw2f.jpg",
