@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import hidrotec from "../assets/clientes/01-hidrotec.png";
 import serminca from "../assets/clientes/02-serminca.png";
@@ -27,6 +27,9 @@ import mei from "../assets/clientes/22-mei.png";
 import nubicom from "../assets/clientes/23-nubicom.png";
 import saltapor from "../assets/clientes/24-saltapor.png";
 import saltaMunicipalidad from "../assets/clientes/25-salta-municipalidad.png";
+
+/* Velocidad de la cinta de logos (px por segundo) */
+const SPEED = 60;
 
 /** @typedef {{ name: string, logo: string }} Client */
 
@@ -62,14 +65,91 @@ const clients = [
 export default function Testimonios() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [isMobile] = useState(
-    () => window.matchMedia("(max-width: 767px)").matches,
+  const trackRef = useRef(/** @type {HTMLDivElement | null} */ (null));
+  const viewportRef = useRef(/** @type {HTMLDivElement | null} */ (null));
+  const halfRef = useRef(0);
+  const offsetRef = useRef(0);
+  const hoverRef = useRef(false);
+  const [reducedMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
+
+  /* Cinta infinita de una línea (mismo motor que Normas):
+     corre solo cuando es visible, se pausa con el mouse encima
+     y con prefers-reduced-motion queda estática. */
+  useEffect(() => {
+    const track = trackRef.current;
+    const viewport = viewportRef.current;
+    if (!track || !viewport) return;
+
+    let rafId = /** @type {number | null} */ (null);
+    let last = 0;
+    let visible = false;
+    let lastWritten = -1;
+
+    const measure = () => {
+      halfRef.current = track.scrollWidth / 2;
+    };
+    measure();
+
+    const step = (/** @type {number} */ now) => {
+      rafId = requestAnimationFrame(step);
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+
+      let offset = offsetRef.current;
+      if (!hoverRef.current && !reducedMotion) offset += SPEED * dt;
+
+      const h = halfRef.current;
+      if (h > 0) {
+        while (offset >= h) offset -= h;
+        while (offset < 0) offset += h;
+      }
+
+      offsetRef.current = offset;
+      if (offset !== lastWritten) {
+        lastWritten = offset;
+        track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+      }
+    };
+
+    const start = () => {
+      if (rafId !== null) return;
+      last = performance.now();
+      rafId = requestAnimationFrame(step);
+    };
+    const stop = () => {
+      if (rafId === null) return;
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    };
+
+    const obs = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !document.hidden) start();
+      else stop();
+    });
+    obs.observe(viewport);
+
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else if (visible) start();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("resize", measure);
+
+    return () => {
+      stop();
+      obs.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("resize", measure);
+    };
+  }, [reducedMotion]);
 
   return (
     <section
       id="testimonios"
-      className="relative overflow-hidden pt-12 pb-12 md:pt-32 md:pb-32 px-4"
+      className="relative overflow-hidden pt-12 pb-8 md:pt-20 md:pb-10 px-4"
     >
       {/* Background: verde esmeralda brillante - confianza/éxito */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#031d12] via-[#06331e] to-[#031d12]" />
@@ -92,27 +172,30 @@ export default function Testimonios() {
             <span className="gradient-text font-bold">eligen</span>
           </h2>
         </motion.div>
+      </div>
 
-        {/* Logos de clientes: 2 por fila en mobile, 5 en PC.
-            Se muestran tal cual vienen (lienzos cuadrados con su margen
-            transparente, que genera la separación entre ellos). */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-0 lg:gap-y-0">
-          {clients.map((client, i) => (
-            <motion.div
-              key={client.name}
-              initial={isMobile ? false : { opacity: 0, y: 40 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.04 }}
-              className="group flex items-center justify-center"
-            >
-              <img
-                src={client.logo}
-                alt={client.name}
-                className="h-[110px] w-[110px] object-contain opacity-60 transition-all duration-500 group-hover:scale-105 group-hover:opacity-100 sm:h-24 sm:w-24 lg:h-40 lg:w-40"
-                loading="lazy"
-                decoding="async"
-              />
-            </motion.div>
+      {/* Cinta de logos: una sola línea, avanza sola (los PNG van tal cual) */}
+      <div
+        ref={viewportRef}
+        className="relative z-10 -mx-4 overflow-hidden"
+        onMouseEnter={() => {
+          hoverRef.current = true;
+        }}
+        onMouseLeave={() => {
+          hoverRef.current = false;
+        }}
+      >
+        <div ref={trackRef} className="flex w-max items-center gap-4 pr-4">
+          {[...clients, ...clients].map((client, i) => (
+            <img
+              key={`${i}-${client.name}`}
+              src={client.logo}
+              alt={i < clients.length ? client.name : ""}
+              aria-hidden={i >= clients.length}
+              className="h-28 w-28 shrink-0 object-contain opacity-60 transition-all duration-500 hover:scale-105 hover:opacity-100 sm:h-26 sm:w-26 lg:h-48 lg:w-48"
+              loading="lazy"
+              decoding="async"
+            />
           ))}
         </div>
       </div>
