@@ -53,7 +53,7 @@ const certs = [
   {
     icon: ShieldCheck,
     image:
-      "https://res.cloudinary.com/da1hje3a1/image/upload/v1791087308/LOGO_IRAM_pic0ju.svg",
+      "https://res.cloudinary.com/da1hje3a1/image/upload/v1792464755/IRAM_cllwxn.png",
     tag: "IRAM",
   },
 ];
