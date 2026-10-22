@@ -6,10 +6,12 @@ import {
   MapPin,
   Clock,
   ChevronRight,
+  QrCode,
 } from "lucide-react";
 import { WhatsAppIcon, FacebookIcon, InstagramIcon } from "./Icons";
 import { getImageUrl } from "../lib/cloudinary";
 import { useState } from "react";
+import { QRCodeSVG as QRCode } from "qrcode.react";
 
 const socialLinks = [
   {
@@ -47,6 +49,7 @@ const MAPS_URL =
   "https://maps.google.com/?q=-24.859000,-65.531400&entry=gps&g_ep=CAESCTExLjk1LjMwMBgAINeCAyoSNDcwNjg2MTUsLDQ3MDc1OTE1QgJBUg%3D%3D&shorturl=1";
 const WHATSAPP_URL =
   "https://wa.me/543875021303?text=Hola,%20me%20interesa%20una%20cotización%20para%20una%20carrocería.";
+const EMAIL_RRHH = "rrhh@trebolcarrocerias.com.ar";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -55,6 +58,9 @@ export default function Footer() {
 
   const [copiedTop, setCopiedTop] = useState(false);
   const [copiedBottom, setCopiedBottom] = useState(false);
+  const [copiedRRHH, setCopiedRRHH] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+  const [showQRMain, setShowQRMain] = useState(false);
 
   const copyEmailTop = async () => {
     try {
@@ -76,6 +82,19 @@ export default function Footer() {
 
       setTimeout(() => {
         setCopiedBottom(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Error al copiar el email:", error);
+    }
+  };
+
+  const copyEmailRRHH = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL_RRHH);
+      setCopiedRRHH(true);
+
+      setTimeout(() => {
+        setCopiedRRHH(false);
       }, 2000);
     } catch (error) {
       console.error("Error al copiar el email:", error);
@@ -129,27 +148,27 @@ export default function Footer() {
           </motion.div>
 
           {/* Contact cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 animate-float">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10 animate-float">
             {/* Click to call */}
             <motion.a
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="icon-pulse group flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
+              className="icon-pulse group flex items-center gap-3 p-4 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
             >
-              <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center group-hover:bg-trebol-500/20 transition-colors flex-shrink-0">
-                <Phone className="w-6 h-6 text-trebol-400" />
+              <div className="w-10 h-10 rounded-2xl bg-trebol-500/10 flex items-center justify-center group-hover:bg-trebol-500/20 transition-colors flex-shrink-0">
+                <Phone className="w-5 h-5 text-trebol-400" />
               </div>
               <div className="flex-1 min-w-0 ">
                 <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
                   Llamanos
                 </div>
-                <div className="text-white font-heading font-bold tracking-tight text-sm">
+                <div className="text-white font-heading font-bold tracking-tight text-xs">
                   +54 9 387 502-1303
                 </div>
               </div>
-              <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-trebol-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
+              <ChevronRight className="w-3 h-3 text-gray-600 group-hover:text-trebol-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
             </motion.a>
 
             {/* WhatsApp */}
@@ -161,20 +180,20 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="icon-pulse group flex items-center gap-4 p-6 rounded-3xl border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/40 transition-all duration-500"
+              className="icon-pulse group flex items-center gap-3 p-4 rounded-3xl border border-green-500/20 bg-green-500/5 hover:bg-green-500/10 hover:border-green-500/40 transition-all duration-500"
             >
-              <div className=" w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
-                <WhatsAppIcon className="w-6 h-6 fill-green-400" />
+              <div className=" w-10 h-10 rounded-2xl bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                <WhatsAppIcon className="w-5 h-5 fill-green-400" />
               </div>
               <div className="flex-1">
-                <div className="text-green-400 text-xs tracking-[0.15em] uppercase mb-1">
+                <div className="text-green-400 text-[10px] tracking-[0.15em] uppercase mb-1">
                   WhatsApp
                 </div>
-                <div className="text-white font-heading font-bold tracking-tight">
+                <div className="text-white font-heading font-bold tracking-tight text-xs">
                   Chateá con nosotros
                 </div>
               </div>
-              <ChevronRight className="w-4 h-4 text-green-600 group-hover:text-green-400 group-hover:translate-x-1 transition-all" />
+              <ChevronRight className="w-3 h-3 text-green-600 group-hover:text-green-400 group-hover:translate-x-1 transition-all" />
             </motion.a>
 
             {/* Email */}
@@ -188,26 +207,61 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="icon-pulse group flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
+              className="icon-pulse group flex items-center gap-3 p-4 rounded-3xl border border-white/[0.06] bg-dark-800 hover:border-trebol-500/30 transition-all duration-500"
             >
-              <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center group-hover:bg-trebol-500/20 transition-colors flex-shrink-0">
-                <Mail className="w-6 h-6 text-trebol-400" />
+              <div className="w-10 h-10 rounded-2xl bg-trebol-500/10 flex items-center justify-center group-hover:bg-trebol-500/20 transition-colors flex-shrink-0">
+                <Mail className="w-5 h-5 text-trebol-400" />
               </div>
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 overflow-hidden">
                 <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
                   {copiedTop ? "¡Copiado!" : "Email"}
                 </div>
-                <div className="text-white font-heading font-bold text-xs tracking-tight truncate">
-                  ventas@trebolcarrocerias.com.ar
+                {/* Emails apilados verticalmente con QR */}
+                <div className="mt-1 flex flex-col gap-1">
+                  {/* Email principal con QR */}
+                  <div className="flex items-center gap-1.5">
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        copyEmailTop();
+                      }}
+                      className="text-trebol-400 text-xs font-medium hover:text-trebol-300 truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
+                    >
+                      {copiedTop ? "¡Copiado!" : "ventas@trebolcarrocerias.com.ar"}
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => setShowQRMain(true)}
+                      className="p-0.5 text-gray-500 hover:text-trebol-400 transition-colors flex-shrink-0"
+                      aria-label="Ver QR para ventas"
+                    >
+                      <QrCode className="w-3 h-3" />
+                    </button>
+                  </div>
+                  {/* RRHH con QR (sin label) */}
+                  <div className="flex items-center gap-1.5">
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        copyEmailRRHH();
+                      }}
+                      className="text-trebol-400 text-xs font-medium hover:text-trebol-300 truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
+                    >
+                      {copiedRRHH ? "¡Copiado!" : EMAIL_RRHH}
+                    </a>
+                    <button
+                      type="button"
+                      onClick={() => setShowQR(true)}
+                      className="p-0.5 text-gray-500 hover:text-trebol-400 transition-colors flex-shrink-0"
+                      aria-label="Ver QR para RRHH"
+                    >
+                      <QrCode className="w-3 h-3" />
+                    </button>
+                  </div>
                 </div>
               </div>
-              <ChevronRight
-                className={`w-4 h-4 transition-all flex-shrink-0 ${
-                  copiedTop
-                    ? "text-trebol-400"
-                    : "text-gray-600 group-hover:text-trebol-400 group-hover:translate-x-1"
-                }`}
-              />
             </motion.a>
 
             {/* Address / Hours */}
@@ -218,10 +272,10 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="icon-pulse flex items-center gap-4 p-6 rounded-3xl border border-white/[0.06] bg-dark-800"
+              className="icon-pulse flex items-center gap-3 p-4 rounded-3xl border border-white/[0.06] bg-dark-800"
             >
-              <div className="w-14 h-14 rounded-2xl bg-trebol-500/10 flex items-center justify-center flex-shrink-0">
-                <MapPin className="w-6 h-6 text-trebol-400" />
+              <div className="w-10 h-10 rounded-2xl bg-trebol-500/10 flex items-center justify-center flex-shrink-0">
+                <MapPin className="w-5 h-5 text-trebol-400" />
               </div>
               <div>
                 <div className="text-gray-500 text-xs tracking-[0.15em] uppercase mb-1">
@@ -342,20 +396,56 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="w-4 h-4 text-trebol-400 flex-shrink-0 mt-0.5" />
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    copyEmailBottom();
-                  }}
-                  className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight truncate"
-                >
-                  <div className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight  mb-1">
-                    {copiedBottom
-                      ? "¡Copiado!"
-                      : "ventas@trebolcarrocerias.com.ar"}
+                <div className="flex-1 min-w-0 overflow-hidden">
+                  <div className="flex flex-col gap-1">
+                    {/* Ventas */}
+                    <div className="flex items-center gap-1.5">
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          copyEmailBottom();
+                        }}
+                        className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
+                      >
+                        {copiedBottom
+                          ? "¡Copiado!"
+                          : "ventas@trebolcarrocerias.com.ar"}
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => setShowQRMain(true)}
+                        className="p-0.5 text-gray-500 hover:text-trebol-400 transition-colors flex-shrink-0"
+                        aria-label="Ver QR para ventas"
+                      >
+                        <QrCode className="w-3 h-3" />
+                      </button>
+                    </div>
+                    {/* RRHH */}
+                    <div className="flex items-center gap-1.5">
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          copyEmailRRHH();
+                        }}
+                        className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
+                      >
+                        {copiedRRHH
+                          ? "¡Copiado!"
+                          : EMAIL_RRHH}
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => setShowQR(true)}
+                        className="p-0.5 text-gray-500 hover:text-trebol-400 transition-colors flex-shrink-0"
+                        aria-label="Ver QR para RRHH"
+                      >
+                        <QrCode className="w-3 h-3" />
+                      </button>
+                    </div>
                   </div>
-                </a>
+                </div>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-trebol-400 flex-shrink-0 mt-0.5" />
@@ -412,8 +502,45 @@ export default function Footer() {
           >
             <ArrowUp className="w-4 h-4 text-white" />
           </motion.button>
-        </div>
-      </div>
+</div>
+    </div>
+
+      {/* QR Modal */}
+      {(showQR || showQRMain) && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={() => { setShowQR(false); setShowQRMain(false); }}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white p-6 rounded-2xl text-center max-w-xs"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-xs text-gray-500 mb-3">
+              Escaneá para guardar contacto {showQR ? "RRHH" : "Ventas"}
+            </p>
+            <QRCode
+              value={`mailto:${showQR ? EMAIL_RRHH : "ventas@trebolcarrocerias.com.ar"}`}
+              size={180}
+              level="M"
+              includeMargin={true}
+            />
+            <p className="mt-3 text-xs text-gray-500">
+              {showQR ? EMAIL_RRHH : "ventas@trebolcarrocerias.com.ar"}
+            </p>
+            <button
+              onClick={() => { setShowQR(false); setShowQRMain(false); }}
+              className="mt-4 text-trebol-400 text-xs font-medium hover:text-trebol-300"
+            >
+              Cerrar
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
     </footer>
   );
 }
