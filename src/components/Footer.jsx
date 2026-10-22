@@ -226,9 +226,11 @@ export default function Footer() {
                         e.preventDefault();
                         copyEmailTop();
                       }}
-                      className="text-trebol-400 text-xs font-medium hover:text-trebol-300 truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
+                      className="text-white text-xs font-medium hover:text-trebol-300 truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
                     >
-                      {copiedTop ? "¡Copiado!" : "ventas@trebolcarrocerias.com.ar"}
+                      {copiedTop
+                        ? "¡Copiado!"
+                        : "ventas@trebolcarrocerias.com.ar"}
                     </a>
                     <button
                       type="button"
@@ -236,7 +238,7 @@ export default function Footer() {
                       className="p-0.5 text-gray-500 hover:text-trebol-400 transition-colors flex-shrink-0"
                       aria-label="Ver QR para ventas"
                     >
-                      <QrCode className="w-3 h-3" />
+                      <QrCode className="w-5 h-5" />
                     </button>
                   </div>
                   {/* RRHH con QR (sin label) */}
@@ -247,7 +249,7 @@ export default function Footer() {
                         e.preventDefault();
                         copyEmailRRHH();
                       }}
-                      className="text-trebol-400 text-xs font-medium hover:text-trebol-300 truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
+                      className="text-white text-xs font-medium hover:text-trebol-300 truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
                     >
                       {copiedRRHH ? "¡Copiado!" : EMAIL_RRHH}
                     </a>
@@ -257,7 +259,7 @@ export default function Footer() {
                       className="p-0.5 text-gray-500 hover:text-trebol-400 transition-colors flex-shrink-0"
                       aria-label="Ver QR para RRHH"
                     >
-                      <QrCode className="w-3 h-3" />
+                      <QrCode className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
@@ -418,7 +420,7 @@ export default function Footer() {
                         className="p-0.5 text-gray-500 hover:text-trebol-400 transition-colors flex-shrink-0"
                         aria-label="Ver QR para ventas"
                       >
-                        <QrCode className="w-3 h-3" />
+                        <QrCode className="w-5 h-5" />
                       </button>
                     </div>
                     {/* RRHH */}
@@ -431,9 +433,7 @@ export default function Footer() {
                         }}
                         className="text-gray-500 hover:text-trebol-400 transition-colors text-sm tracking-tight truncate block overflow-hidden text-ellipsis whitespace-nowrap flex-1"
                       >
-                        {copiedRRHH
-                          ? "¡Copiado!"
-                          : EMAIL_RRHH}
+                        {copiedRRHH ? "¡Copiado!" : EMAIL_RRHH}
                       </a>
                       <button
                         type="button"
@@ -441,7 +441,7 @@ export default function Footer() {
                         className="p-0.5 text-gray-500 hover:text-trebol-400 transition-colors flex-shrink-0"
                         aria-label="Ver QR para RRHH"
                       >
-                        <QrCode className="w-3 h-3" />
+                        <QrCode className="w-5 h-5" />
                       </button>
                     </div>
                   </div>
@@ -502,8 +502,8 @@ export default function Footer() {
           >
             <ArrowUp className="w-4 h-4 text-white" />
           </motion.button>
-</div>
-    </div>
+        </div>
+      </div>
 
       {/* QR Modal */}
       {(showQR || showQRMain) && (
@@ -512,7 +512,10 @@ export default function Footer() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-          onClick={() => { setShowQR(false); setShowQRMain(false); }}
+          onClick={() => {
+            setShowQR(false);
+            setShowQRMain(false);
+          }}
         >
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
@@ -533,7 +536,10 @@ export default function Footer() {
               {showQR ? EMAIL_RRHH : "ventas@trebolcarrocerias.com.ar"}
             </p>
             <button
-              onClick={() => { setShowQR(false); setShowQRMain(false); }}
+              onClick={() => {
+                setShowQR(false);
+                setShowQRMain(false);
+              }}
               className="mt-4 text-trebol-400 text-xs font-medium hover:text-trebol-300"
             >
               Cerrar
